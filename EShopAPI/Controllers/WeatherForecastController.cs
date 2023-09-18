@@ -29,5 +29,11 @@ namespace EShopAPI.Controllers
             })
             .ToArray();
         }
+
+        [HttpPost()]
+        public IActionResult Post()
+        {
+            return Ok();
+        }
     }
 }
