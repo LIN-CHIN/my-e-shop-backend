@@ -38,7 +38,7 @@ try
                     })
                     .ToList();
 
-                return new OkObjectResult(new ResponseModel<List<CustomModelState>>
+                return new OkObjectResult(new GenericResponse<List<CustomModelState>>
                 {
                     Code = ResponseCodeType.ModelBindingError,
                     Message = ResponseCodeType.ModelBindingError.GetMessage(),
