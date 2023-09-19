@@ -4,14 +4,19 @@ using EShopCores.Errors;
 using EShopCores.Models;
 using Microsoft.AspNetCore.Mvc;
 using NSwag;
+using Serilog.Events;
+using Serilog;
+using Serilog.Exceptions;
+using EShopCores.LogHelpers;
+using EShopAPI;
 
-var builder = WebApplication.CreateBuilder(args);
+try
+{
+    var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers()
+    builder.Services.AddControllers()
         .AddNewtonsoftJson()
-        //自訂ModelState 
+        //Custom ModelState 
         .ConfigureApiBehaviorOptions(options =>
         {
             options.InvalidModelStateResponseFactory = context =>
@@ -45,56 +50,81 @@ builder.Services.AddControllers()
             };
         });
 
-//NSwag Settings
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    //NSwag Settings
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
 
-builder.Services.AddOpenApiDocument(settings =>
-{
-    settings.DocumentName = "eShop-API";  //預設為V1
-    settings.Title = "eShop API";
-    settings.Version = "1.0.0";
-    settings.Description = "集合所有eShop API";
-    settings.AddSecurity("Bearer Token", Enumerable.Empty<string>(),
-        new OpenApiSecurityScheme()
+    builder.Services.AddOpenApiDocument(settings =>
+    {
+        settings.DocumentName = "eShop-API";  //預設為V1
+        settings.Title = "eShop API";
+        settings.Version = "1.0.0";
+        settings.Description = "集合所有eShop API";
+        settings.AddSecurity("Bearer Token", Enumerable.Empty<string>(),
+            new OpenApiSecurityScheme()
+            {
+                Type = OpenApiSecuritySchemeType.Http,
+                In = OpenApiSecurityApiKeyLocation.Header,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                Description = "Put your JWT token here",
+                Name = "Authorization"
+            }
+        );
+    });
+
+    //Log Settings
+    builder.Host.UseSerilog();
+    Log.Logger = new LoggerConfiguration()
+       .MinimumLevel.Information()
+       .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+       .Enrich.FromLogContext()
+       .Enrich.WithExceptionDetails()
+       .WriteTo.File($"Logs/.txt", rollingInterval: RollingInterval.Day)
+       .CreateLogger();
+
+
+    //Dependency Injection
+    builder.Services.AddDependency();
+
+    var app = builder.Build();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseOpenApi(options =>
         {
-            Type = OpenApiSecuritySchemeType.Http,
-            In = OpenApiSecurityApiKeyLocation.Header,
-            Scheme = "Bearer",
-            BearerFormat = "JWT",
-            Description = "Put your JWT token here",
-            Name = "Authorization"
-        }
-    );
-});
 
-var app = builder.Build();
+        });
 
-if (app.Environment.IsDevelopment())
+        app.UseSwaggerUi3(options =>
+        {
+
+        });
+
+        app.UseReDoc(options =>
+        {
+            options.Path = "/redoc";
+        });
+    }
+
+    app.UseHttpsRedirection();
+    app.UseAuthorization();
+
+    //Custom Middleware
+    app.UseMiddleware<LogMiddleware>();
+    app.UseMiddleware<ExceptionMiddleware>();
+
+    app.MapControllers();
+
+    app.Run();
+}
+catch (Exception ex)
 {
-    app.UseOpenApi(options =>
-    {
-
-    });
-
-    app.UseSwaggerUi3(options =>
-    {
-
-    });
-
-    app.UseReDoc(options =>
-    {
-        options.Path = "/redoc";
-    });
+    Log.Error(ex.ToString(), "Stopped program because of exception");
+    throw;
+}
+finally
+{
+    Log.CloseAndFlush();
 }
 
-app.UseHttpsRedirection();
-app.UseAuthorization();
-
-//自訂Middleware
-app.UseMiddleware<LogMiddleware>();
-app.UseMiddleware<ExceptionMiddleware>();
-
-app.MapControllers();
-
-app.Run();

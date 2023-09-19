@@ -1,4 +1,5 @@
 ﻿using EShopCores.Enums;
+using EShopCores.Errors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +32,21 @@ namespace EShopCores.Models
         /// 回傳內容
         /// </summary>
         public T Content { get; set; }
+
+        /// <summary>
+        /// 取得最後的結果
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="content"></param>
+        public static ResponseModel<T> GetResult(ResponseCodeType code, T content)
+        {
+            return new ResponseModel<T>
+            {
+                Code = code,
+                Message = code.GetMessage(),
+                Description = code.GetDescription(),
+                Content = content
+            };
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EShopCores.Enums;
 using EShopCores.Errors;
+using EShopCores.LogHelpers;
 using EShopCores.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -37,50 +38,45 @@ namespace EShopAPI.Middlewares
         /// <param name="context"></param>
         /// <param name="exception"></param>
         /// <returns></returns>
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            
+
+            ResponseModel<string> result = new ResponseModel<string>();
+
             //處理DB相關的錯誤
             if (exception.InnerException != null)
             {
                 //違反Unique Key
                 if (((PostgresException)exception.InnerException).SqlState == "23505")
                 {
-                    return context.Response.WriteAsync(
-                        JsonConvert.SerializeObject( new ResponseModel<string>
-                        {
-                            Code = ResponseCodeType.UniqueDataDuplicate,
-                            Message = ResponseCodeType.UniqueDataDuplicate.GetMessage(),
-                            Description = ResponseCodeType.UniqueDataDuplicate.GetDescription(),
-                            Content = exception.ToString()
-                        })
-                    );
+                    result = ResponseModel<string>.GetResult(
+                        ResponseCodeType.UniqueDataDuplicate,
+                        exception.ToString());
+                }
+                //違反FK
+                else if (((PostgresException)exception.InnerException).SqlState == "23503")
+                {
+                    result = ResponseModel<string>.GetResult(
+                        ResponseCodeType.UniqueDataDuplicate,
+                        exception.ToString());
                 }
                 else
                 {
-                    return context.Response.WriteAsync(
-                        JsonConvert.SerializeObject(new ResponseModel<string>
-                        {
-                            Code = ResponseCodeType.DBInnerError,
-                            Message = ResponseCodeType.DBInnerError.GetMessage(),
-                            Description = ResponseCodeType.DBInnerError.GetDescription(),
-                            Content = exception.ToString()
-                        })
-                    );
+                    result = ResponseModel<string>.GetResult(
+                        ResponseCodeType.DBInnerError,
+                        exception.ToString());
                 }
             }
-
-            return context.Response.WriteAsync(
-                JsonConvert.SerializeObject(new ResponseModel<string>
-                {
-                    Code = ResponseCodeType.SystemError,
-                    Message = ResponseCodeType.SystemError.GetMessage(),
-                    Description = ResponseCodeType.SystemError.GetDescription(),
-                    Content = exception.ToString()
-                })
-            );
+            else 
+            {
+                result = ResponseModel<string>.GetResult(
+                    ResponseCodeType.SystemError,
+                    exception.ToString());
+            }
+            
+            await context.Response.WriteAsJsonAsync(result);
         }
     }
 }

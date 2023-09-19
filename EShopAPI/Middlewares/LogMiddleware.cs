@@ -1,7 +1,10 @@
 ﻿using EShopCores.Enums;
+using EShopCores.Errors;
 using EShopCores.LogHelpers;
+using EShopCores.Models;
 using Microsoft.IO;
 using Newtonsoft.Json;
+using System.Net;
 using System.Text;
 
 namespace EShopAPI.Middlewares
@@ -12,30 +15,27 @@ namespace EShopAPI.Middlewares
     public class LogMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogHelper _logger;
         private readonly RecyclableMemoryStreamManager _recyclableMemoryStreamManager;
 
-        public LogMiddleware(RequestDelegate next, ILogHelper logger)
+        public LogMiddleware(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
             _recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            string eventId = context.Request.Headers["EventId"].ToString();
-            if (string.IsNullOrWhiteSpace(eventId))
-            {
-                throw new ArgumentException("Header一定要有EventId");
-            }
+            //Generate eventId
+            string eventId = Guid.NewGuid().ToString();
+            context.Items["EventId"] = eventId;
+
+            var _logger = context.RequestServices.GetRequiredService<ILogHelper>();
 
             object? requestBody = await GetRequestBody(context.Request);
             _logger.WriteBody(eventId, LogMessageType.Request, JsonConvert.SerializeObject(requestBody));
 
             object? responseBody = await GetResponseBody(context);
             _logger.WriteBody(eventId, LogMessageType.Response, JsonConvert.SerializeObject(responseBody));
-
         }
 
         /// <summary>
@@ -66,6 +66,7 @@ namespace EShopAPI.Middlewares
         /// <returns></returns>
         private async Task<object?> GetResponseBody(HttpContext context)
         {
+            var originalBodyStream = context.Response.Body;
             await using var responseBody = _recyclableMemoryStreamManager.GetStream();
             context.Response.Body = responseBody;
 
@@ -74,6 +75,7 @@ namespace EShopAPI.Middlewares
             context.Response.Body.Seek(0, SeekOrigin.Begin);
             var body = await new StreamReader(responseBody).ReadToEndAsync();
             context.Response.Body.Seek(0, SeekOrigin.Begin);
+            await responseBody.CopyToAsync(originalBodyStream);
 
             return JsonConvert.DeserializeObject(body);
         }

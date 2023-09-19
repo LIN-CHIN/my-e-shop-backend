@@ -34,8 +34,8 @@ namespace EShopCores.Enums
         /// Request參數錯誤
         /// </summary>
         [Description("Request參數錯誤")]
-        [ResponseMessage("RequestParameter", Description = "Request參數錯誤")]
-        RequestParameter = 1000,
+        [ResponseMessage("RequestParameterError", Description = "Request參數錯誤")]
+        RequestParameterError = 1000,
 
         /// <summary>
         /// ModelBinding錯誤
@@ -43,6 +43,13 @@ namespace EShopCores.Enums
         [Description("ModelBinding錯誤")]
         [ResponseMessage("ModelBindingError", Description = "ModelBinding錯誤")]
         ModelBindingError = 1001,
+
+        /// <summary>
+        /// EventId不可為空
+        /// </summary>
+        [Description("EventId不可為空")]
+        [ResponseMessage("EventIdNullError", Description = "EventId不可為空")]
+        EventIdNullError = 1002,
         #endregion
 
         #region 資料庫、資料問題  2000-3000
@@ -59,9 +66,15 @@ namespace EShopCores.Enums
         /// </summary>
         [Description("違反Unique Key，資料重複")]
         [ResponseMessage("UniqueDataDuplicate", Description = "違反Unique Key，資料重複")]
-        UniqueDataDuplicate = 2001
+        UniqueDataDuplicate = 2001,
 
-
+        /// <summary>
+        /// 違反ForeignKey
+        /// </summary>
+        [Description("違反ForeignKey")]
+        [ResponseMessage("DbForeignKeyViolation", Description = "違反ForeignKey")]
+        DbForeignKeyViolation = 2002
+            
         #endregion
     }
 }
