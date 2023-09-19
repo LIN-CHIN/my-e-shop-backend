@@ -1,3 +1,4 @@
+using EShopAPI.Middlewares;
 using EShopCores.Enums;
 using EShopCores.Errors;
 using EShopCores.Models;
@@ -69,7 +70,6 @@ builder.Services.AddOpenApiDocument(settings =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi(options =>
@@ -89,8 +89,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
+
+//¦Û­qMiddleware
+app.UseMiddleware<LogMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 
