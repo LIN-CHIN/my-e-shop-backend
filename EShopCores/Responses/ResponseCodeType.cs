@@ -1,12 +1,12 @@
-﻿using EShopCores.Errors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EShopCores.Errors;
 
-namespace EShopCores.Enums
+namespace EShopCores.Responses
 {
     /// <summary>
     /// Response 代碼類型
@@ -74,7 +74,7 @@ namespace EShopCores.Enums
         [Description("違反ForeignKey")]
         [ResponseMessage("DbForeignKeyViolation", Description = "違反ForeignKey")]
         DbForeignKeyViolation = 2002
-            
+
         #endregion
     }
 }

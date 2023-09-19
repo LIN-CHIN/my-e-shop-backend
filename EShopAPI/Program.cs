@@ -1,14 +1,12 @@
 using EShopAPI.Middlewares;
-using EShopCores.Enums;
-using EShopCores.Errors;
 using EShopCores.Models;
 using Microsoft.AspNetCore.Mvc;
 using NSwag;
 using Serilog.Events;
 using Serilog;
 using Serilog.Exceptions;
-using EShopCores.LogHelpers;
 using EShopAPI;
+using EShopCores.Responses;
 
 try
 {

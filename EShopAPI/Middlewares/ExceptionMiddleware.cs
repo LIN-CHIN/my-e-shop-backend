@@ -1,9 +1,4 @@
-﻿using EShopCores.Enums;
-using EShopCores.Errors;
-using EShopCores.LogHelpers;
-using EShopCores.Models;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+﻿using EShopCores.Responses;
 using Npgsql;
 
 namespace EShopAPI.Middlewares

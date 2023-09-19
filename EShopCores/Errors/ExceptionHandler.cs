@@ -1,4 +1,5 @@
-﻿using EShopCores.Enums;
+﻿using EShopCores.Responses;
+
 namespace EShopCores.Errors
 {
     /// <summary>

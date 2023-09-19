@@ -1,12 +1,11 @@
-﻿using EShopCores.Enums;
-using EShopCores.Errors;
+﻿using EShopCores.Errors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EShopCores.Models
+namespace EShopCores.Responses
 {
     /// <summary>
     /// Response Model

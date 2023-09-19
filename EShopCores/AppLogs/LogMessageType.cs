@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EShopCores.Enums
+namespace EShopCores.AppLogs
 {
     /// <summary>
     /// Log訊息類型

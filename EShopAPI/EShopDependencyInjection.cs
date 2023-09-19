@@ -1,4 +1,4 @@
-﻿using EShopCores.LogHelpers;
+﻿using EShopCores.AppLogs.LogHelpers;
 
 namespace EShopAPI
 {

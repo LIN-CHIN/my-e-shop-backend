@@ -1,6 +1,4 @@
-﻿using EShopCores.Enums;
-using EShopCores.Models;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog.Context;
 using System;
@@ -9,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EShopCores.LogHelpers
+namespace EShopCores.AppLogs.LogHelpers
 {
     public class LogHelper : ILogHelper
     {

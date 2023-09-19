@@ -1,6 +1,6 @@
-﻿using EShopCores.Enums;
+﻿using EShopCores.AppLogs;
+using EShopCores.AppLogs.LogHelpers;
 using EShopCores.Errors;
-using EShopCores.LogHelpers;
 using EShopCores.Models;
 using Microsoft.IO;
 using Newtonsoft.Json;

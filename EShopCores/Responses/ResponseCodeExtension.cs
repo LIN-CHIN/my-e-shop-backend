@@ -1,12 +1,11 @@
-﻿using EShopCores.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EShopCores.Errors
+namespace EShopCores.Responses
 {
     /// <summary>
     /// ResponseCode 的擴充功能
