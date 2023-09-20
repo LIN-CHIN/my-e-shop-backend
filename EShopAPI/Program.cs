@@ -69,6 +69,9 @@ try
                 Name = "Authorization"
             }
         );
+
+        //讓Controller可以直接加上註解，就能夠顯示在swagger畫面中
+        settings.UseControllerSummaryAsTagDescription = true;
     });
 
     //Log Settings

@@ -17,12 +17,21 @@ namespace EShopAPI.Middlewares
         private readonly RequestDelegate _next;
         private readonly RecyclableMemoryStreamManager _recyclableMemoryStreamManager;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="next"></param>
         public LogMiddleware(RequestDelegate next)
         {
             _next = next;
             _recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
         }
 
+        /// <summary>
+        /// Invoke
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task InvokeAsync(HttpContext context)
         {
             //Generate eventId

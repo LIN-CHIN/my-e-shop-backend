@@ -15,7 +15,7 @@ namespace EShopCores.AppLogs
         /// <summary>
         /// 事件id
         /// </summary>
-        public string EventId { get; private set; } = null!;
+        public string EventId { get; private set; } 
 
         /// <summary>
         /// 訊息類型
