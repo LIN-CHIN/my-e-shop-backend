@@ -10,6 +10,7 @@ namespace EShopAPI.NSwags
     /// </summary>
     public class AddHeaderParameter : IOperationProcessor
     {
+        ///<inheritdoc/>
         public bool Process(OperationProcessorContext context)
         {
             // Define your custom header parameter here
