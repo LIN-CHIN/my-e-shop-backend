@@ -19,9 +19,15 @@ namespace EShopCores.Responses
         /// <returns></returns>
         public static string GetDescription(this ResponseCodeType responseCodeType)
         {
-            var enumType = typeof(ResponseCodeType);
-            var enumName = Enum.GetName(enumType, responseCodeType);
-            var attr = enumType.GetField(enumName).GetCustomAttributes<ResponseMessageAttribute>().First();
+            Type enumType = typeof(ResponseCodeType);
+            string? enumName = Enum.GetName(enumType, responseCodeType);
+
+            if (string.IsNullOrEmpty(enumName)) 
+            {
+                return string.Empty;
+            }
+
+            var attr = enumType.GetField(enumName)!.GetCustomAttributes<ResponseMessageAttribute>().First();
             return attr.Description;
         }
 
@@ -33,8 +39,14 @@ namespace EShopCores.Responses
 		public static string GetMessage(this ResponseCodeType responseCodeType)
         {
             var enumType = typeof(ResponseCodeType);
-            var enumName = Enum.GetName(enumType, responseCodeType);
-            var attr = enumType.GetField(enumName).GetCustomAttributes<ResponseMessageAttribute>().First();
+            string? enumName = Enum.GetName(enumType, responseCodeType);
+
+            if (string.IsNullOrEmpty(enumName))
+            {
+                return string.Empty;
+            }
+
+            var attr = enumType.GetField(enumName)!.GetCustomAttributes<ResponseMessageAttribute>().First();
             return attr.Message;
         }
     }

@@ -38,7 +38,7 @@ namespace EShopAPI.Middlewares
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-            GenericResponse<string> result = new GenericResponse<string>();
+            GenericResponse<string> result;
 
             //處理DB相關的錯誤
             if (exception.InnerException != null)
@@ -48,27 +48,27 @@ namespace EShopAPI.Middlewares
                 {
                     result = GenericResponse<string>.GetResult(
                         ResponseCodeType.UniqueDataDuplicate,
-                        exception.ToString());
+                        exception.ToString())!;
                 }
                 //違反FK
                 else if (((PostgresException)exception.InnerException).SqlState == "23503")
                 {
                     result = GenericResponse<string>.GetResult(
                         ResponseCodeType.UniqueDataDuplicate,
-                        exception.ToString());
+                        exception.ToString())!;
                 }
                 else
                 {
                     result = GenericResponse<string>.GetResult(
                         ResponseCodeType.DBInnerError,
-                        exception.ToString());
+                        exception.ToString())!;
                 }
             }
             else 
             {
                 result = GenericResponse<string>.GetResult(
                     ResponseCodeType.SystemError,
-                    exception.ToString());
+                    exception.ToString())!;
             }
             
             await context.Response.WriteAsJsonAsync(result);

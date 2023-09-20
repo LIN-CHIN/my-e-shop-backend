@@ -5,7 +5,7 @@ namespace EShopCores.Errors
     /// <summary>
     /// 負責錯誤處理的class
     /// </summary>
-    public class ExceptionHandler : Exception
+    public class EShopException : Exception
     {
         /// <summary>
         /// Response代碼
@@ -20,19 +20,19 @@ namespace EShopCores.Errors
         /// <summary>
         /// 錯誤訊息
         /// </summary>
-        public string Message { get; set; } = "";
+        public string ErrorMessage { get; set; } = "";
 
         /// <summary>
 		/// exception內容
 		/// </summary>
 		public string Description { get; set; } = "";
 
-        public ExceptionHandler()
+        public EShopException()
             : base()
         {
         }
 
-        public ExceptionHandler(string message)
+        public EShopException(string message)
             : base(message)
         {
         }
@@ -42,11 +42,11 @@ namespace EShopCores.Errors
         /// </summary>
         /// <param name="code">錯誤代碼</param>
         /// <param name="content">錯誤內容訊息補充</param>
-        public ExceptionHandler(ResponseCodeType code, string content)
+        public EShopException(ResponseCodeType code, string content)
             : base(code.GetMessage())
         {
             Code = code;
-            Message = code.GetMessage();
+            ErrorMessage = code.GetMessage();
             Description = code.GetDescription();
             Content = content;
         }

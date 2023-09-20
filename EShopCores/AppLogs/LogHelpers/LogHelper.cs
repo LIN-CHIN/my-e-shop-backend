@@ -21,7 +21,7 @@ namespace EShopCores.AppLogs.LogHelpers
         ///<inheritdoc/>
         public void WriteInfoLog(string message)
         {
-            _logger.LogInformation(message);
+            _logger.LogInformation("{message}", message);
         }
 
         ///<inheritdoc/>
@@ -29,14 +29,14 @@ namespace EShopCores.AppLogs.LogHelpers
         {
             using (LogContext.PushProperty("EventID", eventId, true))
             {
-                _logger.LogInformation(message);
+                _logger.LogInformation("{message}", message);
             }
         }
 
         ///<inheritdoc/>
         public void WriteErrorLog(string message)
         {
-            _logger.LogError(message);
+            _logger.LogError("{message}", message);
         }
 
         ///<inheritdoc/>
@@ -44,23 +44,18 @@ namespace EShopCores.AppLogs.LogHelpers
         {
             using (LogContext.PushProperty("EventID", eventId, true))
             {
-                _logger.LogError(message);
+                _logger.LogError("{message}", message);
             }
         }
 
         ///<inheritdoc/>
         public void WriteBody(string eventId, LogMessageType messageType, object? body)
         {
-            LogModel logModel = new LogModel
-            {
-                EventId = eventId,
-                LogMessageType = messageType,
-                Body = body
-            };
-
+            LogModel logModel = new LogModel(eventId, messageType, body);
+            
             using (LogContext.PushProperty("EventID", eventId, true))
             {
-                _logger.LogInformation(JsonConvert.SerializeObject(logModel));
+                _logger.LogInformation("{message}", JsonConvert.SerializeObject(logModel));
             }
         }
     }
