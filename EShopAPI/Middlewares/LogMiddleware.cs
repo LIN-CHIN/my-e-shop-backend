@@ -43,7 +43,7 @@ namespace EShopAPI.Middlewares
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        private async Task<object?> GetRequestBody(HttpRequest request)
+        private static async Task<object?> GetRequestBody(HttpRequest request)
         {
             request.EnableBuffering();
 

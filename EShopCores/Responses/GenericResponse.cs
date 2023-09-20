@@ -20,26 +20,26 @@ namespace EShopCores.Responses
         /// <summary>
         /// Response代表的訊息
         /// </summary>
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
 
         /// <summary>
         /// Response的中文描述
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// 回傳內容
         /// </summary>
-        public T Content { get; set; }
+        public T? Content { get; set; }
 
         /// <summary>
         /// 取得最後的結果
         /// </summary>
         /// <param name="code"></param>
         /// <param name="content"></param>
-        public static GenericResponse<T> GetResult(ResponseCodeType code, T content)
+        public static GenericResponse<T?> GetResult(ResponseCodeType code, T? content)
         {
-            return new GenericResponse<T>
+            return new GenericResponse<T?>
             {
                 Code = code,
                 Message = code.GetMessage(),
