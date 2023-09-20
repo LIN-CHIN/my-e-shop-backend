@@ -10,12 +10,21 @@ namespace EShopAPI.Middlewares
     {
         private readonly RequestDelegate _next;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="next"></param>
         public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context)
+        /// <summary>
+        /// Invoke
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
