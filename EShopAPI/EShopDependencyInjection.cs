@@ -1,4 +1,7 @@
-﻿using EShopCores.AppLogs.LogHelpers;
+﻿using EShopAPI.Context;
+using EShopAPI.Settings;
+using EShopCores.AppLogs.LogHelpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI
 {
@@ -11,10 +14,21 @@ namespace EShopAPI
         /// 新增Depndency
         /// </summary>
         /// <param name="services"></param>
+        /// <param name="configurationRoot"></param>
         /// <returns></returns>
-        public static IServiceCollection AddDependency(this IServiceCollection services) 
+        public static IServiceCollection AddDependency(this IServiceCollection services, IConfigurationRoot configurationRoot) 
         {
+            //Settings 
+            var apiSettings = configurationRoot.GetSection("ApiSettings").Get<ApiSettings>(c => c.BindNonPublicProperties = true);
+            services.AddSingleton(apiSettings!);
+
+            //EntityFrameWork Settings 
+            services.AddDbContext<EShopContext>(opt => opt.UseNpgsql(apiSettings!.ConnectionString));
+
+            //Helpers
             services.AddScoped<ILogHelper, LogHelper>();
+
+            //Services
 
             return services;
         }

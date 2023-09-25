@@ -7,6 +7,8 @@ using Serilog;
 using Serilog.Exceptions;
 using EShopAPI;
 using EShopCores.Responses;
+using EShopAPI.Context;
+using Microsoft.EntityFrameworkCore;
 
 try
 {
@@ -48,6 +50,9 @@ try
             };
         });
 
+    //Dependency Injection
+    builder.Services.AddDependency(builder.Configuration);
+    
     //NSwag Settings
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
@@ -84,11 +89,16 @@ try
        .WriteTo.File($"Logs/.txt", rollingInterval: RollingInterval.Day)
        .CreateLogger();
 
-
-    //Dependency Injection
-    builder.Services.AddDependency();
-
     var app = builder.Build();
+
+    // Entity Framework migrate on startup
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+
+        var context = services.GetRequiredService<EShopContext>();
+        context.Database.Migrate();
+    }
 
     if (app.Environment.IsDevelopment())
     {

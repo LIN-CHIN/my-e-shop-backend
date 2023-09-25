@@ -1,0 +1,34 @@
+DROP TABLE "__EFMigrationsHistory";
+
+DROP TABLE map_user_role;
+DROP TABLE map_role_permission;
+DROP TABLE map_permission_action;
+DROP TABLE shop_cart;
+
+DROP TABLE order_for_composite_item;
+DROP TABLE order_for_composite_detail;
+DROP TABLE order_for_product;
+DROP TABLE order_master;
+DROP TABLE record_order_for_composite_item;
+DROP TABLE record_order_for_composite_detail;
+DROP TABLE record_order_for_product;
+DROP TABLE record_order_master;
+DROP TABLE delivery_preference;
+DROP TABLE shop_user;
+DROP TABLE shop_role;
+DROP TABLE shop_permission;
+DROP TABLE shop_action;
+DROP TABLE map_composite_product_delivery;
+DROP TABLE map_product_delivery_category;
+DROP TABLE delivery_category;
+DROP TABLE composite_product_item;
+DROP TABLE composite_product_detail;
+DROP TABLE composite_product_master;
+DROP TABLE map_product_category;
+DROP TABLE product_category;
+DROP TABLE product_detail;
+DROP TABLE product_master;
+DROP TABLE shop_inventory;
+DROP TABLE eshop_unit;
+DROP TABLE payment_category;
+DROP TABLE shop_coupon;

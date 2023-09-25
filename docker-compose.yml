@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+   eshop-db:
+     image: postgres:14.1-alpine
+     container_name: eshop-db
+     hostname: eshop-db
+     restart: always
+     ports:
+       - "5432:5432"
+     mem_limit: 300m
+     environment:
+       - TZ=Asia/Taipei
+       - POSTGRES_USER=$DEFAULT_USER
+       - POSTGRES_PASSWORD=$DEFAULT_PASSWORD
+       - POSTGRES_DB=$MAIN_DB
+     volumes:
+       - ~/.docker-conf/EshopDB/data:/var/lib/postgresql/data
