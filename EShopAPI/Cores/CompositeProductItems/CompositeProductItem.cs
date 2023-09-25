@@ -52,9 +52,9 @@ namespace EShopAPI.Cores.CompositeProductItems
         /// 是否總是特價
         /// </summary>
         [Required]
-        [Column("always_sale")]
+        [Column("is_always_sale")]
         [Comment("是否總是特價")]
-        public bool AlwaysSale { get; set; }
+        public bool IsAlwaysSale { get; set; }
 
         /// <summary>
         /// 折扣數

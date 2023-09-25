@@ -181,6 +181,32 @@ namespace EShopAPI.Migrations
                 comment: "商店Action(功能)實體, 存角色權限可以用哪些API (Controller Action)");
 
             migrationBuilder.CreateTable(
+                name: "shop_coupon",
+                schema: "eshop",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    number = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "角色代碼"),
+                    name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "角色名稱"),
+                    coupon_type = table.Column<int>(type: "integer", nullable: false, comment: "優惠券類型"),
+                    use_start_date = table.Column<long>(type: "bigint", nullable: true, comment: "有效期限(起)"),
+                    use_end_date = table.Column<long>(type: "bigint", nullable: true, comment: "有效期限(起)"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
+                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
+                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
+                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
+                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
+                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
+                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_shop_coupon", x => x.id);
+                },
+                comment: "商店優惠券");
+
+            migrationBuilder.CreateTable(
                 name: "shop_inventory",
                 schema: "eshop",
                 columns: table => new
@@ -399,6 +425,7 @@ namespace EShopAPI.Migrations
                     discount = table.Column<double>(type: "double precision", nullable: false, comment: "折扣數"),
                     sale_start_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價起始日期"),
                     sale_end_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價結束日期"),
+                    is_use_coupon = table.Column<bool>(type: "boolean", nullable: false, comment: "是否可以使用優惠券"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -445,11 +472,12 @@ namespace EShopAPI.Migrations
                     price = table.Column<int>(type: "integer", nullable: false, comment: "價格"),
                     eshop_unit_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店單位id"),
                     status = table.Column<int>(type: "integer", nullable: true, comment: "產品狀態, 暫無想法，保留欄位"),
-                    always_sale = table.Column<bool>(type: "boolean", nullable: false, comment: "是否總是特價"),
+                    is_always_sale = table.Column<bool>(type: "boolean", nullable: false, comment: "是否總是特價"),
                     discount = table.Column<double>(type: "double precision", nullable: true, comment: "折扣數"),
                     sale_start_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價起始日期"),
                     sale_end_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價結束日期"),
                     is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
+                    is_use_coupon = table.Column<bool>(type: "boolean", nullable: false, comment: "是否可以使用優惠券"),
                     variant_attribute = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "變種屬性, 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值 ex: color:[red, blue], size[S,M]"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
@@ -758,7 +786,7 @@ namespace EShopAPI.Migrations
                     shop_inventory_id = table.Column<long>(type: "bigint", nullable: false, comment: "庫存id"),
                     price = table.Column<int>(type: "integer", nullable: false, comment: "單筆價格"),
                     count = table.Column<int>(type: "integer", nullable: false, comment: "數量"),
-                    always_sale = table.Column<bool>(type: "boolean", nullable: false, comment: "是否總是特價"),
+                    is_always_sale = table.Column<bool>(type: "boolean", nullable: false, comment: "是否總是特價"),
                     discount = table.Column<double>(type: "double precision", nullable: false, comment: "折扣數"),
                     sale_start_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價起始日期"),
                     sale_end_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價結束日期"),
@@ -1346,6 +1374,13 @@ namespace EShopAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_shop_coupon_number",
+                schema: "eshop",
+                table: "shop_coupon",
+                column: "number",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_shop_inventory_number",
                 schema: "eshop",
                 table: "shop_inventory",
@@ -1431,6 +1466,10 @@ namespace EShopAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "shop_cart",
+                schema: "eshop");
+
+            migrationBuilder.DropTable(
+                name: "shop_coupon",
                 schema: "eshop");
 
             migrationBuilder.DropTable(

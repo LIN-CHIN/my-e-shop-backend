@@ -24,6 +24,7 @@ using EShopAPI.Cores.RecordOrderForProducts;
 using EShopAPI.Cores.RecordOrderMasters;
 using EShopAPI.Cores.ShopActions;
 using EShopAPI.Cores.ShopCarts;
+using EShopAPI.Cores.ShopCoupons;
 using EShopAPI.Cores.ShopInventories;
 using EShopAPI.Cores.ShopPermissions;
 using EShopAPI.Cores.ShopRoles;
@@ -190,7 +191,12 @@ namespace EShopAPI.Context
         /// 訂單紀錄(針對非組合產品)的實體
         /// </summary>
         public DbSet<RecordOrderForProduct> RecordOrderForProducts => Set<RecordOrderForProduct>();
-        
+
+        /// <summary>
+        /// 訂單紀錄(針對非組合產品)的實體
+        /// </summary>
+        public DbSet<ShopCoupon> ShopCoupons => Set<ShopCoupon>();
+
         ///<inheritdoc/>
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
@@ -294,7 +300,11 @@ namespace EShopAPI.Context
             modelBuilder.Entity<OrderForProduct>()
              .HasIndex(x => new { x.MasterId, x.ShopInventoryId })
              .IsUnique();
-            
+
+            modelBuilder.Entity<ShopCoupon>()
+             .HasIndex(x => new { x.Number })
+             .IsUnique();
+
             #endregion
 
             #region Setting Constraints

@@ -74,6 +74,14 @@ namespace EShopAPI.Cores.CompositeProductDetails
         public long? SaleEndDate { get; set; }
 
         /// <summary>
+        /// 是否可以使用優惠券
+        /// </summary>
+        [Required]
+        [Column("is_use_coupon")]
+        [Comment("是否可以使用優惠券")]
+        public bool IsUseCoupon { get; set; }
+
+        /// <summary>
         /// 組合產品主檔
         /// </summary>
         public CompositeProductMaster? CompositeProductMaster { get; set; }

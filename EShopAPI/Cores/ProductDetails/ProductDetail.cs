@@ -65,9 +65,9 @@ namespace EShopAPI.Cores.ProductDetails
         /// 是否總是特價
         /// </summary>
         [Required]
-        [Column("always_sale")]
+        [Column("is_always_sale")]
         [Comment("是否總是特價")]
-        public bool AlwaysSale { get; set; }
+        public bool IsAlwaysSale { get; set; }
         
         /// <summary>
         /// 折扣數
@@ -97,6 +97,14 @@ namespace EShopAPI.Cores.ProductDetails
         [Column("is_enable")]
         [Comment("是否啟用")]
         public bool IsEnable { get; set; }
+
+        /// <summary>
+        /// 是否可以使用優惠券
+        /// </summary>
+        [Required]
+        [Column("is_use_coupon")]
+        [Comment("是否可以使用優惠券")]
+        public bool IsUseCoupon { get; set; }
 
         /// <summary>
         /// 變種屬性

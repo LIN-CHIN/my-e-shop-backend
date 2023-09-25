@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EShopAPI.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20230925085414_init")]
+    [Migration("20230925092455_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -57,6 +57,11 @@ namespace EShopAPI.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("eshop_unit_id")
                         .HasComment("商店單位id");
+
+                    b.Property<bool>("IsUseCoupon")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_use_coupon")
+                        .HasComment("是否可以使用優惠券");
 
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
@@ -129,11 +134,6 @@ namespace EShopAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<bool>("AlwaysSale")
-                        .HasColumnType("boolean")
-                        .HasColumnName("always_sale")
-                        .HasComment("是否總是特價");
-
                     b.Property<int>("Count")
                         .HasColumnType("integer")
                         .HasColumnName("count")
@@ -164,6 +164,11 @@ namespace EShopAPI.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("eshop_unit_id")
                         .HasComment("單位");
+
+                    b.Property<bool>("IsAlwaysSale")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_always_sale")
+                        .HasComment("是否總是特價");
 
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
@@ -1500,11 +1505,6 @@ namespace EShopAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<bool>("AlwaysSale")
-                        .HasColumnType("boolean")
-                        .HasColumnName("always_sale")
-                        .HasComment("是否總是特價");
-
                     b.Property<long>("CreateDate")
                         .HasColumnType("bigint")
                         .HasColumnName("create_date")
@@ -1526,10 +1526,20 @@ namespace EShopAPI.Migrations
                         .HasColumnName("eshop_unit_id")
                         .HasComment("商店單位id");
 
+                    b.Property<bool>("IsAlwaysSale")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_always_sale")
+                        .HasComment("是否總是特價");
+
                     b.Property<bool>("IsEnable")
                         .HasColumnType("boolean")
                         .HasColumnName("is_enable")
                         .HasComment("是否啟用");
+
+                    b.Property<bool>("IsUseCoupon")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_use_coupon")
+                        .HasComment("是否可以使用優惠券");
 
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
@@ -2236,6 +2246,93 @@ namespace EShopAPI.Migrations
                     b.ToTable("shop_cart", "eshop", t =>
                         {
                             t.HasComment("購物車實體");
+                        });
+                });
+
+            modelBuilder.Entity("EShopAPI.Cores.ShopCoupons.ShopCoupon", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id")
+                        .HasColumnOrder(0)
+                        .HasComment("系統id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("CouponType")
+                        .HasColumnType("integer")
+                        .HasColumnName("coupon_type")
+                        .HasComment("優惠券類型");
+
+                    b.Property<long>("CreateDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("create_date")
+                        .HasComment("建立日期");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("create_user")
+                        .HasComment("建立者");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_enable")
+                        .HasComment("是否啟用");
+
+                    b.Property<JsonDocument>("Language")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("language")
+                        .HasComment("多國語系");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("name")
+                        .HasComment("角色名稱");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("number")
+                        .HasComment("角色代碼");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("text")
+                        .HasColumnName("remarks")
+                        .HasComment("備註");
+
+                    b.Property<long?>("UpdateDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("update_date")
+                        .HasComment("更新日期");
+
+                    b.Property<string>("UpdateUser")
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("update_user")
+                        .HasComment("更新者");
+
+                    b.Property<long?>("UseEndDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("use_end_date")
+                        .HasComment("有效期限(起)");
+
+                    b.Property<long?>("UseStartDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("use_start_date")
+                        .HasComment("有效期限(起)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Number")
+                        .IsUnique();
+
+                    b.ToTable("shop_coupon", "eshop", t =>
+                        {
+                            t.HasComment("商店優惠券");
                         });
                 });
 
