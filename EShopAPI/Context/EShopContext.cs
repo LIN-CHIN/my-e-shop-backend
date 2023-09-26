@@ -34,6 +34,9 @@ using System.Xml.Linq;
 
 namespace EShopAPI.Context
 {
+    /// <summary>
+    /// Shop DbContext
+    /// </summary>
     public class EShopContext : DbContext
     {
         /// <summary>
