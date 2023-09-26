@@ -9,6 +9,7 @@ using EShopAPI;
 using EShopCores.Responses;
 using EShopAPI.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 try
 {
@@ -40,13 +41,18 @@ try
                     })
                     .ToList();
 
-                return new OkObjectResult(new GenericResponse<List<CustomModelState>>
+                var result = new GenericResponse<List<CustomModelState>>
                 {
                     Code = ResponseCodeType.ModelBindingError,
                     Message = ResponseCodeType.ModelBindingError.GetMessage(),
                     Description = ResponseCodeType.ModelBindingError.GetDescription(),
                     Content = errors
-                });
+                };
+
+                return new ObjectResult(result)
+                { 
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
             };
         });
 
