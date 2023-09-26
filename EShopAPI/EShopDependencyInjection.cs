@@ -1,4 +1,6 @@
 ﻿using EShopAPI.Context;
+using EShopAPI.Cores.ShopUsers.DAOs;
+using EShopAPI.Cores.ShopUsers.Services;
 using EShopAPI.Settings;
 using EShopCores.AppLogs.LogHelpers;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +33,9 @@ namespace EShopAPI
             //Helpers
             services.AddScoped<ILogHelper, LogHelper>();
 
-            //Services
+            //ShopUsers
+            services.AddScoped<IShopUserService, ShopUserService>();
+            services.AddScoped<IShopUserDAO, ShopUserDAO>();
 
             return services;
         }

@@ -47,6 +47,7 @@ namespace EShopAPI.Cores.ShopUsers
         /// </summary>
         [Column("address", TypeName = "varchar(100)")]
         [Comment("地址")]
+        [StringLength(100)]
         public string? Address { get; set; }
 
         /// <summary>
@@ -54,6 +55,7 @@ namespace EShopAPI.Cores.ShopUsers
         /// </summary>
         [Column("email", TypeName = "varchar(50)")]
         [Comment("Email")]
+        [StringLength(50)]
         public string? Email { get; set; }
 
         /// <summary>
@@ -61,6 +63,7 @@ namespace EShopAPI.Cores.ShopUsers
         /// </summary>
         [Column("phone", TypeName = "varchar(20)")]
         [Comment("手機")]
+        [StringLength(20)]
         public string? Phone { get; set; }
 
         /// <summary>

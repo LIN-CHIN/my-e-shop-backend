@@ -56,10 +56,7 @@ namespace EShopAPI.Cores
         /// </summary>
         [Column("remarks", TypeName = "text")]
         [Comment("備註")]
-        public string? Remarks
-        {
-            get; set;
-        }
+        public string? Remarks { get; set; }
 
         /// <summary>
         /// 多國語系

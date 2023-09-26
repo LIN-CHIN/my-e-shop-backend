@@ -47,5 +47,20 @@ namespace EShopCores.Responses
                 Content = content
             };
         }
+
+        /// <summary>
+        /// 取得成功結果
+        /// </summary>
+        /// <param name="content"></param>
+        public static GenericResponse<T?> GetSuccess(T? content)
+        {
+            return new GenericResponse<T?>
+            {
+                Code = ResponseCodeType.Success,
+                Message = ResponseCodeType.Success.GetMessage(),
+                Description = ResponseCodeType.Success.GetDescription(),
+                Content = content
+            };
+        }
     }
 }
