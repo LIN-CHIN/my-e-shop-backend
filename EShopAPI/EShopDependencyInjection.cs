@@ -2,6 +2,7 @@
 using EShopAPI.Settings;
 using EShopCores.AppLogs.LogHelpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EShopAPI
 {
@@ -23,7 +24,9 @@ namespace EShopAPI
             services.AddSingleton(apiSettings!);
 
             //EntityFrameWork Settings 
-            services.AddDbContext<EShopContext>(opt => opt.UseNpgsql(apiSettings!.ConnectionString));
+            services.AddDbContext<EShopContext>(opt => opt.UseNpgsql(
+                apiSettings!.ConnectionString,
+                x => x.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "eshop")));
 
             //Helpers
             services.AddScoped<ILogHelper, LogHelper>();
