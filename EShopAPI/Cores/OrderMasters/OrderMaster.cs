@@ -67,7 +67,6 @@ namespace EShopAPI.Cores.OrderMasters
         /// <summary>
         /// 是否已付款
         /// </summary>
-        /// <remarks>
         [Required]
         [Column("is_pay")]
         [Comment("是否已付款")]
