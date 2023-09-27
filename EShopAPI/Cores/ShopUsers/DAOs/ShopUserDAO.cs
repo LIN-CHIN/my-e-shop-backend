@@ -1,4 +1,5 @@
 ﻿using EShopAPI.Context;
+using EShopAPI.Cores.ShopUsers.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI.Cores.ShopUsers.DAOs
@@ -20,6 +21,32 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         public ShopUserDAO(EShopContext eShopContext) 
         {
             _eShopContext = eShopContext;
+        }
+
+        ///<inheritdoc/>
+        public IQueryable<ShopUser> Get(QueryShopUserDTO queryDTO)
+        {
+            IQueryable<ShopUser> shopUsers = _eShopContext.ShopUsers;
+
+            if (!string.IsNullOrWhiteSpace(queryDTO.Number)) 
+            {
+                shopUsers = shopUsers.Where(user => 
+                    EF.Functions.Like(user.Number, $"%{queryDTO.Number}%"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryDTO.Name))
+            {
+                shopUsers = shopUsers.Where(user =>
+                    EF.Functions.Like(user.Name, $"%{queryDTO.Name}%"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryDTO.Email))
+            {
+                shopUsers = shopUsers.Where(user =>
+                    EF.Functions.Like(user.Email, $"%{queryDTO.Email}%"));
+            }
+
+            return shopUsers;
         }
 
         ///<inheritdoc/>

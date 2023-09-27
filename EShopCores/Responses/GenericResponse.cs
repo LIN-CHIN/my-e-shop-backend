@@ -1,4 +1,5 @@
 ﻿using EShopCores.Errors;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,27 +11,33 @@ namespace EShopCores.Responses
     /// <summary>
     /// 通用的Response Class
     /// </summary>
-    public class GenericResponse<T>
+    public class GenericResponse<T> : BaseResponse
     {
-        /// <summary>
-        /// 代碼
-        /// </summary>
-        public ResponseCodeType Code { get; set; }
-
-        /// <summary>
-        /// Response代表的訊息
-        /// </summary>
-        public string Message { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Response的中文描述
-        /// </summary>
-        public string Description { get; set; } = string.Empty;
-
         /// <summary>
         /// 回傳內容
         /// </summary>
+        [JsonProperty(Order = 3)]
         public T? Content { get; set; }
+
+        /// <summary>
+        /// 取得最後的結果 (Exception訊息)
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="description">exception錯誤訊息</param>
+        /// <param name="content"></param>
+        public static GenericResponse<T?> GetResult(
+            ResponseCodeType code,
+            string description,
+            T? content)
+        {
+            return new GenericResponse<T?>
+            {
+                Code = code,
+                Message = code.GetMessage(),
+                Description = description,
+                Content = content
+            };
+        }
 
         /// <summary>
         /// 取得最後的結果

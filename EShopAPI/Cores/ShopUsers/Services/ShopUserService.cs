@@ -22,6 +22,12 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
+        public IQueryable<ShopUser> Get(QueryShopUserDTO queryDTO)
+        {
+            return _shopUserDAO.Get(queryDTO);
+        }
+
+        ///<inheritdoc/>
         public async Task<ShopUser?> GetByNumberAsync(string number)
         {
             return await _shopUserDAO.GetByNumberAsync(number);

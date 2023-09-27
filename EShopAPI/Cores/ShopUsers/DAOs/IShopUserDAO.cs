@@ -1,10 +1,19 @@
-﻿namespace EShopAPI.Cores.ShopUsers.DAOs
+﻿using EShopAPI.Cores.ShopUsers.DTOs;
+
+namespace EShopAPI.Cores.ShopUsers.DAOs
 {
     /// <summary>
     /// 使用者的 DAO Interface
     /// </summary>
     public interface IShopUserDAO
     {
+        /// <summary>
+        /// 取得使用者
+        /// </summary>
+        /// <param name="queryDTO"></param>
+        /// <returns></returns>
+        IQueryable<ShopUser> Get(QueryShopUserDTO queryDTO);
+
         /// <summary>
         /// 根據使用者帳號取得使用者實體
         /// </summary>

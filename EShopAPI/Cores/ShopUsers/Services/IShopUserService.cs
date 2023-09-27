@@ -8,6 +8,13 @@ namespace EShopAPI.Cores.ShopUsers.Services
     public interface IShopUserService
     {
         /// <summary>
+        /// 取得使用者
+        /// </summary>
+        /// <param name="queryDTO"></param>
+        /// <returns></returns>
+        IQueryable<ShopUser> Get(QueryShopUserDTO queryDTO);
+
+        /// <summary>
         /// 根據帳號取得使用者
         /// </summary>
         /// <param name="number">帳號</param>
