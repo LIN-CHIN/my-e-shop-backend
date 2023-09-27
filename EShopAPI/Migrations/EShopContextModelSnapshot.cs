@@ -2559,6 +2559,44 @@ namespace EShopAPI.Migrations
                         {
                             t.HasComment("商店角色實體");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            Name = "商店管理者權限",
+                            Number = "shopAdminRole",
+                            Remarks = "商店管理者權限"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopUser",
+                            Name = "商店使用者(測試用)",
+                            Number = "shopUser",
+                            Remarks = "預設的一般使用者(測試用)"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopUser",
+                            Name = "一般客戶",
+                            Number = "custom",
+                            Remarks = "一般客戶"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopUser",
+                            Name = "VIP客戶",
+                            Number = "vip_custom",
+                            Remarks = "VIP客戶"
+                        });
                 });
 
             modelBuilder.Entity("EShopAPI.Cores.ShopUsers.ShopUser", b =>
@@ -2573,6 +2611,7 @@ namespace EShopAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Address")
+                        .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("address")
                         .HasComment("地址");
@@ -2589,6 +2628,7 @@ namespace EShopAPI.Migrations
                         .HasComment("建立者");
 
                     b.Property<string>("Email")
+                        .HasMaxLength(50)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("email")
                         .HasComment("Email");
@@ -2613,6 +2653,7 @@ namespace EShopAPI.Migrations
                         .HasComment("使用者代碼/帳號");
 
                     b.Property<string>("Phone")
+                        .HasMaxLength(20)
                         .HasColumnType("varchar(20)")
                         .HasColumnName("phone")
                         .HasComment("手機");
@@ -2646,6 +2687,28 @@ namespace EShopAPI.Migrations
                     b.ToTable("shop_user", "eshop", t =>
                         {
                             t.HasComment("商店使用者實體");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            Name = "商店管理員",
+                            Number = "shopAdmin",
+                            Pwd = "shopAdmin",
+                            Remarks = "預設的最高權限帳號"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopUser",
+                            Name = "商店使用者(測試用)",
+                            Number = "shopUser",
+                            Pwd = "shopUser",
+                            Remarks = "預設的一般使用者(測試用)"
                         });
                 });
 
