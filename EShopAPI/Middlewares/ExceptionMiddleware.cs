@@ -60,6 +60,7 @@ namespace EShopAPI.Middlewares
             {
                 result = GenericResponse<string>.GetResult(
                         eshopException.Code,
+                        eshopException.Description,
                         exception.ToString())!;
             }
             else
