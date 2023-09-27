@@ -22,6 +22,12 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
+        public async Task<ShopUser?> GetByNumberAsync(string number)
+        {
+            return await _shopUserDAO.GetByNumberAsync(number);
+        }
+
+        ///<inheritdoc/>
         public async Task<ShopUser> InsertAsync(InsertShopUserDTO insertDTO)
         {
             ShopUser? shopUser = await _shopUserDAO.GetByNumberAsync(insertDTO.Number);

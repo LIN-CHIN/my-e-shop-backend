@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EShopCores.Extensions;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace EShopAPI.Cores.ShopUsers.DTOs
@@ -56,7 +57,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// 建立時間
         /// </summary>
         [JsonIgnore]
-        public long CreateDate { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        public long CreateDate { get; set; } = DateTime.UtcNow.GetUnixTimeMillisecond();
 
         /// <summary>
         /// 備註

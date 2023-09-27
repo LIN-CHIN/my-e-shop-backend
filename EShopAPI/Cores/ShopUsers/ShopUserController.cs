@@ -28,6 +28,8 @@ namespace EShopAPI.Cores.ShopUsers
         /// </summary>
         /// <param name="insertDTO">要新增的使用者資訊</param>
         /// <returns></returns>
+        /// <response code="200">新增成功</response>
+        /// <response code="500">新增失敗</response>
         [HttpPost]
         [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]

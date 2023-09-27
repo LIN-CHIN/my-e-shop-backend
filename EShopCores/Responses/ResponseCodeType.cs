@@ -57,6 +57,13 @@ namespace EShopCores.Responses
         [Description("資料重複")]
         [ResponseMessage("DuplicateData", Description = "資料重複")]
         DuplicateData = 1003,
+
+        /// <summary>
+        /// 帳號密碼錯誤
+        /// </summary>
+        [Description("帳號密碼錯誤")]
+        [ResponseMessage("AccountAndPwdError", Description = "帳號密碼錯誤")]
+        AccountAndPwdError = 1004,
         #endregion
 
         #region 資料庫、資料問題  2000-3000
