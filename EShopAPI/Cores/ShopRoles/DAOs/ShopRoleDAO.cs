@@ -8,6 +8,9 @@ namespace EShopAPI.Cores.ShopRoles.DAOs
     /// </summary>
     public class ShopRoleDAO : IShopRoleDAO
     {
+        /// <summary>
+        /// EShop context
+        /// </summary>
         public readonly EShopContext _eShopContext;
 
         /// <summary>

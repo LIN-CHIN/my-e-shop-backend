@@ -48,7 +48,6 @@ namespace EShopCores.Errors
             Code = code;
             ErrorMessage = code.GetMessage();
             Description = description;
-            Content = Content;
         }
     }
 }

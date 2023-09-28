@@ -5,6 +5,7 @@
     /// </summary>
     public class ShopRoleService : IShopRoleService
     {
+        ///<inheritdoc/>
         public Task<ShopRole?> GetById(long id)
         {
             throw new NotImplementedException();
