@@ -30,6 +30,8 @@ using EShopAPI.Cores.ShopPermissions;
 using EShopAPI.Cores.ShopRoles;
 using EShopAPI.Cores.ShopUsers;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Numerics;
 using System.Xml.Linq;
 
 namespace EShopAPI.Context
@@ -570,7 +572,13 @@ namespace EShopAPI.Context
 
             #region Add Seed
             modelBuilder.Entity<EShopUnit>()
-                .HasData(GetDefaultUnit());
+                .HasData(GetDefaultUnits());
+
+            modelBuilder.Entity<ShopUser>()
+               .HasData(GetDefaultUsers());
+
+            modelBuilder.Entity<ShopRole>()
+               .HasData(GetDefaultRoles());
             #endregion
         }
 
@@ -578,7 +586,7 @@ namespace EShopAPI.Context
         /// 取得預設的單位清單
         /// </summary>
         /// <returns></returns>
-        private static IList<EShopUnit> GetDefaultUnit() 
+        private static IList<EShopUnit> GetDefaultUnits() 
         {
             return new List<EShopUnit>()
             {
@@ -685,6 +693,114 @@ namespace EShopAPI.Context
                     Name = "瓶",
                     IsEnable = true,
                     IsSystemDefault = true
+                },
+            };
+        }
+
+        /// <summary>
+        /// 取得預設的使用者清單
+        /// </summary>
+        /// <returns></returns>
+        private static IList<ShopUser> GetDefaultUsers() 
+        {
+            return new List<ShopUser>
+            {
+                new ShopUser
+                {
+                    Id = 1,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "預設的最高權限帳號",
+                    Language = null,
+                    Number = "shopAdmin",
+                    Name = "商店管理員",
+                    Pwd = "shopAdmin",
+                    Address = null,
+                    Email = null,
+                    Phone = null,
+                    IsEnable = true
+                },
+                new ShopUser
+                {
+                    Id = 2,
+                    CreateUser = "shopUser",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "預設的一般使用者(測試用)",
+                    Language = null,
+                    Number = "shopUser",
+                    Name = "商店使用者(測試用)",
+                    Pwd = "shopUser",
+                    Address = null,
+                    Email = null,
+                    Phone = null,
+                    IsEnable = true
+                },
+            };
+        }
+
+        /// <summary>
+        /// 取得預設的角色清單
+        /// </summary>
+        /// <returns></returns>
+        private static IList<ShopRole> GetDefaultRoles()
+        {
+            return new List<ShopRole>
+            {
+                new ShopRole
+                {
+                    Id = 1,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "商店管理者權限",
+                    Language = null,
+                    Number = "shopAdminRole",
+                    Name = "商店管理者權限",
+                    IsEnable = true
+                },
+                new ShopRole
+                {
+                    Id = 2,
+                    CreateUser = "shopUser",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "預設的一般使用者(測試用)",
+                    Language = null,
+                    Number = "shopUser",
+                    Name = "商店使用者(測試用)",
+                    IsEnable = true
+                },
+                new ShopRole
+                {
+                    Id = 3,
+                    CreateUser = "shopUser",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "一般客戶",
+                    Language = null,
+                    Number = "custom",
+                    Name = "一般客戶",
+                    IsEnable = true
+                },
+                new ShopRole
+                {
+                    Id = 4,
+                    CreateUser = "shopUser",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "VIP客戶",
+                    Language = null,
+                    Number = "vip_custom",
+                    Name = "VIP客戶",
+                    IsEnable = true
                 },
             };
         }

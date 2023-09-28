@@ -43,6 +43,6 @@ namespace EShopCores.AppLogs.LogHelpers
         /// <param name="eventId">事件id</param>
         /// <param name="messageType">訊息類型</param>
         /// <param name="body"></param>
-        void WriteBody(string eventId, LogMessageType messageType, object? body);
+        void WriteBody(string eventId, LogMessageType messageType, string? body);
     }
 }

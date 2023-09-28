@@ -41,14 +41,14 @@ namespace EShopCores.Errors
         /// Constructor
         /// </summary>
         /// <param name="code">錯誤代碼</param>
-        /// <param name="content">錯誤內容訊息補充</param>
-        public EShopException(ResponseCodeType code, string content)
+        /// <param name="description">錯誤內容訊息補充</param>
+        public EShopException(ResponseCodeType code, string description)
             : base(code.GetMessage())
         {
             Code = code;
             ErrorMessage = code.GetMessage();
-            Description = code.GetDescription();
-            Content = content;
+            Description = description;
+            Content = Content;
         }
     }
 }

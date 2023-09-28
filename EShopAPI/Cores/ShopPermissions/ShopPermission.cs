@@ -32,6 +32,14 @@ namespace EShopAPI.Cores.ShopPermissions
         public string Name { get; set; } = null!;
 
         /// <summary>
+        /// 是否啟用
+        /// </summary>
+        [Required]
+        [Column("is_enable")]
+        [Comment("是否啟用")]
+        public bool IsEnable { get; set; }
+
+        /// <summary>
         /// 角色與權限的關聯
         /// </summary>
         public ICollection<MapRolePermission>? MapRolePermissions { get; set; } 

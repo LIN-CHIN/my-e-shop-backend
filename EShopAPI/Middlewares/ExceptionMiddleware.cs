@@ -1,4 +1,5 @@
-﻿using EShopCores.Responses;
+﻿using EShopCores.Errors;
+using EShopCores.Responses;
 using Npgsql;
 
 namespace EShopAPI.Middlewares
@@ -50,30 +51,19 @@ namespace EShopAPI.Middlewares
             GenericResponse<string> result;
 
             //處理DB相關的錯誤
-            if (exception.InnerException != null)
+            if (exception.GetBaseException() is PostgresException pgException)
             {
-                //違反Unique Key
-                if (((PostgresException)exception.InnerException).SqlState == "23505")
-                {
-                    result = GenericResponse<string>.GetResult(
-                        ResponseCodeType.UniqueDataDuplicate,
-                        exception.ToString())!;
-                }
-                //違反FK
-                else if (((PostgresException)exception.InnerException).SqlState == "23503")
-                {
-                    result = GenericResponse<string>.GetResult(
-                        ResponseCodeType.UniqueDataDuplicate,
-                        exception.ToString())!;
-                }
-                else
-                {
-                    result = GenericResponse<string>.GetResult(
-                        ResponseCodeType.DBInnerError,
-                        exception.ToString())!;
-                }
+                result = HandlePostgresException(pgException);
+               
             }
-            else 
+            else if (exception is EShopException eshopException) 
+            {
+                result = GenericResponse<string>.GetResult(
+                        eshopException.Code,
+                        eshopException.Description,
+                        exception.ToString())!;
+            }
+            else
             {
                 result = GenericResponse<string>.GetResult(
                     ResponseCodeType.SystemError,
@@ -81,6 +71,36 @@ namespace EShopAPI.Middlewares
             }
             
             await context.Response.WriteAsJsonAsync(result);
+        }
+
+        /// <summary>
+		/// 專門處理PostgresException
+		/// </summary>
+		/// <param name="exception"></param>
+		/// <returns></returns>
+		private static GenericResponse<string> HandlePostgresException(PostgresException exception)
+        {
+            //違反Unique Key
+            if (exception.SqlState == "23505")
+            {
+                return GenericResponse<string>.GetResult(
+                        ResponseCodeType.UniqueDataDuplicate,
+                        exception.ToString())!;
+            }
+            //違反FK
+            else if (exception.SqlState == "23503")
+            {
+                return GenericResponse<string>.GetResult(
+                        ResponseCodeType.DbForeignKeyViolation,
+                        exception.ToString())!;
+            }
+            //其他錯誤
+            else
+            {
+                return GenericResponse<string>.GetResult(
+                         ResponseCodeType.DBInnerError,
+                         exception.ToString())!;
+            }
         }
     }
 }
