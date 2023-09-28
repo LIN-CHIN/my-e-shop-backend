@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace EShopAPI.Cores
 {
@@ -51,7 +52,7 @@ namespace EShopAPI.Cores
         /// </summary>
         /// <param name="eShopObject"></param>
         /// <returns></returns>
-        protected EShopObjectDTO ParseBaseObject(EShopObject eShopObject) 
+        protected void ParseBaseObject(EShopObject eShopObject) 
         {
             Id = eShopObject.Id;
             CreateUser = eShopObject.CreateUser;
@@ -60,7 +61,6 @@ namespace EShopAPI.Cores
             UpdateDate = eShopObject.UpdateDate;
             Remarks = eShopObject.Remarks;
             Language = eShopObject.Language;
-            return this;
         }
     }
 }

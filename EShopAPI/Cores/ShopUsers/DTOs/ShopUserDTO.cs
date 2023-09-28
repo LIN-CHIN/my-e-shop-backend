@@ -40,8 +40,13 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// </summary>
         /// <param name="shopUser"></param>
         /// <returns></returns>
-        public static ShopUserDTO Parse(ShopUser shopUser) 
+        public static ShopUserDTO? Parse(ShopUser? shopUser) 
         {
+            if (shopUser == null) 
+            {
+                return null;
+            }
+
             ShopUserDTO shopUserDTO = new ShopUserDTO
             {
                 Number = shopUser.Number,

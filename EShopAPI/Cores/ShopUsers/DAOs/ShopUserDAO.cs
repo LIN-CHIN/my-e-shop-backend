@@ -18,7 +18,7 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         /// Constructor
         /// </summary>
         /// <param name="eShopContext"></param>
-        public ShopUserDAO(EShopContext eShopContext) 
+        public ShopUserDAO(EShopContext eShopContext)
         {
             _eShopContext = eShopContext;
         }
@@ -28,9 +28,9 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         {
             IQueryable<ShopUser> shopUsers = _eShopContext.ShopUsers;
 
-            if (!string.IsNullOrWhiteSpace(queryDTO.Number)) 
+            if (!string.IsNullOrWhiteSpace(queryDTO.Number))
             {
-                shopUsers = shopUsers.Where(user => 
+                shopUsers = shopUsers.Where(user =>
                     EF.Functions.Like(user.Number, $"%{queryDTO.Number}%"));
             }
 
@@ -50,6 +50,14 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         }
 
         ///<inheritdoc/>
+        public async Task<ShopUser?> GetByIdAsync(long id)
+        {
+            return await _eShopContext.ShopUsers
+                .Where(user => user.Id == id)
+                .SingleOrDefaultAsync();
+        }
+
+        ///<inheritdoc/>
         public async Task<ShopUser?> GetByNumberAsync(string number)
         {
             return await _eShopContext.ShopUsers
@@ -61,10 +69,15 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         public async Task<ShopUser> InsertAsync(ShopUser shopUser)
         {
             _eShopContext.ShopUsers.Add(shopUser);
-            await _eShopContext.SaveChangesAsync(); 
+            await _eShopContext.SaveChangesAsync();
             return shopUser;
         }
 
-       
+        ///<inheritdoc/>
+        public async Task UpdaeAsync(ShopUser shopUser)
+        {
+            _eShopContext.ShopUsers.Update(shopUser);
+            await _eShopContext.SaveChangesAsync();
+        }
     }
 }

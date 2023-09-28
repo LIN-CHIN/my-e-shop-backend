@@ -28,6 +28,12 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
+        public Task<ShopUser?> GetByIdAsync(long id)
+        {
+            return _shopUserDAO.GetByIdAsync(id);
+        }
+
+        ///<inheritdoc/>
         public async Task<ShopUser?> GetByNumberAsync(string number)
         {
             return await _shopUserDAO.GetByNumberAsync(number);
@@ -43,6 +49,21 @@ namespace EShopAPI.Cores.ShopUsers.Services
             };
 
             return await _shopUserDAO.InsertAsync(insertDTO.ToEntity());
+        }
+
+        ///<inheritdoc/>
+        public async Task UpdaeAsync(UpdateShopUserDTO updateDTO)
+        {
+            ShopUser? shopUser = await _shopUserDAO.GetByIdAsync(updateDTO.Id);
+
+            if(shopUser == null)
+            {
+                throw new EShopException(
+                    ResponseCodeType.RequestParameterError,
+                    $"找不到使用者id :{updateDTO.Id}");
+            }
+
+            await _shopUserDAO.UpdaeAsync(updateDTO.SetEntity(shopUser));
         }
     }
 }

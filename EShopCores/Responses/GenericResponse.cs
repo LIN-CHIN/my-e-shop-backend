@@ -69,5 +69,19 @@ namespace EShopCores.Responses
                 Content = content
             };
         }
+
+        /// <summary>
+        /// 取得成功結果(沒有任何要回傳的資料)
+        /// </summary>
+        public static GenericResponse<T?> GetSuccess()
+        {
+            return new GenericResponse<T?>
+            {
+                Code = ResponseCodeType.Success,
+                Message = ResponseCodeType.Success.GetMessage(),
+                Description = ResponseCodeType.Success.GetDescription(),
+                Content = default
+            };
+        }
     }
 }

@@ -30,21 +30,37 @@ namespace EShopAPI.Cores.ShopUsers
         /// <param name="pageDTO">分頁資訊</param>
         /// <param name="queryDTO">要新增的使用者資訊</param>
         /// <returns></returns>
-        /// <response code="200">新增成功</response>
-        /// <response code="500">新增失敗</response>
+        /// <response code="200">查詢成功</response>
+        /// <response code="500">查詢失敗</response>
         [HttpGet]
-        [ProducesResponseType(typeof(PaginationResponse<ShopUser>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginationResponse<ShopUserDTO?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public IActionResult Get([FromQuery] QueryPaginationDTO pageDTO, 
+        public IActionResult Get(
+            [FromQuery] QueryPaginationDTO pageDTO, 
             [FromQuery] QueryShopUserDTO queryDTO)
         {
-            return Ok(PaginationResponse<ShopUserDTO>.GetSuccess(
+            return Ok(PaginationResponse<ShopUserDTO?>.GetSuccess(
                 pageDTO.Page,
                 pageDTO.PageCount,
                 _shopUserService.Get(queryDTO).Select(user => ShopUserDTO.Parse(user)
             )));
         }
 
+        /// <summary>
+        /// 根據id查詢使用者
+        /// </summary>
+        /// <param name="id">使用者的id</param>
+        /// <returns></returns>
+        /// <response code="200">查詢成功</response>
+        /// <response code="500">查詢失敗</response>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(GenericResponse<ShopUserDTO?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetByIdAsync(long id)
+        {
+            ShopUser? shopUser = await _shopUserService.GetByIdAsync(id);
+            return Ok(GenericResponse<ShopUserDTO?>.GetSuccess(ShopUserDTO.Parse(shopUser)));
+        }
 
         /// <summary>
         /// 新增使用者
@@ -60,6 +76,22 @@ namespace EShopAPI.Cores.ShopUsers
         {
             return Ok(GenericResponse<ShopUser>.GetSuccess(
                 await _shopUserService.InsertAsync(insertDTO)));
+        }
+
+        /// <summary>
+        /// 編輯使用者
+        /// </summary>
+        /// <param name="updateDTO">要編輯的使用者資訊</param>
+        /// <returns></returns>
+        /// <response code="200">編輯成功</response>
+        /// <response code="500">編輯失敗</response>
+        [HttpPut]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Update([FromBody] UpdateShopUserDTO updateDTO)
+        {
+            await _shopUserService.UpdaeAsync(updateDTO);
+            return Ok(GenericResponse<string>.GetSuccess());
         }
     }
 }
