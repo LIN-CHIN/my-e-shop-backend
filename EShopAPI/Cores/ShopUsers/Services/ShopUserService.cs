@@ -46,7 +46,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
             if (shopUser != null)
             {
                 throw new EShopException(ResponseCodeType.DuplicateData, "帳號已存在");
-            };
+            }
 
             return await _shopUserDAO.InsertAsync(insertDTO.ToEntity());
         }

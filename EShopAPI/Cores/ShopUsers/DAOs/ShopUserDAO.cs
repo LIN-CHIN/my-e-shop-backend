@@ -43,7 +43,7 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
             if (!string.IsNullOrWhiteSpace(queryDTO.Email))
             {
                 shopUsers = shopUsers.Where(user =>
-                    EF.Functions.Like(user.Email, $"%{queryDTO.Email}%"));
+                    EF.Functions.Like(user.Email!, $"%{queryDTO.Email}%"));
             }
 
             return shopUsers;
