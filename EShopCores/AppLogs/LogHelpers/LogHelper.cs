@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Serilog.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace EShopCores.AppLogs.LogHelpers
 {
@@ -49,13 +44,26 @@ namespace EShopCores.AppLogs.LogHelpers
         }
 
         ///<inheritdoc/>
-        public void WriteBody(string eventId, LogMessageType messageType, object? body)
+        public void WriteBody(string eventId, LogMessageType messageType, string? body)
         {
-            LogModel logModel = new LogModel(eventId, messageType, body);
+            LogModel logModel;
+
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                logModel = new LogModel(eventId, messageType, "");
+            }
+            else 
+            {
+                logModel = new LogModel(
+                    eventId,
+                    messageType,
+                    JsonSerializer.Deserialize<object?>(body));
+            }
+            
             
             using (LogContext.PushProperty("EventID", eventId, true))
             {
-                _logger.LogInformation("{message}", JsonConvert.SerializeObject(logModel));
+                _logger.LogInformation("{message}", JsonSerializer.Serialize(logModel));
             }
         }
     }

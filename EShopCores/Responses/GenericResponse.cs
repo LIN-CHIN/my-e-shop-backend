@@ -1,10 +1,4 @@
-﻿using EShopCores.Errors;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace EShopCores.Responses
 {
@@ -16,7 +10,7 @@ namespace EShopCores.Responses
         /// <summary>
         /// 回傳內容
         /// </summary>
-        [JsonProperty(Order = 3)]
+        [JsonPropertyOrder(3)]
         public T? Content { get; set; }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿using EShopCores.Extensions;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace EShopAPI.Cores.ShopUsers.DTOs
 {

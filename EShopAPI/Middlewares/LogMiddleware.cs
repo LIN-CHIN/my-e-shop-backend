@@ -1,11 +1,8 @@
 ﻿using EShopCores.AppLogs;
 using EShopCores.AppLogs.LogHelpers;
-using EShopCores.Errors;
-using EShopCores.Models;
 using Microsoft.IO;
-using Newtonsoft.Json;
-using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace EShopAPI.Middlewares
 {
@@ -40,11 +37,11 @@ namespace EShopAPI.Middlewares
 
             var _logger = context.RequestServices.GetRequiredService<ILogHelper>();
 
-            object? requestBody = await GetRequestBody(context.Request);
-            _logger.WriteBody(eventId, LogMessageType.Request, JsonConvert.SerializeObject(requestBody));
+            string? requestBody = await GetRequestBody(context.Request);
+            _logger.WriteBody(eventId, LogMessageType.Request, requestBody);
 
-            object? responseBody = await GetResponseBody(context);
-            _logger.WriteBody(eventId, LogMessageType.Response, JsonConvert.SerializeObject(responseBody));
+            string? responseBody = await GetResponseBody(context);
+            _logger.WriteBody(eventId, LogMessageType.Response, responseBody);
         }
 
         /// <summary>
@@ -52,7 +49,7 @@ namespace EShopAPI.Middlewares
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        private static async Task<object?> GetRequestBody(HttpRequest request)
+        private static async Task<string?> GetRequestBody(HttpRequest request)
         {
             request.EnableBuffering();
 
@@ -62,9 +59,9 @@ namespace EShopAPI.Middlewares
                 detectEncodingFromByteOrderMarks: false,
                 leaveOpen: true))
             {
-                string body = await reader.ReadToEndAsync();
+                string? body = await reader.ReadToEndAsync();
                 request.Body.Position = 0;
-                return JsonConvert.DeserializeObject(body);
+                return body;
             }
         }
 
@@ -73,7 +70,7 @@ namespace EShopAPI.Middlewares
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        private async Task<object?> GetResponseBody(HttpContext context)
+        private async Task<string?> GetResponseBody(HttpContext context)
         {
             var originalBodyStream = context.Response.Body;
             await using var responseBody = _recyclableMemoryStreamManager.GetStream();
@@ -86,7 +83,7 @@ namespace EShopAPI.Middlewares
             context.Response.Body.Seek(0, SeekOrigin.Begin);
             await responseBody.CopyToAsync(originalBodyStream);
 
-            return JsonConvert.DeserializeObject(body);
+            return body;
         }
     }
 }

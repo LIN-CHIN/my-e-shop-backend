@@ -16,7 +16,6 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddControllers()
-        .AddNewtonsoftJson()
         //Custom ModelState 
         .ConfigureApiBehaviorOptions(options =>
         {

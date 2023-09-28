@@ -1,5 +1,4 @@
-﻿using EShopAPI.Cores.MapRolePermissions;
-using EShopAPI.Cores.MapUserRoles;
+﻿using EShopAPI.Cores.MapUserRoles;
 using EShopAPI.Cores.MapUserRoles.Services;
 using EShopAPI.Cores.ShopActions;
 using EShopAPI.Cores.ShopUsers;
@@ -7,8 +6,8 @@ using EShopAPI.Settings;
 using EShopCores.Extensions;
 using Jose;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace EShopAPI.Cores.Auth.JWTs
 {
@@ -86,7 +85,7 @@ namespace EShopAPI.Cores.Auth.JWTs
                 ShopActions = shopActions,
             };
 
-            string json = JsonConvert.SerializeObject(payload);
+            string json = JsonSerializer.Serialize(payload);
             string token = JWT.Encode(json, Encoding.UTF8.GetBytes(_jwtTokenSettings.SignKey), JwsAlgorithm.HS256);
             return token;
         }
