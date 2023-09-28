@@ -719,7 +719,8 @@ namespace EShopAPI.Context
                     Pwd = "shopAdmin",
                     Address = null,
                     Email = null,
-                    Phone = null
+                    Phone = null,
+                    IsEnable = true
                 },
                 new ShopUser
                 {
@@ -735,7 +736,8 @@ namespace EShopAPI.Context
                     Pwd = "shopUser",
                     Address = null,
                     Email = null,
-                    Phone = null
+                    Phone = null,
+                    IsEnable = true
                 },
             };
         }
@@ -759,6 +761,7 @@ namespace EShopAPI.Context
                     Language = null,
                     Number = "shopAdminRole",
                     Name = "商店管理者權限",
+                    IsEnable = true
                 },
                 new ShopRole
                 {
@@ -771,6 +774,7 @@ namespace EShopAPI.Context
                     Language = null,
                     Number = "shopUser",
                     Name = "商店使用者(測試用)",
+                    IsEnable = true
                 },
                 new ShopRole
                 {
@@ -783,6 +787,7 @@ namespace EShopAPI.Context
                     Language = null,
                     Number = "custom",
                     Name = "一般客戶",
+                    IsEnable = true
                 },
                 new ShopRole
                 {
@@ -795,6 +800,7 @@ namespace EShopAPI.Context
                     Language = null,
                     Number = "vip_custom",
                     Name = "VIP客戶",
+                    IsEnable = true
                 },
             };
         }

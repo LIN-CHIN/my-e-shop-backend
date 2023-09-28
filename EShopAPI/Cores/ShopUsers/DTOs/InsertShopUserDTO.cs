@@ -48,6 +48,12 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         public string? Phone { get; set; }
 
         /// <summary>
+        /// 是否啟用
+        /// </summary>
+        [JsonRequired]
+        public bool IsEnable { get; set; } = true;
+
+        /// <summary>
         /// 建立者
         /// </summary>
         [JsonRequired]
@@ -83,6 +89,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
                 Address = Address,
                 Email = Email,
                 Phone = Phone,
+                IsEnable = IsEnable,
                 CreateUser = CreateUser,
                 CreateDate = CreateDate,
                 Remarks = Remarks,

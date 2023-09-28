@@ -65,5 +65,21 @@ namespace EShopAPI.Cores.ShopUsers.Services
 
             await _shopUserDAO.UpdaeAsync(updateDTO.SetEntity(shopUser));
         }
+
+        ///<inheritdoc/>
+        public async Task EnableAsync(long id, bool isEnable)
+        {
+            ShopUser? shopUser = await _shopUserDAO.GetByIdAsync(id);
+
+            if (shopUser == null)
+            {
+                throw new EShopException(
+                    ResponseCodeType.RequestParameterError,
+                    $"找不到使用者id :{id}");
+            }
+
+            shopUser.IsEnable = isEnable;
+            await _shopUserDAO.UpdaeAsync(shopUser);
+        }
     }
 }

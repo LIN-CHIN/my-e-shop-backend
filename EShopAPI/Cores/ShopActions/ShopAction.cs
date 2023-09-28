@@ -35,6 +35,14 @@ namespace EShopAPI.Cores.ShopActions
         public string Name { get; set; } = null!;
 
         /// <summary>
+        /// 是否啟用
+        /// </summary>
+        [Required]
+        [Column("is_enable")]
+        [Comment("是否啟用")]
+        public bool IsEnable { get; set; }
+
+        /// <summary>
         /// 權限與功能關聯的實體
         /// </summary>
         public ICollection<MapPermissionAction>? MapPermissionActions { get; set; }

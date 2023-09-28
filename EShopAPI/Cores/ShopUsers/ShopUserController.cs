@@ -93,5 +93,37 @@ namespace EShopAPI.Cores.ShopUsers
             await _shopUserService.UpdaeAsync(updateDTO);
             return Ok(GenericResponse<string>.GetSuccess());
         }
+
+        /// <summary>
+        /// 啟用使用者
+        /// </summary>
+        /// <param name="id">要設定啟用的 使用者id</param>
+        /// <returns></returns>
+        /// <response code="200">編輯成功</response>
+        /// <response code="500">編輯失敗</response>
+        [HttpPatch("Enable/{id}")]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SetEnable(long id)
+        {
+            await _shopUserService.EnableAsync(id, true);
+            return Ok(GenericResponse<string>.GetSuccess());
+        }
+
+        /// <summary>
+        /// 停用使用者
+        /// </summary>
+        /// <param name="id">要設定啟用的 使用者id</param>
+        /// <returns></returns>
+        /// <response code="200">編輯成功</response>
+        /// <response code="500">編輯失敗</response>
+        [HttpPatch("Disable/{id}")]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SetDesable(long id)
+        {
+            await _shopUserService.EnableAsync(id, false);
+            return Ok(GenericResponse<string>.GetSuccess());
+        }
     }
 }

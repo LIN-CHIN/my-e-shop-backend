@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EShopAPI.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20230927055249_init")]
+    [Migration("20230928075753_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -2126,6 +2126,11 @@ namespace EShopAPI.Migrations
                         .HasColumnName("create_user")
                         .HasComment("建立者");
 
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_enable")
+                        .HasComment("是否啟用");
+
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
                         .HasColumnName("language")
@@ -2452,6 +2457,11 @@ namespace EShopAPI.Migrations
                         .HasColumnName("create_user")
                         .HasComment("建立者");
 
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_enable")
+                        .HasComment("是否啟用");
+
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
                         .HasColumnName("language")
@@ -2519,6 +2529,11 @@ namespace EShopAPI.Migrations
                         .HasColumnName("create_user")
                         .HasComment("建立者");
 
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_enable")
+                        .HasComment("是否啟用");
+
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
                         .HasColumnName("language")
@@ -2569,6 +2584,7 @@ namespace EShopAPI.Migrations
                             Id = 1L,
                             CreateDate = 1695285957713L,
                             CreateUser = "shopAdmin",
+                            IsEnable = true,
                             Name = "商店管理者權限",
                             Number = "shopAdminRole",
                             Remarks = "商店管理者權限"
@@ -2578,6 +2594,7 @@ namespace EShopAPI.Migrations
                             Id = 2L,
                             CreateDate = 1695285957713L,
                             CreateUser = "shopUser",
+                            IsEnable = true,
                             Name = "商店使用者(測試用)",
                             Number = "shopUser",
                             Remarks = "預設的一般使用者(測試用)"
@@ -2587,6 +2604,7 @@ namespace EShopAPI.Migrations
                             Id = 3L,
                             CreateDate = 1695285957713L,
                             CreateUser = "shopUser",
+                            IsEnable = true,
                             Name = "一般客戶",
                             Number = "custom",
                             Remarks = "一般客戶"
@@ -2596,6 +2614,7 @@ namespace EShopAPI.Migrations
                             Id = 4L,
                             CreateDate = 1695285957713L,
                             CreateUser = "shopUser",
+                            IsEnable = true,
                             Name = "VIP客戶",
                             Number = "vip_custom",
                             Remarks = "VIP客戶"
@@ -2635,6 +2654,11 @@ namespace EShopAPI.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("email")
                         .HasComment("Email");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_enable")
+                        .HasComment("是否啟用");
 
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
@@ -2698,6 +2722,7 @@ namespace EShopAPI.Migrations
                             Id = 1L,
                             CreateDate = 1695285957713L,
                             CreateUser = "shopAdmin",
+                            IsEnable = true,
                             Name = "商店管理員",
                             Number = "shopAdmin",
                             Pwd = "shopAdmin",
@@ -2708,6 +2733,7 @@ namespace EShopAPI.Migrations
                             Id = 2L,
                             CreateDate = 1695285957713L,
                             CreateUser = "shopUser",
+                            IsEnable = true,
                             Name = "商店使用者(測試用)",
                             Number = "shopUser",
                             Pwd = "shopUser",

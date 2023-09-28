@@ -4,6 +4,7 @@ using EShopAPI.Cores.OrderMasters;
 using EShopAPI.Cores.RecordOrderMasters;
 using EShopAPI.Cores.ShopCarts;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -65,6 +66,14 @@ namespace EShopAPI.Cores.ShopUsers
         [Comment("手機")]
         [StringLength(20)]
         public string? Phone { get; set; }
+
+        /// <summary>
+        /// 是否啟用
+        /// </summary>
+        [JsonRequired]
+        [Column("is_enable")]
+        [Comment("是否啟用")]
+        public bool IsEnable { get; set; }
 
         /// <summary>
         /// 使用者與角色的關聯

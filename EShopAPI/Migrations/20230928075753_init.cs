@@ -167,6 +167,7 @@ namespace EShopAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     number = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "功能代碼"),
                     name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "功能名稱"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -242,6 +243,7 @@ namespace EShopAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     number = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "權限代碼"),
                     name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "權限名稱"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -264,6 +266,7 @@ namespace EShopAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     number = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "角色代碼"),
                     name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "角色名稱"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -290,6 +293,7 @@ namespace EShopAPI.Migrations
                     address = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true, comment: "地址"),
                     email = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true, comment: "Email"),
                     phone = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true, comment: "手機"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -1072,23 +1076,23 @@ namespace EShopAPI.Migrations
             migrationBuilder.InsertData(
                 schema: "eshop",
                 table: "shop_role",
-                columns: new[] { "id", "create_date", "create_user", "language", "name", "number", "remarks", "update_date", "update_user" },
+                columns: new[] { "id", "create_date", "create_user", "is_enable", "language", "name", "number", "remarks", "update_date", "update_user" },
                 values: new object[,]
                 {
-                    { 1L, 1695285957713L, "shopAdmin", null, "商店管理者權限", "shopAdminRole", "商店管理者權限", null, null },
-                    { 2L, 1695285957713L, "shopUser", null, "商店使用者(測試用)", "shopUser", "預設的一般使用者(測試用)", null, null },
-                    { 3L, 1695285957713L, "shopUser", null, "一般客戶", "custom", "一般客戶", null, null },
-                    { 4L, 1695285957713L, "shopUser", null, "VIP客戶", "vip_custom", "VIP客戶", null, null }
+                    { 1L, 1695285957713L, "shopAdmin", true, null, "商店管理者權限", "shopAdminRole", "商店管理者權限", null, null },
+                    { 2L, 1695285957713L, "shopUser", true, null, "商店使用者(測試用)", "shopUser", "預設的一般使用者(測試用)", null, null },
+                    { 3L, 1695285957713L, "shopUser", true, null, "一般客戶", "custom", "一般客戶", null, null },
+                    { 4L, 1695285957713L, "shopUser", true, null, "VIP客戶", "vip_custom", "VIP客戶", null, null }
                 });
 
             migrationBuilder.InsertData(
                 schema: "eshop",
                 table: "shop_user",
-                columns: new[] { "id", "address", "create_date", "create_user", "email", "language", "name", "number", "phone", "pwd", "remarks", "update_date", "update_user" },
+                columns: new[] { "id", "address", "create_date", "create_user", "email", "is_enable", "language", "name", "number", "phone", "pwd", "remarks", "update_date", "update_user" },
                 values: new object[,]
                 {
-                    { 1L, null, 1695285957713L, "shopAdmin", null, null, "商店管理員", "shopAdmin", null, "shopAdmin", "預設的最高權限帳號", null, null },
-                    { 2L, null, 1695285957713L, "shopUser", null, null, "商店使用者(測試用)", "shopUser", null, "shopUser", "預設的一般使用者(測試用)", null, null }
+                    { 1L, null, 1695285957713L, "shopAdmin", null, true, null, "商店管理員", "shopAdmin", null, "shopAdmin", "預設的最高權限帳號", null, null },
+                    { 2L, null, 1695285957713L, "shopUser", null, true, null, "商店使用者(測試用)", "shopUser", null, "shopUser", "預設的一般使用者(測試用)", null, null }
                 });
 
             migrationBuilder.CreateIndex(

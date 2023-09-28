@@ -36,6 +36,11 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         public string? Phone { get; set; }
 
         /// <summary>
+        /// 是否啟用
+        /// </summary>
+        public bool IsEnable { get; set; }
+
+        /// <summary>
         /// 將實體解析成ShopUserDTO
         /// </summary>
         /// <param name="shopUser"></param>
@@ -53,7 +58,8 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
                 Name = shopUser.Name,
                 Address = shopUser.Address,
                 Email = shopUser.Email,
-                Phone = shopUser.Phone
+                Phone = shopUser.Phone,
+                IsEnable = shopUser.IsEnable
             };
 
             shopUserDTO.ParseBaseObject(shopUser);
