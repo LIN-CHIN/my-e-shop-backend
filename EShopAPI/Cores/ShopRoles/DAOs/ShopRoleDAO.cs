@@ -6,7 +6,7 @@ namespace EShopAPI.Cores.ShopRoles.DAOs
     /// <summary>
     /// 商店角色的 DAO
     /// </summary>
-    public class ShopRoleDAO : IShopRoleDAO
+    public class ShopRoleDao : IShopRoleDao
     {
         /// <summary>
         /// EShop context
@@ -17,7 +17,7 @@ namespace EShopAPI.Cores.ShopRoles.DAOs
         /// Constructor
         /// </summary>
         /// <param name="eShopContext"></param>
-        public ShopRoleDAO(EShopContext eShopContext) 
+        public ShopRoleDao(EShopContext eShopContext) 
         {
             _eShopContext = eShopContext;
         }

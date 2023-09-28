@@ -3,7 +3,7 @@
     /// <summary>
     /// 商店角色的 DAO Interface
     /// </summary>
-    public interface IShopRoleDAO
+    public interface IShopRoleDao
     {
         /// <summary>
         /// 根據id取得角色

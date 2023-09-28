@@ -5,7 +5,7 @@ namespace EShopAPI.Cores
     /// <summary>
     /// 共同回傳的物件DTO
     /// </summary>
-    public abstract class EShopObjectDTO
+    public abstract class EShopObjectDto
     {
         /// <summary>
         /// 系統id

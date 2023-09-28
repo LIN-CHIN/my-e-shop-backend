@@ -48,15 +48,15 @@ namespace EShopAPI
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             //JWTs
-            services.AddScoped<IJWTService, JWTService>();
+            services.AddScoped<IJwtService, JwtService>();
 
             //ShopUsers
             services.AddScoped<IShopUserService, ShopUserService>();
-            services.AddScoped<IShopUserDAO, ShopUserDAO>();
+            services.AddScoped<IShopUserDao, ShopUserDao>();
 
             //ShopRoles
             services.AddScoped<IShopRoleService, ShopRoleService>();
-            services.AddScoped<IShopRoleDAO, ShopRoleDAO>();
+            services.AddScoped<IShopRoleDao, ShopRoleDao>();
 
             //MapUserRoleServices
             services.AddScoped<IMapUserRoleService, MapUserRoleService>();

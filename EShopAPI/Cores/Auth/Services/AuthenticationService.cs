@@ -13,7 +13,7 @@ namespace EShopAPI.Cores.Auth.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IShopUserService _shopUserService;
-        private readonly IJWTService _jwtService;
+        private readonly IJwtService _jwtService;
 
         /// <summary>
         /// Constructor
@@ -21,14 +21,14 @@ namespace EShopAPI.Cores.Auth.Services
         /// <param name="shopUserService"></param>
         /// <param name="jwtService"></param>
         public AuthenticationService(IShopUserService shopUserService,
-           IJWTService jwtService) 
+           IJwtService jwtService) 
         {
             _shopUserService = shopUserService;
             _jwtService = jwtService;
         }
 
         ///<inheritdoc/>
-        public async Task<LoginResponseDTO> LoginAsync(LoginDTO loginDTO) 
+        public async Task<LoginResponseDto> LoginAsync(LoginDto loginDTO) 
         {
             ShopUser? shopUser = await _shopUserService.GetByNumberAsync(loginDTO.UserNumber);
             if(shopUser == null) 
@@ -44,7 +44,7 @@ namespace EShopAPI.Cores.Auth.Services
             string accessToken = await _jwtService.GenerateAccessTokenAsync(shopUser);
             string refreshToken = _jwtService.GenerateRefreshToken(shopUser);
 
-            return new LoginResponseDTO
+            return new LoginResponseDto
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken

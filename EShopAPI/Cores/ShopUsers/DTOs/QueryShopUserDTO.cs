@@ -5,7 +5,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
     /// <summary>
     /// 查詢使用者用的DTO
     /// </summary>
-    public class QueryShopUserDTO
+    public class QueryShopUserDto
     {
         /// <summary>
         /// 使用者代碼/帳號

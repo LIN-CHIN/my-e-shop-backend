@@ -9,7 +9,7 @@ namespace EShopCores.Models
     /// <summary>
     /// 分頁查詢用的DTO
     /// </summary>
-    public class QueryPaginationDTO
+    public class QueryPaginationDto
     {
         /// <summary>
         /// 使用者要取得第幾頁的資料

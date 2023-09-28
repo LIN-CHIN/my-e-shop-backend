@@ -5,14 +5,14 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
     /// <summary>
     /// 使用者的 DAO Interface
     /// </summary>
-    public interface IShopUserDAO
+    public interface IShopUserDao
     {
         /// <summary>
         /// 取得使用者
         /// </summary>
         /// <param name="queryDTO"></param>
         /// <returns></returns>
-        IQueryable<ShopUser> Get(QueryShopUserDTO queryDTO);
+        IQueryable<ShopUser> Get(QueryShopUserDto queryDTO);
 
         /// <summary>
         /// 根據id取得使用者

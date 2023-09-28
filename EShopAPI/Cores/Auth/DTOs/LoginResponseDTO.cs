@@ -3,7 +3,7 @@
     /// <summary>
     /// 登入回傳結果用的DTO
     /// </summary>
-    public class LoginResponseDTO
+    public class LoginResponseDto
     {
         /// <summary>
         /// Token

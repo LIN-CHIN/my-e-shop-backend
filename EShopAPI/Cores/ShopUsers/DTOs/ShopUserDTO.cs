@@ -8,7 +8,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
     /// <summary>
     /// 查詢使用者回傳的DTO
     /// </summary>
-    public class ShopUserDTO : EShopObjectDTO
+    public class ShopUserDto : EShopObjectDto
     {
         /// <summary>
         /// 使用者代碼/帳號
@@ -45,14 +45,14 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// </summary>
         /// <param name="shopUser"></param>
         /// <returns></returns>
-        public static ShopUserDTO? Parse(ShopUser? shopUser) 
+        public static ShopUserDto? Parse(ShopUser? shopUser) 
         {
             if (shopUser == null) 
             {
                 return null;
             }
 
-            ShopUserDTO shopUserDTO = new ShopUserDTO
+            ShopUserDto shopUserDTO = new ShopUserDto
             {
                 Number = shopUser.Number,
                 Name = shopUser.Name,
