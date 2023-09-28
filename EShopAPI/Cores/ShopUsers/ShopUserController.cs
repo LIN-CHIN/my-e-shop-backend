@@ -33,16 +33,16 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="200">查詢成功</response>
         /// <response code="500">查詢失敗</response>
         [HttpGet]
-        [ProducesResponseType(typeof(PaginationResponse<ShopUserDTO?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginationResponse<ShopUserDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public IActionResult Get(
-            [FromQuery] QueryPaginationDTO pageDTO, 
-            [FromQuery] QueryShopUserDTO queryDTO)
+            [FromQuery] QueryPaginationDto pageDTO, 
+            [FromQuery] QueryShopUserDto queryDTO)
         {
-            return Ok(PaginationResponse<ShopUserDTO?>.GetSuccess(
+            return Ok(PaginationResponse<ShopUserDto?>.GetSuccess(
                 pageDTO.Page,
                 pageDTO.PageCount,
-                _shopUserService.Get(queryDTO).Select(user => ShopUserDTO.Parse(user)
+                _shopUserService.Get(queryDTO).Select(user => ShopUserDto.Parse(user)
             )));
         }
 
@@ -54,12 +54,12 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="200">查詢成功</response>
         /// <response code="500">查詢失敗</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(GenericResponse<ShopUserDTO?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<ShopUserDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetByIdAsync(long id)
         {
             ShopUser? shopUser = await _shopUserService.GetByIdAsync(id);
-            return Ok(GenericResponse<ShopUserDTO?>.GetSuccess(ShopUserDTO.Parse(shopUser)));
+            return Ok(GenericResponse<ShopUserDto?>.GetSuccess(ShopUserDto.Parse(shopUser)));
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace EShopAPI.Cores.ShopUsers
         [HttpPost]
         [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Insert([FromBody] InsertShopUserDTO insertDTO) 
+        public async Task<IActionResult> Insert([FromBody] InsertShopUserDto insertDTO) 
         {
             return Ok(GenericResponse<ShopUser>.GetSuccess(
                 await _shopUserService.InsertAsync(insertDTO)));
@@ -88,7 +88,7 @@ namespace EShopAPI.Cores.ShopUsers
         [HttpPut]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update([FromBody] UpdateShopUserDTO updateDTO)
+        public async Task<IActionResult> Update([FromBody] UpdateShopUserDto updateDTO)
         {
             await _shopUserService.UpdaeAsync(updateDTO);
             return Ok(GenericResponse<string>.GetSuccess());

@@ -7,7 +7,7 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
     /// <summary>
     /// 使用者的 DAO
     /// </summary>
-    public class ShopUserDAO : IShopUserDAO
+    public class ShopUserDao : IShopUserDao
     {
         /// <summary>
         /// eShop Context
@@ -18,13 +18,13 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         /// Constructor
         /// </summary>
         /// <param name="eShopContext"></param>
-        public ShopUserDAO(EShopContext eShopContext)
+        public ShopUserDao(EShopContext eShopContext)
         {
             _eShopContext = eShopContext;
         }
 
         ///<inheritdoc/>
-        public IQueryable<ShopUser> Get(QueryShopUserDTO queryDTO)
+        public IQueryable<ShopUser> Get(QueryShopUserDto queryDTO)
         {
             IQueryable<ShopUser> shopUsers = _eShopContext.ShopUsers;
 

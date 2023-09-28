@@ -10,19 +10,19 @@ namespace EShopAPI.Cores.ShopUsers.Services
     /// </summary>
     public class ShopUserService : IShopUserService
     {
-        private readonly IShopUserDAO _shopUserDAO; 
+        private readonly IShopUserDao _shopUserDAO; 
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="shopUserDAO"></param>
-        public ShopUserService(IShopUserDAO shopUserDAO) 
+        public ShopUserService(IShopUserDao shopUserDAO) 
         {
             _shopUserDAO = shopUserDAO;
         }
 
         ///<inheritdoc/>
-        public IQueryable<ShopUser> Get(QueryShopUserDTO queryDTO)
+        public IQueryable<ShopUser> Get(QueryShopUserDto queryDTO)
         {
             return _shopUserDAO.Get(queryDTO);
         }
@@ -40,7 +40,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
-        public async Task<ShopUser> InsertAsync(InsertShopUserDTO insertDTO)
+        public async Task<ShopUser> InsertAsync(InsertShopUserDto insertDTO)
         {
             ShopUser? shopUser = await _shopUserDAO.GetByNumberAsync(insertDTO.Number);
             if (shopUser != null)
@@ -52,7 +52,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
-        public async Task UpdaeAsync(UpdateShopUserDTO updateDTO)
+        public async Task UpdaeAsync(UpdateShopUserDto updateDTO)
         {
             ShopUser? shopUser = await _shopUserDAO.GetByIdAsync(updateDTO.Id);
 

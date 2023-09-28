@@ -14,7 +14,7 @@ namespace EShopAPI.Cores.Auth.JWTs
     /// <summary>
     /// JWT Service
     /// </summary>
-    public class JWTService : IJWTService
+    public class JwtService : IJwtService
     {
         //一小時
         private const int AccessTokenExpireTime = 1800;
@@ -30,7 +30,7 @@ namespace EShopAPI.Cores.Auth.JWTs
         /// </summary>
         /// <param name="jwtTokenSettings"></param>
         /// <param name="mapUserRoleService"></param>
-        public JWTService(JwtTokenSettings jwtTokenSettings, IMapUserRoleService mapUserRoleService)
+        public JwtService(JwtTokenSettings jwtTokenSettings, IMapUserRoleService mapUserRoleService)
         {
             _jwtTokenSettings = jwtTokenSettings;
             _mapUserRoleService = mapUserRoleService;
@@ -76,7 +76,7 @@ namespace EShopAPI.Cores.Auth.JWTs
             DateTime iat = DateTime.Now;
             DateTime exp = iat.AddSeconds(expireTime);
 
-            var payload = new JWTPayload
+            var payload = new JwtPayload
             {
                 Subject = shopUser.Number,
                 Issuer = _jwtTokenSettings.Issuer,

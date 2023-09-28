@@ -7,7 +7,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
     /// <summary>
     /// 新增使用者用的DTO
     /// </summary>
-    public class InsertShopUserDTO
+    public class InsertShopUserDto
     {
         /// <summary>
         /// 使用者代碼/帳號

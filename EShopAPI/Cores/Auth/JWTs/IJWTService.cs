@@ -5,7 +5,7 @@ namespace EShopAPI.Cores.Auth.JWTs
     /// <summary>
     /// JWT Service Interface
     /// </summary>
-    public interface IJWTService
+    public interface IJwtService
     {
         /// <summary>
         /// 產生Token

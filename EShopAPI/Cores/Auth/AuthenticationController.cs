@@ -35,9 +35,9 @@ namespace EShopAPI.Cores.Auth
         [HttpPost("Login")]
         [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Login(LoginDTO loginDTO) 
+        public async Task<IActionResult> Login(LoginDto loginDTO) 
         {
-            return Ok(GenericResponse<LoginResponseDTO>.GetSuccess(
+            return Ok(GenericResponse<LoginResponseDto>.GetSuccess(
                 await _authenticationService.LoginAsync(loginDTO)));
         }
     }

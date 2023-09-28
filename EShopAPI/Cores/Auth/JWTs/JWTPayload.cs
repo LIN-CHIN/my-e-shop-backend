@@ -5,7 +5,7 @@ namespace EShopAPI.Cores.Auth.JWTs
     /// <summary>
     /// JWT payload
     /// </summary>
-    public class JWTPayload : JWTBasePayload
+    public class JwtPayload : JwtBasePayload
     {
         /// <summary>
         /// 商店功能清單

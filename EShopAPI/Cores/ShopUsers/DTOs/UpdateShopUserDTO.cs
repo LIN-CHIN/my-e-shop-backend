@@ -8,7 +8,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
     /// <summary>
     /// 更新使用者用的DTO
     /// </summary>
-    public class UpdateShopUserDTO
+    public class UpdateShopUserDto
     {
         /// <summary>
         /// 使用者id

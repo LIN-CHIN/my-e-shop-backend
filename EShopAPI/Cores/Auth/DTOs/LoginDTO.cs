@@ -6,7 +6,7 @@ namespace EShopAPI.Cores.Auth.DTOs
     /// <summary>
     /// 登入DTO
     /// </summary>
-    public class LoginDTO
+    public class LoginDto
     {
         /// <summary>
         /// 使用者帳號

@@ -12,6 +12,6 @@ namespace EShopAPI.Cores.Auth.Services
         /// </summary>
         /// <param name="loginDTO">登入資訊</param>
         /// <returns></returns>
-        Task<LoginResponseDTO> LoginAsync(LoginDTO loginDTO);
+        Task<LoginResponseDto> LoginAsync(LoginDto loginDTO);
     }
 }
