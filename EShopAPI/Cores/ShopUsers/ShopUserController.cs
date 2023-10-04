@@ -90,7 +90,7 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update([FromBody] UpdateShopUserDto updateDto)
         {
-            await _shopUserService.UpdaeAsync(updateDto);
+            await _shopUserService.UpdateAsync(updateDto);
             return Ok(GenericResponse<string>.GetSuccess());
         }
 

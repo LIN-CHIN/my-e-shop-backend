@@ -40,7 +40,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
         /// </summary>
         /// <param name="updateDto">要編輯的使用者資料</param>
         /// <returns></returns>
-        Task UpdaeAsync(UpdateShopUserDto updateDto);
+        Task UpdateAsync(UpdateShopUserDto updateDto);
 
         /// <summary>
         /// 啟用/停用使用者
