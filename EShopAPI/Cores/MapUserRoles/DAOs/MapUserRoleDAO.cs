@@ -5,7 +5,7 @@ namespace EShopAPI.Cores.MapUserRoles.DAOs
     /// <summary>
     /// 使用者與角色關聯的 DAO
     /// </summary>
-    public class MapUserRoleDAO : IMapUserRoleDAO
+    public class MapUserRoleDao : IMapUserRoleDao
     {
         private readonly EShopContext _eShopContext;
 
@@ -13,7 +13,7 @@ namespace EShopAPI.Cores.MapUserRoles.DAOs
         /// Constructor
         /// </summary>
         /// <param name="eShopContext"></param>
-        public MapUserRoleDAO(EShopContext eShopContext) 
+        public MapUserRoleDao(EShopContext eShopContext) 
         {
             _eShopContext = eShopContext;
         }

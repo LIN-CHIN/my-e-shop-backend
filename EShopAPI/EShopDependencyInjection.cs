@@ -60,7 +60,7 @@ namespace EShopAPI
 
             //MapUserRoleServices
             services.AddScoped<IMapUserRoleService, MapUserRoleService>();
-            services.AddScoped<IMapUserRoleDAO, MapUserRoleDAO>();
+            services.AddScoped<IMapUserRoleDao, MapUserRoleDao>();
 
             //ShopPermissionService
             services.AddScoped<IShopPermissionService, ShopPermissionService>();

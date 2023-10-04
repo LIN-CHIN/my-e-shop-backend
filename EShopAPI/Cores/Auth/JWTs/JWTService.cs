@@ -55,7 +55,7 @@ namespace EShopAPI.Cores.Auth.JWTs
                     .Select(s => s.ShopAction!)
                     .ToList();
 
-            return GetToken(shopUser, AccessTokenExpireTime);
+            return GetToken(shopUser, AccessTokenExpireTime, shopActions);
         }
 
         ///<inheritdoc/>

@@ -7,7 +7,7 @@ namespace EShopAPI.Cores.Auth.JWTs
     /// </summary>
     public class JwtBasePayload
     {
-        // <summary>
+        /// <summary>
         /// JWT用戶
         /// </summary>
         [JsonPropertyName("sub")]
