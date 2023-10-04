@@ -10,9 +10,9 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         /// <summary>
         /// 取得使用者
         /// </summary>
-        /// <param name="queryDTO"></param>
+        /// <param name="queryDto"></param>
         /// <returns></returns>
-        IQueryable<ShopUser> Get(QueryShopUserDto queryDTO);
+        IQueryable<ShopUser> Get(QueryShopUserDto queryDto);
 
         /// <summary>
         /// 根據id取得使用者

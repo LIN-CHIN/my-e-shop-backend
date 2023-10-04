@@ -28,17 +28,17 @@ namespace EShopAPI.Cores.Auth
         /// <summary>
         /// 登入
         /// </summary>
-        /// <param name="loginDTO"></param>
+        /// <param name="loginDto"></param>
         /// <returns></returns>
         /// <response code="200">新增成功</response>
         /// <response code="500">新增失敗</response>
         [HttpPost("Login")]
         [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Login(LoginDto loginDTO) 
+        public async Task<IActionResult> Login(LoginDto loginDto) 
         {
             return Ok(GenericResponse<LoginResponseDto>.GetSuccess(
-                await _authenticationService.LoginAsync(loginDTO)));
+                await _authenticationService.LoginAsync(loginDto)));
         }
     }
 }

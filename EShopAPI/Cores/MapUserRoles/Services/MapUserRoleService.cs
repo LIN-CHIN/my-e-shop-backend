@@ -7,21 +7,21 @@ namespace EShopAPI.Cores.MapUserRoles.Services
     /// </summary>
     public class MapUserRoleService : IMapUserRoleService
     {
-        private readonly IMapUserRoleDao _mapUserRoleDAO;
+        private readonly IMapUserRoleDao _mapUserRoleDao;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="mapUserRoleDAO"></param>
-        public MapUserRoleService(IMapUserRoleDao mapUserRoleDAO) 
+        /// <param name="mapUserRoleDao"></param>
+        public MapUserRoleService(IMapUserRoleDao mapUserRoleDao) 
         {
-            _mapUserRoleDAO = mapUserRoleDAO;
+            _mapUserRoleDao = mapUserRoleDao;
         }
 
         ///<inheritdoc/>
         public IQueryable<MapUserRole> GetByUserId(long userId)
         {
-            return _mapUserRoleDAO.GetByUserId(userId);
+            return _mapUserRoleDao.GetByUserId(userId);
         }
     }
 }

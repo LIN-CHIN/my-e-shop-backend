@@ -27,8 +27,8 @@ namespace EShopAPI.Cores.ShopUsers
         /// <summary>
         /// 查詢所有使用者
         /// </summary>
-        /// <param name="pageDTO">分頁資訊</param>
-        /// <param name="queryDTO">要新增的使用者資訊</param>
+        /// <param name="pageDto">分頁資訊</param>
+        /// <param name="queryDto">要新增的使用者資訊</param>
         /// <returns></returns>
         /// <response code="200">查詢成功</response>
         /// <response code="500">查詢失敗</response>
@@ -36,13 +36,13 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(PaginationResponse<ShopUserDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public IActionResult Get(
-            [FromQuery] QueryPaginationDto pageDTO, 
-            [FromQuery] QueryShopUserDto queryDTO)
+            [FromQuery] QueryPaginationDto pageDto, 
+            [FromQuery] QueryShopUserDto queryDto)
         {
             return Ok(PaginationResponse<ShopUserDto?>.GetSuccess(
-                pageDTO.Page,
-                pageDTO.PageCount,
-                _shopUserService.Get(queryDTO).Select(user => ShopUserDto.Parse(user)
+                pageDto.Page,
+                pageDto.PageCount,
+                _shopUserService.Get(queryDto).Select(user => ShopUserDto.Parse(user)
             )));
         }
 
@@ -65,32 +65,32 @@ namespace EShopAPI.Cores.ShopUsers
         /// <summary>
         /// 新增使用者
         /// </summary>
-        /// <param name="insertDTO">要新增的使用者資訊</param>
+        /// <param name="insertDto">要新增的使用者資訊</param>
         /// <returns></returns>
         /// <response code="200">新增成功</response>
         /// <response code="500">新增失敗</response>
         [HttpPost]
         [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Insert([FromBody] InsertShopUserDto insertDTO) 
+        public async Task<IActionResult> Insert([FromBody] InsertShopUserDto insertDto) 
         {
             return Ok(GenericResponse<ShopUser>.GetSuccess(
-                await _shopUserService.InsertAsync(insertDTO)));
+                await _shopUserService.InsertAsync(insertDto)));
         }
 
         /// <summary>
         /// 編輯使用者
         /// </summary>
-        /// <param name="updateDTO">要編輯的使用者資訊</param>
+        /// <param name="updateDto">要編輯的使用者資訊</param>
         /// <returns></returns>
         /// <response code="200">編輯成功</response>
         /// <response code="500">編輯失敗</response>
         [HttpPut]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update([FromBody] UpdateShopUserDto updateDTO)
+        public async Task<IActionResult> Update([FromBody] UpdateShopUserDto updateDto)
         {
-            await _shopUserService.UpdaeAsync(updateDTO);
+            await _shopUserService.UpdaeAsync(updateDto);
             return Ok(GenericResponse<string>.GetSuccess());
         }
 

@@ -28,15 +28,15 @@ namespace EShopAPI.Cores.Auth.Services
         }
 
         ///<inheritdoc/>
-        public async Task<LoginResponseDto> LoginAsync(LoginDto loginDTO) 
+        public async Task<LoginResponseDto> LoginAsync(LoginDto loginDto) 
         {
-            ShopUser? shopUser = await _shopUserService.GetByNumberAsync(loginDTO.UserNumber);
+            ShopUser? shopUser = await _shopUserService.GetByNumberAsync(loginDto.UserNumber);
             if(shopUser == null) 
             {
                 throw new EShopException(ResponseCodeType.AccountAndPwdError, "帳號不存在");
             }
 
-            if (shopUser.Pwd != loginDTO.Pwd) 
+            if (shopUser.Pwd != loginDto.Pwd) 
             {
                 throw new EShopException(ResponseCodeType.AccountAndPwdError, "密碼不存在");
             }

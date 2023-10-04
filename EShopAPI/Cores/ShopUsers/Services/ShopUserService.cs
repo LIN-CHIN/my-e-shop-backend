@@ -10,66 +10,66 @@ namespace EShopAPI.Cores.ShopUsers.Services
     /// </summary>
     public class ShopUserService : IShopUserService
     {
-        private readonly IShopUserDao _shopUserDAO; 
+        private readonly IShopUserDao _shopUserDao; 
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="shopUserDAO"></param>
-        public ShopUserService(IShopUserDao shopUserDAO) 
+        /// <param name="shopUserDao"></param>
+        public ShopUserService(IShopUserDao shopUserDao) 
         {
-            _shopUserDAO = shopUserDAO;
+            _shopUserDao = shopUserDao;
         }
 
         ///<inheritdoc/>
-        public IQueryable<ShopUser> Get(QueryShopUserDto queryDTO)
+        public IQueryable<ShopUser> Get(QueryShopUserDto queryDto)
         {
-            return _shopUserDAO.Get(queryDTO);
+            return _shopUserDao.Get(queryDto);
         }
 
         ///<inheritdoc/>
         public Task<ShopUser?> GetByIdAsync(long id)
         {
-            return _shopUserDAO.GetByIdAsync(id);
+            return _shopUserDao.GetByIdAsync(id);
         }
 
         ///<inheritdoc/>
         public async Task<ShopUser?> GetByNumberAsync(string number)
         {
-            return await _shopUserDAO.GetByNumberAsync(number);
+            return await _shopUserDao.GetByNumberAsync(number);
         }
 
         ///<inheritdoc/>
-        public async Task<ShopUser> InsertAsync(InsertShopUserDto insertDTO)
+        public async Task<ShopUser> InsertAsync(InsertShopUserDto insertDto)
         {
-            ShopUser? shopUser = await _shopUserDAO.GetByNumberAsync(insertDTO.Number);
+            ShopUser? shopUser = await _shopUserDao.GetByNumberAsync(insertDto.Number);
             if (shopUser != null)
             {
                 throw new EShopException(ResponseCodeType.DuplicateData, "帳號已存在");
             }
 
-            return await _shopUserDAO.InsertAsync(insertDTO.ToEntity());
+            return await _shopUserDao.InsertAsync(insertDto.ToEntity());
         }
 
         ///<inheritdoc/>
-        public async Task UpdaeAsync(UpdateShopUserDto updateDTO)
+        public async Task UpdaeAsync(UpdateShopUserDto updateDto)
         {
-            ShopUser? shopUser = await _shopUserDAO.GetByIdAsync(updateDTO.Id);
+            ShopUser? shopUser = await _shopUserDao.GetByIdAsync(updateDto.Id);
 
             if(shopUser == null)
             {
                 throw new EShopException(
                     ResponseCodeType.RequestParameterError,
-                    $"找不到使用者id :{updateDTO.Id}");
+                    $"找不到使用者id :{updateDto.Id}");
             }
 
-            await _shopUserDAO.UpdaeAsync(updateDTO.SetEntity(shopUser));
+            await _shopUserDao.UpdaeAsync(updateDto.SetEntity(shopUser));
         }
 
         ///<inheritdoc/>
         public async Task EnableAsync(long id, bool isEnable)
         {
-            ShopUser? shopUser = await _shopUserDAO.GetByIdAsync(id);
+            ShopUser? shopUser = await _shopUserDao.GetByIdAsync(id);
 
             if (shopUser == null)
             {
@@ -79,7 +79,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
             }
 
             shopUser.IsEnable = isEnable;
-            await _shopUserDAO.UpdaeAsync(shopUser);
+            await _shopUserDao.UpdaeAsync(shopUser);
         }
     }
 }

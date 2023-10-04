@@ -24,26 +24,26 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         }
 
         ///<inheritdoc/>
-        public IQueryable<ShopUser> Get(QueryShopUserDto queryDTO)
+        public IQueryable<ShopUser> Get(QueryShopUserDto queryDto)
         {
             IQueryable<ShopUser> shopUsers = _eShopContext.ShopUsers;
 
-            if (!string.IsNullOrWhiteSpace(queryDTO.Number))
+            if (!string.IsNullOrWhiteSpace(queryDto.Number))
             {
                 shopUsers = shopUsers.Where(user =>
-                    EF.Functions.Like(user.Number, $"%{queryDTO.Number}%"));
+                    EF.Functions.Like(user.Number, $"%{queryDto.Number}%"));
             }
 
-            if (!string.IsNullOrWhiteSpace(queryDTO.Name))
+            if (!string.IsNullOrWhiteSpace(queryDto.Name))
             {
                 shopUsers = shopUsers.Where(user =>
-                    EF.Functions.Like(user.Name, $"%{queryDTO.Name}%"));
+                    EF.Functions.Like(user.Name, $"%{queryDto.Name}%"));
             }
 
-            if (!string.IsNullOrWhiteSpace(queryDTO.Email))
+            if (!string.IsNullOrWhiteSpace(queryDto.Email))
             {
                 shopUsers = shopUsers.Where(user =>
-                    EF.Functions.Like(user.Email!, $"%{queryDTO.Email}%"));
+                    EF.Functions.Like(user.Email!, $"%{queryDto.Email}%"));
             }
 
             return shopUsers;

@@ -10,9 +10,9 @@ namespace EShopAPI.Cores.ShopUsers.Services
         /// <summary>
         /// 取得使用者
         /// </summary>
-        /// <param name="queryDTO"></param>
+        /// <param name="queryDto"></param>
         /// <returns></returns>
-        IQueryable<ShopUser> Get(QueryShopUserDto queryDTO);
+        IQueryable<ShopUser> Get(QueryShopUserDto queryDto);
 
         /// <summary>
         /// 根據id取得使用者
@@ -31,16 +31,16 @@ namespace EShopAPI.Cores.ShopUsers.Services
         /// <summary>
         /// 新增使用者
         /// </summary>
-        /// <param name="insertDTO">要新增的使用者資料</param>
+        /// <param name="insertDto">要新增的使用者資料</param>
         /// <returns></returns>
-        Task<ShopUser> InsertAsync(InsertShopUserDto insertDTO);
+        Task<ShopUser> InsertAsync(InsertShopUserDto insertDto);
 
         /// <summary>
         /// 編輯使用者
         /// </summary>
-        /// <param name="updateDTO">要編輯的使用者資料</param>
+        /// <param name="updateDto">要編輯的使用者資料</param>
         /// <returns></returns>
-        Task UpdaeAsync(UpdateShopUserDto updateDTO);
+        Task UpdaeAsync(UpdateShopUserDto updateDto);
 
         /// <summary>
         /// 啟用/停用使用者
