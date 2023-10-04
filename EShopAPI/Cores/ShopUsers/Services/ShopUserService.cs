@@ -47,10 +47,10 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
-        public async Task UpdateAsync(UpdateShopUserDto updateDTO)
+        public async Task UpdateAsync(UpdateShopUserDto updateDto)
         {
-            ShopUser? shopUser = await _shopUserDao.ThrowNotFindByIdAsync(updateDTO.Id);
-            await _shopUserDao.UpdateAsync(updateDTO.SetEntity(shopUser));
+            ShopUser? shopUser = await _shopUserDao.ThrowNotFindByIdAsync(updateDto.Id);
+            await _shopUserDao.UpdateAsync(updateDto.SetEntity(shopUser));
         }
 
         ///<inheritdoc/>
