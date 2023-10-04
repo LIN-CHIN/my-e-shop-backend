@@ -52,7 +52,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
-        public async Task UpdaeAsync(UpdateShopUserDto updateDTO)
+        public async Task UpdateAsync(UpdateShopUserDto updateDTO)
         {
             ShopUser? shopUser = await _shopUserDAO.GetByIdAsync(updateDTO.Id);
 
@@ -63,7 +63,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
                     $"找不到使用者id :{updateDTO.Id}");
             }
 
-            await _shopUserDAO.UpdaeAsync(updateDTO.SetEntity(shopUser));
+            await _shopUserDAO.UpdateAsync(updateDTO.SetEntity(shopUser));
         }
 
         ///<inheritdoc/>
@@ -79,7 +79,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
             }
 
             shopUser.IsEnable = isEnable;
-            await _shopUserDAO.UpdaeAsync(shopUser);
+            await _shopUserDAO.UpdateAsync(shopUser);
         }
     }
 }

@@ -40,6 +40,6 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         /// </summary>
         /// <param name="shopUser">要編輯的使用者實體</param>
         /// <returns></returns>
-        Task UpdaeAsync(ShopUser shopUser);
+        Task UpdateAsync(ShopUser shopUser);
     }
 }

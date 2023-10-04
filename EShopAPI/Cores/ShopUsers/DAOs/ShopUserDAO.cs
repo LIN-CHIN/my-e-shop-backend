@@ -74,7 +74,7 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         }
 
         ///<inheritdoc/>
-        public async Task UpdaeAsync(ShopUser shopUser)
+        public async Task UpdateAsync(ShopUser shopUser)
         {
             _eShopContext.ShopUsers.Update(shopUser);
             await _eShopContext.SaveChangesAsync();
