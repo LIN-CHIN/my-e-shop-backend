@@ -3,7 +3,7 @@
     /// <summary>
     /// 使用者與角色關聯的 DAO Interface
     /// </summary>
-    public interface IMapUserRoleDAO
+    public interface IMapUserRoleDao
     {
         /// <summary>
         /// 根據使用者id取得使用者與角色的關聯清單

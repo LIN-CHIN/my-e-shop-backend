@@ -7,13 +7,13 @@ namespace EShopAPI.Cores.MapUserRoles.Services
     /// </summary>
     public class MapUserRoleService : IMapUserRoleService
     {
-        private readonly IMapUserRoleDAO _mapUserRoleDAO;
+        private readonly IMapUserRoleDao _mapUserRoleDAO;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="mapUserRoleDAO"></param>
-        public MapUserRoleService(IMapUserRoleDAO mapUserRoleDAO) 
+        public MapUserRoleService(IMapUserRoleDao mapUserRoleDAO) 
         {
             _mapUserRoleDAO = mapUserRoleDAO;
         }
