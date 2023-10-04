@@ -1,5 +1,7 @@
 ﻿using EShopAPI.Context;
 using EShopAPI.Cores.ShopUsers.DTOs;
+using EShopCores.Errors;
+using EShopCores.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI.Cores.ShopUsers.DAOs
@@ -63,6 +65,36 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
             return await _eShopContext.ShopUsers
                 .Where(user => user.Number == number)
                 .SingleOrDefaultAsync();
+        }
+
+        ///<inheritdoc/>
+        public async Task ThrowNotFindByNumberAsync(string number)
+        {
+            ShopUser? shopUser = await _eShopContext.ShopUsers
+                .Where(user => user.Number == number)
+                .SingleOrDefaultAsync();
+
+            if (shopUser == null)
+            {
+                throw new EShopException(ResponseCodeType.DuplicateData, "帳號已存在");
+            }
+        }
+
+        ///<inheritdoc/>
+        public async Task<ShopUser> ThrowNotFindByIdAsync(long id)
+        {
+            ShopUser? shopUser = await _eShopContext.ShopUsers
+                .Where(user => user.Id == id)
+                .SingleOrDefaultAsync();
+
+            if (shopUser == null)
+            {
+                throw new EShopException(
+                    ResponseCodeType.RequestParameterError,
+                    $"找不到使用者id :{id}");
+            }
+
+            return shopUser;
         }
 
         ///<inheritdoc/>
