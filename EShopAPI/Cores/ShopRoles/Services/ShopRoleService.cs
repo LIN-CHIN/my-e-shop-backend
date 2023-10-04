@@ -50,16 +50,8 @@ namespace EShopAPI.Cores.ShopRoles.Services
         public async Task EnableAsync(long id, bool isEnable)
         {
             ShopRole shopRole = await _shopRoleDao.ThrowNotFindByIdAsync(id);
-            if (isEnable)
-            {
-                shopRole.IsEnable = true;
-                await _shopRoleDao.UpdateAsync(shopRole);
-            }
-            else 
-            {
-                shopRole.IsEnable = false;
-                await _shopRoleDao.UpdateAsync(shopRole);
-            }
+            shopRole.IsEnable = isEnable;
+            await _shopRoleDao.UpdateAsync(shopRole);
         }
     }
 }
