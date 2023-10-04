@@ -1,4 +1,7 @@
 ﻿using EShopAPI.Context;
+using EShopAPI.Cores.ShopRoles.DTOs;
+using EShopCores.Errors;
+using EShopCores.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI.Cores.ShopRoles.DAOs
@@ -23,11 +26,66 @@ namespace EShopAPI.Cores.ShopRoles.DAOs
         }
 
         ///<inheritdoc/>
-        public async Task<ShopRole?> GetById(long id)
+        public IQueryable<ShopRole> Get(QueryShopRoleDto queryDto)
+        {
+            IQueryable<ShopRole> shopRoles = _eShopContext.ShopRoles;
+
+            if (!string.IsNullOrWhiteSpace(queryDto.Number)) 
+            {
+                shopRoles = shopRoles.Where(role => EF.Functions.Like(role.Number, $"%{queryDto.Number}%"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryDto.Name))
+            {
+                shopRoles = shopRoles.Where(role => EF.Functions.Like(role.Name, $"%{queryDto.Name}%"));
+            }
+
+            if (queryDto.IsEnable != null) 
+            {
+                shopRoles = shopRoles.Where(role => role.IsEnable == queryDto.IsEnable);
+            }
+
+            return shopRoles;
+        }
+
+        ///<inheritdoc/>
+        public async Task<ShopRole?> GetByIdAsync(long id)
         {
             return await _eShopContext.ShopRoles
                 .Where(role => role.Id == id)
                 .SingleOrDefaultAsync();
+        }
+
+        ///<inheritdoc/>
+        public async Task<ShopRole> ThrowNotFindByIdAsync(long id)
+        {
+            ShopRole? shopRole = await _eShopContext.ShopRoles
+                .Where(role => role.Id == id)
+                .SingleOrDefaultAsync();
+
+            if (shopRole == null) 
+            {
+                throw new EShopException(
+                    ResponseCodeType.RequestParameterError,
+                    $"找不到該id: {id}");
+            }
+
+            return shopRole;
+        }
+
+        ///<inheritdoc/>
+        public async Task<ShopRole> InsertAsync(ShopRole shopRole)
+        {
+            _eShopContext.Add(shopRole);
+            await _eShopContext.SaveChangesAsync();
+            return shopRole;
+        }
+
+        ///<inheritdoc/>
+        public async Task UpdateAsync(ShopRole shopRole)
+        {
+            _eShopContext.Update(shopRole);
+            await _eShopContext.SaveChangesAsync();
         }
     }
 }
