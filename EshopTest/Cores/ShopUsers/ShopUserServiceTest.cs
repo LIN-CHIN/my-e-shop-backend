@@ -5,10 +5,7 @@ using EShopAPI.Cores.ShopUsers.Services;
 using EShopCores.Errors;
 using EShopCores.Responses;
 using Moq;
-using System.Net;
-using System.Numerics;
 using System.Text.Json;
-using System.Xml.Linq;
 
 namespace EshopTest.Cores.ShopUsers
 {
@@ -30,6 +27,15 @@ namespace EshopTest.Cores.ShopUsers
                     Number = "Test001",
                     Name = "Test",
                     Pwd = "1234",
+                    Address = "新增地址01",
+                    Email = "新增email01",
+                    Phone = "0912345678",
+                    IsEnable = true,
+                    Remarks = "新增備註01",
+                    Language = new Dictionary<string, string>()
+                    {
+                        { "insert01", "value01"}
+                    },
                     CreateUser = "shopAdmin"
                 },
                 new ShopUser()
@@ -38,6 +44,17 @@ namespace EshopTest.Cores.ShopUsers
                     Number = "Test001",
                     Name = "Test",
                     Pwd = "1234",
+                    Address = "新增地址01",
+                    Email = "新增email01",
+                    Phone = "0912345678",
+                    IsEnable = true,
+                    Remarks = "新增備註01",
+                    Language = JsonSerializer.SerializeToDocument(
+                        new Dictionary<string, string>()
+                        {
+                            { "insert01", "value01"}
+                        }
+                    ),
                     CreateUser = "shopAdmin"
                 }
             },
@@ -48,6 +65,15 @@ namespace EshopTest.Cores.ShopUsers
                     Number = "Test002",
                     Name = "Test02",
                     Pwd = "5678",
+                    Address = "新增地址02",
+                    Email = "新增email02",
+                    Phone = "0912345678",
+                    IsEnable = false,
+                    Remarks = "新增備註02",
+                    Language = new Dictionary<string, string>()
+                    {
+                        { "insert02", "value02"}
+                    },
                     CreateUser = "shopAdmin"
                 },
                 new ShopUser()
@@ -56,6 +82,17 @@ namespace EshopTest.Cores.ShopUsers
                     Number = "Test002",
                     Name = "Test02",
                     Pwd = "5678",
+                    Address = "新增地址02",
+                    Email = "新增email02",
+                    Phone = "0912345678",
+                    IsEnable = false,
+                    Remarks = "新增備註02",
+                    Language = JsonSerializer.SerializeToDocument(
+                        new Dictionary<string, string>()
+                        {
+                            { "insert02", "value02"}
+                        }
+                    ),
                     CreateUser = "shopAdmin"
                 }
             }
