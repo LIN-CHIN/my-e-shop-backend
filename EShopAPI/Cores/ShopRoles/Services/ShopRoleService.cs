@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.ShopRoles.DAOs;
+﻿using EShopAPI.Context;
+using EShopAPI.Cores.ShopRoles.DAOs;
 using EShopAPI.Cores.ShopRoles.DTOs;
 using EShopCores.Errors;
 using EShopCores.Responses;
@@ -34,6 +35,21 @@ namespace EShopAPI.Cores.ShopRoles.Services
         }
 
         ///<inheritdoc/>
+        public async Task<ShopRole> ThrowNotFindByIdAsync(long id)
+        {
+            ShopRole? shopRole = await _shopRoleDao.GetByIdAsync(id);
+
+            if (shopRole == null)
+            {
+                throw new EShopException(
+                    ResponseCodeType.RequestParameterError,
+                    $"找不到該id: {id}");
+            }
+
+            return shopRole;
+        }
+
+        ///<inheritdoc/>
         public async Task<ShopRole> InsertAsync(InsertShopRoleDto insertDto)
         {
             return await _shopRoleDao.InsertAsync(insertDto.ToEntity());
@@ -42,14 +58,14 @@ namespace EShopAPI.Cores.ShopRoles.Services
         ///<inheritdoc/>
         public async Task UpdateAsync(UpdateShopRoleDto updateDto)
         {
-            ShopRole shopRole = await _shopRoleDao.ThrowNotFindByIdAsync(updateDto.Id);
+            ShopRole shopRole = await ThrowNotFindByIdAsync(updateDto.Id);
             await _shopRoleDao.UpdateAsync(updateDto.SetEntity(shopRole));
         }
 
         ///<inheritdoc/>
         public async Task EnableAsync(long id, bool isEnable)
         {
-            ShopRole shopRole = await _shopRoleDao.ThrowNotFindByIdAsync(id);
+            ShopRole shopRole = await ThrowNotFindByIdAsync(id);
             shopRole.IsEnable = isEnable;
             await _shopRoleDao.UpdateAsync(shopRole);
         }

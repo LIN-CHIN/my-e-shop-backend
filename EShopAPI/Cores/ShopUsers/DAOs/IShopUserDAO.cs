@@ -30,22 +30,6 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         Task<ShopUser?> GetByNumberAsync(string number);
 
         /// <summary>
-        /// 根據number取得使用者，如果找到number 就會直接throw exception
-        /// </summary>
-        /// <param name="number">使用者的代碼/帳號</param>
-        /// <exception cref="EShopException">Number已存在</exception>
-        /// <returns></returns>
-        Task ThrowNotFindByNumberAsync(string number);
-
-        /// <summary>
-        /// 根據id取得使用者，如果沒找到id 就會直接throw exception
-        /// </summary>
-        /// <param name="id">使用者的id</param>
-        /// <exception cref="EShopException">找不到該id</exception>
-        /// <returns></returns>
-        Task<ShopUser> ThrowNotFindByIdAsync(long id);
-
-        /// <summary>
         /// 新增使用者
         /// </summary>
         /// <param name="shopUser">要新增的使用者實體</param>

@@ -57,23 +57,6 @@ namespace EShopAPI.Cores.ShopRoles.DAOs
         }
 
         ///<inheritdoc/>
-        public async Task<ShopRole> ThrowNotFindByIdAsync(long id)
-        {
-            ShopRole? shopRole = await _eShopContext.ShopRoles
-                .Where(role => role.Id == id)
-                .SingleOrDefaultAsync();
-
-            if (shopRole == null) 
-            {
-                throw new EShopException(
-                    ResponseCodeType.RequestParameterError,
-                    $"找不到該id: {id}");
-            }
-
-            return shopRole;
-        }
-
-        ///<inheritdoc/>
         public async Task<ShopRole> InsertAsync(ShopRole shopRole)
         {
             _eShopContext.Add(shopRole);
