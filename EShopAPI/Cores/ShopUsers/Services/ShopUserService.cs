@@ -41,7 +41,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
-        public async Task ThrowNotFindByNumberAsync(string number)
+        public async Task ThrowExistByNumberAsync(string number)
         {
             ShopUser? shopUser = await _shopUserDao.GetByNumberAsync(number);
 
@@ -69,7 +69,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
         ///<inheritdoc/>
         public async Task<ShopUser> InsertAsync(InsertShopUserDto insertDto)
         {
-            await ThrowNotFindByNumberAsync(insertDto.Number);
+            await ThrowExistByNumberAsync(insertDto.Number);
             return await _shopUserDao.InsertAsync(insertDto.ToEntity());
         }
 

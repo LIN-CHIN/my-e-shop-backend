@@ -35,7 +35,7 @@ namespace EShopAPI.Cores.ShopUsers.Services
         /// <param name="number">使用者的代碼/帳號</param>
         /// <exception cref="EShopException">Number已存在</exception>
         /// <returns></returns>
-        Task ThrowNotFindByNumberAsync(string number);
+        Task ThrowExistByNumberAsync(string number);
 
         /// <summary>
         /// 根據id取得使用者，如果沒找到id 就會直接throw exception
