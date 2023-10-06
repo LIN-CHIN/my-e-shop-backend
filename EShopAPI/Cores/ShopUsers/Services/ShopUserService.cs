@@ -29,9 +29,9 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
-        public Task<ShopUser?> GetByIdAsync(long id)
+        public async Task<ShopUser?> GetByIdAsync(long id)
         {
-            return _shopUserDao.GetByIdAsync(id);
+            return await _shopUserDao.GetByIdAsync(id);
         }
 
         ///<inheritdoc/>
