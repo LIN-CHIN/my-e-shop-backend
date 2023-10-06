@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.ShopUsers.DAOs;
+﻿using EShopAPI.Context;
+using EShopAPI.Cores.ShopUsers.DAOs;
 using EShopAPI.Cores.ShopUsers.DTOs;
 using EShopCores.Errors;
 using EShopCores.Responses;
@@ -28,9 +29,9 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
-        public Task<ShopUser?> GetByIdAsync(long id)
+        public async Task<ShopUser?> GetByIdAsync(long id)
         {
-            return _shopUserDao.GetByIdAsync(id);
+            return await _shopUserDao.GetByIdAsync(id);
         }
 
         ///<inheritdoc/>
@@ -40,23 +41,49 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
+        public async Task ThrowExistByNumberAsync(string number)
+        {
+            ShopUser? shopUser = await _shopUserDao.GetByNumberAsync(number);
+
+            if (shopUser != null)
+            {
+                throw new EShopException(ResponseCodeType.DuplicateData, "帳號已存在");
+            }
+        }
+
+        ///<inheritdoc/>
+        public async Task<ShopUser> ThrowNotFindByIdAsync(long id)
+        {
+            ShopUser? shopUser = await _shopUserDao.GetByIdAsync(id);
+
+            if (shopUser == null)
+            {
+                throw new EShopException(
+                    ResponseCodeType.RequestParameterError,
+                    $"找不到使用者id :{id}");
+            }
+
+            return shopUser;
+        }
+
+        ///<inheritdoc/>
         public async Task<ShopUser> InsertAsync(InsertShopUserDto insertDto)
         {
-            await _shopUserDao.ThrowNotFindByNumberAsync(insertDto.Number);
+            await ThrowExistByNumberAsync(insertDto.Number);
             return await _shopUserDao.InsertAsync(insertDto.ToEntity());
         }
 
         ///<inheritdoc/>
         public async Task UpdateAsync(UpdateShopUserDto updateDto)
         {
-            ShopUser? shopUser = await _shopUserDao.ThrowNotFindByIdAsync(updateDto.Id);
+            ShopUser? shopUser = await ThrowNotFindByIdAsync(updateDto.Id);
             await _shopUserDao.UpdateAsync(updateDto.SetEntity(shopUser));
         }
 
         ///<inheritdoc/>
         public async Task EnableAsync(long id, bool isEnable)
         {
-            ShopUser? shopUser = await _shopUserDao.ThrowNotFindByIdAsync(id);
+            ShopUser? shopUser = await ThrowNotFindByIdAsync(id);
             shopUser.IsEnable = isEnable;
             await _shopUserDao.UpdateAsync(shopUser);
         }

@@ -68,36 +68,6 @@ namespace EShopAPI.Cores.ShopUsers.DAOs
         }
 
         ///<inheritdoc/>
-        public async Task ThrowNotFindByNumberAsync(string number)
-        {
-            ShopUser? shopUser = await _eShopContext.ShopUsers
-                .Where(user => user.Number == number)
-                .SingleOrDefaultAsync();
-
-            if (shopUser == null)
-            {
-                throw new EShopException(ResponseCodeType.DuplicateData, "帳號已存在");
-            }
-        }
-
-        ///<inheritdoc/>
-        public async Task<ShopUser> ThrowNotFindByIdAsync(long id)
-        {
-            ShopUser? shopUser = await _eShopContext.ShopUsers
-                .Where(user => user.Id == id)
-                .SingleOrDefaultAsync();
-
-            if (shopUser == null)
-            {
-                throw new EShopException(
-                    ResponseCodeType.RequestParameterError,
-                    $"找不到使用者id :{id}");
-            }
-
-            return shopUser;
-        }
-
-        ///<inheritdoc/>
         public async Task<ShopUser> InsertAsync(ShopUser shopUser)
         {
             _eShopContext.ShopUsers.Add(shopUser);

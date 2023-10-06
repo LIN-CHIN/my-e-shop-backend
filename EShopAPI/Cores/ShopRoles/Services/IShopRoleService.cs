@@ -1,4 +1,5 @@
 ﻿using EShopAPI.Cores.ShopRoles.DTOs;
+using EShopCores.Errors;
 
 namespace EShopAPI.Cores.ShopRoles.Services
 {
@@ -20,6 +21,22 @@ namespace EShopAPI.Cores.ShopRoles.Services
         /// <param name="id">角色id</param>
         /// <returns></returns>
         Task<ShopRole?> GetByIdAsync(long id);
+
+        /// <summary>
+        /// 根據id取得角色，但若找不到該id會直接throw exception
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="EShopException">找不到id</exception>
+        Task<ShopRole> ThrowNotFindByIdAsync(long id);
+
+        /// <summary>
+        /// 根據number取得角色，如果找到number 就會直接throw exception
+        /// </summary>
+        /// <param name="number">角色代碼</param>
+        /// <exception cref="EShopException">Number已存在</exception>
+        /// <returns></returns>
+        Task ThrowExistByNumberAsync(string number);
 
         /// <summary>
         /// 新增角色

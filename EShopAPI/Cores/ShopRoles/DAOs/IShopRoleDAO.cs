@@ -23,12 +23,11 @@ namespace EShopAPI.Cores.ShopRoles.DAOs
         Task<ShopRole?> GetByIdAsync(long id);
 
         /// <summary>
-        /// 根據id取得角色，但若找不到該id會直接throw exception
+        /// 根據number取得角色
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="number"></param>
         /// <returns></returns>
-        /// <exception cref="EShopException">找不到id</exception>
-        Task<ShopRole> ThrowNotFindByIdAsync(long id);
+        Task<ShopRole?> GetByNumberAsync(string number);
 
         /// <summary>
         /// 新增角色
