@@ -1,6 +1,7 @@
 ﻿using EShopAPI.Context;
 using EShopAPI.Cores.ShopRoles.DAOs;
 using EShopAPI.Cores.ShopRoles.DTOs;
+using EShopAPI.Cores.ShopUsers;
 using EShopCores.Errors;
 using EShopCores.Responses;
 
@@ -50,8 +51,20 @@ namespace EShopAPI.Cores.ShopRoles.Services
         }
 
         ///<inheritdoc/>
+        public async Task ThrowExistByNumberAsync(string number)
+        {
+            ShopRole? shopRole = await _shopRoleDao.GetByNumberAsync(number);
+
+            if (shopRole != null)
+            {
+                throw new EShopException(ResponseCodeType.DuplicateData, "帳號已存在");
+            }
+        }
+
+        ///<inheritdoc/>
         public async Task<ShopRole> InsertAsync(InsertShopRoleDto insertDto)
         {
+            await ThrowExistByNumberAsync(insertDto.Number);
             return await _shopRoleDao.InsertAsync(insertDto.ToEntity());
         }
 

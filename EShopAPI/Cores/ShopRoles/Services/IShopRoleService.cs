@@ -31,6 +31,14 @@ namespace EShopAPI.Cores.ShopRoles.Services
         Task<ShopRole> ThrowNotFindByIdAsync(long id);
 
         /// <summary>
+        /// 根據number取得角色，如果找到number 就會直接throw exception
+        /// </summary>
+        /// <param name="number">角色代碼</param>
+        /// <exception cref="EShopException">Number已存在</exception>
+        /// <returns></returns>
+        Task ThrowExistByNumberAsync(string number);
+
+        /// <summary>
         /// 新增角色
         /// </summary>
         /// <param name="insertDto">新增用的DTO</param>

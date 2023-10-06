@@ -23,6 +23,13 @@ namespace EShopAPI.Cores.ShopRoles.DAOs
         Task<ShopRole?> GetByIdAsync(long id);
 
         /// <summary>
+        /// 根據number取得角色
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        Task<ShopRole?> GetByNumberAsync(string number);
+
+        /// <summary>
         /// 新增角色
         /// </summary>
         /// <param name="shopRole">要新增的角色實體</param>

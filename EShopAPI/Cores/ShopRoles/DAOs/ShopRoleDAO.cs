@@ -57,6 +57,14 @@ namespace EShopAPI.Cores.ShopRoles.DAOs
         }
 
         ///<inheritdoc/>
+        public async Task<ShopRole?> GetByNumberAsync(string number)
+        {
+            return await _eShopContext.ShopRoles
+                 .Where(role => role.Number == number)
+                 .SingleOrDefaultAsync();
+        }
+
+        ///<inheritdoc/>
         public async Task<ShopRole> InsertAsync(ShopRole shopRole)
         {
             _eShopContext.Add(shopRole);
