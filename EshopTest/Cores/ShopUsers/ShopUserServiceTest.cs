@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.ShopUsers;
+﻿using EShopAPI.Cores.ShopRoles;
+using EShopAPI.Cores.ShopUsers;
 using EShopAPI.Cores.ShopUsers.DAOs;
 using EShopAPI.Cores.ShopUsers.DTOs;
 using EShopAPI.Cores.ShopUsers.Services;
@@ -172,6 +173,102 @@ namespace EshopTest.Cores.ShopUsers
             }
         };
 
+        private static readonly object[] _enableCases =
+        {
+            new object[]
+            {
+                new ShopUser()
+                {
+                    Id = 1,
+                    Number = "Test001",
+                    Name = "Test",
+                    Pwd = "1234",
+                    Address = "新增地址01",
+                    Email = "新增email01",
+                    Phone = "0912345678",
+                    IsEnable = false,
+                    Remarks = "新增備註01",
+                    Language = JsonSerializer.SerializeToDocument(
+                        new Dictionary<string, string>()
+                        {
+                            { "insert01", "value01"}
+                        }
+                    ),
+                    CreateUser = "shopAdmin"
+                }
+            },
+            new object[]
+            {
+                new ShopUser()
+                {
+                    Id = 2,
+                    Number = "Test002",
+                    Name = "Test",
+                    Pwd = "1234",
+                    Address = "新增地址02",
+                    Email = "新增email02",
+                    Phone = "0912345678",
+                    IsEnable = false,
+                    Remarks = "新增備註02",
+                    Language = JsonSerializer.SerializeToDocument(
+                        new Dictionary<string, string>()
+                        {
+                            { "insert02", "value02"}
+                        }
+                    ),
+                    CreateUser = "shopAdmin"
+                }
+            }
+        };
+
+        private static readonly object[] _disableCases =
+        {
+            new object[]
+            {
+                new ShopUser()
+                {
+                    Id = 1,
+                    Number = "Test001",
+                    Name = "Test",
+                    Pwd = "1234",
+                    Address = "新增地址01",
+                    Email = "新增email01",
+                    Phone = "0912345678",
+                    IsEnable = true,
+                    Remarks = "新增備註01",
+                    Language = JsonSerializer.SerializeToDocument(
+                        new Dictionary<string, string>()
+                        {
+                            { "insert01", "value01"}
+                        }
+                    ),
+                    CreateUser = "shopAdmin"
+                }
+            },
+            new object[]
+            {
+                new ShopUser()
+                {
+                    Id = 2,
+                    Number = "Test002",
+                    Name = "Test",
+                    Pwd = "1234",
+                    Address = "新增地址02",
+                    Email = "新增email02",
+                    Phone = "0912345678",
+                    IsEnable = true,
+                    Remarks = "新增備註02",
+                    Language = JsonSerializer.SerializeToDocument(
+                        new Dictionary<string, string>()
+                        {
+                            { "insert02", "value02"}
+                        }
+                    ),
+                    CreateUser = "shopAdmin"
+                }
+            }
+        };
+
         /// <summary>
         /// Setup 
         /// </summary>
@@ -298,6 +395,66 @@ namespace EshopTest.Cores.ShopUsers
                 await _shopUserService.ThrowNotFindByIdAsync(It.IsAny<long>()));
 
             Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試啟用角色
+        /// </summary>
+        /// <param name="shopRole">根據id取得的使用者實體</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_enableCases))]
+        public async Task TestEnableAsync(ShopUser shopUser)
+        {
+            bool isPass = false;
+
+            _mockShopUserDao
+                .Setup(x => x.GetByIdAsync(shopUser.Id))
+                .ReturnsAsync(shopUser);
+
+            _mockShopUserDao
+                .Setup(x => x.UpdateAsync(shopUser))
+                .Callback<ShopUser>(inputEntity =>
+                {
+                    if (inputEntity.IsEnable == true)
+                    {
+                        isPass = true;
+                    }
+                })
+                .Returns(Task.FromResult(false));
+
+            await _shopUserService.EnableAsync(shopUser.Id, true);
+
+            Assert.That(isPass, Is.True);
+        }
+
+        /// <summary>
+        /// 測試停用角色
+        /// </summary>
+        /// <param name="shopUser">根據id取得的使用者實體</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_disableCases))]
+        public async Task TestDisableAsync(ShopUser shopUser)
+        {
+            bool isPass = false;
+
+            _mockShopUserDao
+                .Setup(x => x.GetByIdAsync(shopUser.Id))
+                .ReturnsAsync(shopUser);
+
+            _mockShopUserDao
+                .Setup(x => x.UpdateAsync(shopUser))
+                .Callback<ShopUser>(inputEntity =>
+                {
+                    if (inputEntity.IsEnable == false)
+                    {
+                        isPass = true;
+                    }
+                })
+                .Returns(Task.FromResult(false));
+
+            await _shopUserService.EnableAsync(shopUser.Id, false);
+
+            Assert.That(isPass, Is.True);
         }
     }
 }
