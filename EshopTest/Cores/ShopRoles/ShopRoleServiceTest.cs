@@ -147,7 +147,7 @@ namespace EshopTest.Cores.ShopRoles
             }
         };
 
-        private static readonly object[] _isEnableCases =
+        private static readonly object[] _enableCases =
         {
             new object[]
             {
@@ -158,13 +158,43 @@ namespace EshopTest.Cores.ShopRoles
                     Name = "角色01",
                     IsEnable = false,
                     CreateUser = "shopAdmin",
-                    Remarks = "新增備註01",
-                    Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
-                        {
-                            { "insert01", "value01"}
-                        }
-                    ),
+                }
+            },
+            new object[]
+            {
+                new ShopRole()
+                {
+                    Id = 2,
+                    Number = "role02",
+                    Name = "角色02",
+                    IsEnable = false,
+                    CreateUser = "shopAdmin",
+                }
+            }
+        };
+
+        private static readonly object[] _disableCases =
+        {
+            new object[]
+            {
+                new ShopRole()
+                {
+                    Id = 1,
+                    Number = "role01",
+                    Name = "角色01",
+                    IsEnable = true,
+                    CreateUser = "shopAdmin",
+                }
+            },
+            new object[]
+            {
+                new ShopRole()
+                {
+                    Id = 2,
+                    Number = "role02",
+                    Name = "角色02",
+                    IsEnable = true,
+                    CreateUser = "shopAdmin",
                 }
             }
         };
@@ -286,7 +316,7 @@ namespace EshopTest.Cores.ShopRoles
         /// </summary>
         /// <param name="shopRole">根據id取得的角色實體</param>
         /// <returns></returns>
-        [TestCaseSource(nameof(_isEnableCases))]
+        [TestCaseSource(nameof(_enableCases))]
         public async Task TestEnableAsync(ShopRole shopRole) 
         {
             bool isPass = false; 
@@ -316,7 +346,7 @@ namespace EshopTest.Cores.ShopRoles
         /// </summary>
         /// <param name="shopRole">根據id取得的角色實體</param>
         /// <returns></returns>
-        [TestCaseSource(nameof(_isEnableCases))]
+        [TestCaseSource(nameof(_disableCases))]
         public async Task TestDisableAsync(ShopRole shopRole)
         {
             bool isPass = false;
