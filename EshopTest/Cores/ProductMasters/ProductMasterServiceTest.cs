@@ -5,6 +5,7 @@ using EShopAPI.Cores.ProductMasters.Json;
 using EShopAPI.Cores.ProductMasters.Services;
 using EShopCores.Enums;
 using EShopCores.Errors;
+using EShopCores.Extensions;
 using EShopCores.Json;
 using EShopCores.Responses;
 using Moq;
@@ -386,6 +387,7 @@ namespace EshopTest.Cores.ProductMasters
                 {
                     Id = 1,
                     IsEnable = false,
+                    UpdateDate = null
                 }
             },
             new object[]
@@ -394,6 +396,7 @@ namespace EshopTest.Cores.ProductMasters
                 {
                     Id = 2,
                     IsEnable = false,
+                    UpdateDate = null
                 }
             },
             new object[]
@@ -402,6 +405,7 @@ namespace EshopTest.Cores.ProductMasters
                 {
                     Id = 3,
                     IsEnable = false,
+                    UpdateDate = null
                 }
             }
         };
@@ -414,6 +418,7 @@ namespace EshopTest.Cores.ProductMasters
                 {
                     Id = 1,
                     IsEnable = true,
+                    UpdateDate = null
                 }
             },
             new object[]
@@ -422,6 +427,7 @@ namespace EshopTest.Cores.ProductMasters
                 {
                     Id = 2,
                     IsEnable = true,
+                    UpdateDate = null
                 }
             },
             new object[]
@@ -430,6 +436,7 @@ namespace EshopTest.Cores.ProductMasters
                 {
                     Id = 3,
                     IsEnable = true,
+                    UpdateDate = null
                 }
             }
         };
@@ -626,6 +633,7 @@ namespace EshopTest.Cores.ProductMasters
                 .Callback<ProductMaster>(inputParams =>
                 {
                     if (inputParams.Id == productMaster.Id &&
+                        inputParams.UpdateDate is not null &&
                         inputParams.IsEnable)
                     {
                         isPass = true;
@@ -686,6 +694,7 @@ namespace EshopTest.Cores.ProductMasters
                 .Callback<ProductMaster>(inputParams =>
                 {
                     if (inputParams.Id == productMaster.Id &&
+                        inputParams.UpdateDate is not null &&
                         !inputParams.IsEnable)
                     {
                         isPass = true;

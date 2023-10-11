@@ -2,6 +2,7 @@
 using EShopAPI.Cores.ProductMasters.DTOs;
 using EShopAPI.Cores.ShopUsers;
 using EShopCores.Errors;
+using EShopCores.Extensions;
 using EShopCores.Responses;
 
 namespace EShopAPI.Cores.ProductMasters.Services
@@ -79,6 +80,7 @@ namespace EShopAPI.Cores.ProductMasters.Services
         {
             ProductMaster productMaster = await ThrowNotFindByIdAsync(id);
             productMaster.IsEnable = isEnable;
+            productMaster.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond();
             await _productMasterDao.UpdateAsync(productMaster);
         }
     }
