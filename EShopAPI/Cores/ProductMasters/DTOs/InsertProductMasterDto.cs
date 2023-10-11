@@ -57,7 +57,7 @@ namespace EShopAPI.Cores.ProductMasters.DTOs
         /// <summary>
         /// 建立時間
         /// </summary>
-        [JsonRequired]
+        [JsonIgnore]
         public long CreateDate { get; set; } = DateTime.UtcNow.GetUnixTimeMillisecond();
 
         /// <summary>
