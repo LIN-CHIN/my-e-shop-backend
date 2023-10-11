@@ -1,6 +1,5 @@
 ﻿using EShopAPI.Cores.ProductMasters.DAOs;
 using EShopAPI.Cores.ProductMasters.DTOs;
-using EShopAPI.Cores.ShopUsers;
 using EShopCores.Errors;
 using EShopCores.Extensions;
 using EShopCores.Responses;
