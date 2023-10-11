@@ -25,5 +25,12 @@
         /// <param name="productMaster">要新增的產品主檔實體</param>
         /// <returns></returns>
         Task<ProductMaster> InsertAsync(ProductMaster productMaster);
+
+        /// <summary>
+        /// 編輯產品主檔
+        /// </summary>
+        /// <param name="productMaster">要編輯的產品主檔實體</param>
+        /// <returns></returns>
+        Task UpdateAsync(ProductMaster productMaster);
     }
 }

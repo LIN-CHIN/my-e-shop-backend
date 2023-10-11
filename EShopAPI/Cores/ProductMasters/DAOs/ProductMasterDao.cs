@@ -42,5 +42,12 @@ namespace EShopAPI.Cores.ProductMasters.DAOs
                 .Where(pm => pm.Number == number)
                 .SingleOrDefaultAsync();
         }
+
+        ///<inheritdoc/>
+        public async Task UpdateAsync(ProductMaster productMaster)
+        {
+            _eShopContext.ProductMasters.Update(productMaster);
+            await _eShopContext.SaveChangesAsync();
+        }
     }
 }

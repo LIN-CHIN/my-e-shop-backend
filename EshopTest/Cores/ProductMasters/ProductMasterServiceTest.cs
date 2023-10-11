@@ -222,6 +222,218 @@ namespace EshopTest.Cores.ProductMasters
             }
         };
 
+        private static readonly object[] _updateCases =
+       {
+            new object[]
+            {
+                new UpdateProductMasterDto()
+                {
+                    Id = 1,
+                    Name = "編輯滑鼠",
+                    VariantAttributes = new List<VariantAttributeJson>()
+                    {
+                        new VariantAttributeJson()
+                        {
+                            AttributeKey = "color",
+                            AttributeValue = new List<string>(){ "edit-red", "edit-bule" }
+                        },
+                        new VariantAttributeJson()
+                        {
+                            AttributeKey = "size",
+                            AttributeValue = new List<string>(){ "edit-L", "edit-M" }
+                        }
+                    },
+                    UpdateUser = "shopAdmin",
+                    Remarks = "編輯備註01",
+                    Languages = new List<LanguageJson>()
+                    {
+                        new LanguageJson
+                        {
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "編輯滑鼠"
+                        },
+                        new LanguageJson
+                        {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "edit-Mouse"
+                        },
+                    }
+                },
+                new ProductMaster()
+                {
+                    Id = 1,
+                    Number = "PM2023100600001",
+                    Name = "滑鼠",
+                    ProductType = ProductType.Variant,
+                    IsEnable = true,
+                    VariantAttribute = JsonSerializer.SerializeToDocument(
+                        new List<VariantAttributeJson>()
+                        {
+                            new VariantAttributeJson()
+                            {
+                                AttributeKey = "color",
+                                AttributeValue = new List<string>(){ "red", "bule" }
+                            },
+                            new VariantAttributeJson()
+                            {
+                                AttributeKey = "size",
+                                AttributeValue = new List<string>(){ "L", "M" }
+                            }
+                        }
+                    ),
+                    CreateUser = "shopAdmin",
+                    Remarks = "新增備註01",
+                    Language = JsonSerializer.SerializeToDocument(
+                        new List<LanguageJson>()
+                        {
+                            new LanguageJson
+                            {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "滑鼠"
+                            },
+                            new LanguageJson
+                            {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "Mouse"
+                            },
+                        }
+                    )
+                }
+            },
+            new object[]
+            {
+                new UpdateProductMasterDto()
+                {
+                    Id = 2,
+                    Name = "編輯鍵盤",
+                    VariantAttributes = new List<VariantAttributeJson>()
+                    {
+                        new VariantAttributeJson()
+                        {
+                            AttributeKey = "color",
+                            AttributeValue = new List<string>(){ "edit-red", "edit-bule" }
+                        },
+                        new VariantAttributeJson()
+                        {
+                            AttributeKey = "size",
+                            AttributeValue = new List<string>(){ "edit-L", "edit-M" }
+                        }
+                    },
+                    UpdateUser = "shopAdmin",
+                    Remarks = "編輯備註02",
+                    Languages = new List<LanguageJson>()
+                    {
+                        new LanguageJson
+                        {
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "編輯鍵盤"
+                        },
+                        new LanguageJson
+                        {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "edit-Keyboard"
+                        },
+                    }
+                },
+                new ProductMaster()
+                {
+                    Id = 2,
+                    Number = "PM2023100600002",
+                    Name = "鍵盤",
+                    ProductType = ProductType.Variant,
+                    IsEnable = true,
+                    VariantAttribute = JsonSerializer.SerializeToDocument(
+                        new List<VariantAttributeJson>()
+                        {
+                            new VariantAttributeJson()
+                            {
+                                AttributeKey = "color",
+                                AttributeValue = new List<string>(){ "red", "bule" }
+                            },
+                            new VariantAttributeJson()
+                            {
+                                AttributeKey = "size",
+                                AttributeValue = new List<string>(){ "L", "M" }
+                            }
+                        }
+                    ),
+                    CreateUser = "shopAdmin",
+                    Remarks = "新增備註02",
+                    Language = JsonSerializer.SerializeToDocument(
+                        new List<LanguageJson>()
+                        {
+                            new LanguageJson
+                            {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "鍵盤"
+                            },
+                            new LanguageJson
+                            {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "Keyboard"
+                            },
+                        }
+                    )
+                }
+            }
+        };
+
+        private static readonly object[] _enableCases =
+        {
+            new object[]
+            {
+                new ProductMaster()
+                {
+                    Id = 1,
+                    IsEnable = false,
+                }
+            },
+            new object[]
+            {
+                new ProductMaster()
+                {
+                    Id = 2,
+                    IsEnable = false,
+                }
+            },
+            new object[]
+            {
+                new ProductMaster()
+                {
+                    Id = 3,
+                    IsEnable = false,
+                }
+            }
+        };
+
+        private static readonly object[] _disableCases =
+        {
+            new object[]
+            {
+                new ProductMaster()
+                {
+                    Id = 1,
+                    IsEnable = true,
+                }
+            },
+            new object[]
+            {
+                new ProductMaster()
+                {
+                    Id = 2,
+                    IsEnable = true,
+                }
+            },
+            new object[]
+            {
+                new ProductMaster()
+                {
+                    Id = 3,
+                    IsEnable = true,
+                }
+            }
+        };
+
         /// <summary>
         /// Setup 
         /// </summary>
@@ -302,6 +514,195 @@ namespace EshopTest.Cores.ProductMasters
                 await _productMasterService.InsertAsync(insertDto));
 
             Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.DuplicateData));
+        }
+
+        /// <summary>
+        /// 測試編輯 (找不到產品id)
+        /// </summary>
+        /// <param name="updateDto">要編輯的資料</param>
+        /// <param name="productMaster">編輯前的實體</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_updateCases))]
+        public void TaskUpdateNotFindIdAsync(UpdateProductMasterDto updateDto, ProductMaster productMaster)
+        {
+            _mockProductMasterDao
+                .Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            _mockProductMasterDao
+                .Setup(x => x.UpdateAsync(updateDto.SetEntity(productMaster)))
+                .Returns(Task.CompletedTask);
+
+            var ex = Assert.ThrowsAsync<EShopException>(async () =>
+                await _productMasterService.UpdateAsync(updateDto));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試編輯 (成功)
+        /// </summary>
+        /// <param name="updateDto">要編輯的資料</param>
+        /// <param name="productMaster">編輯前的實體</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_updateCases))]
+        public async Task TaskUpdateSuccessAsync(UpdateProductMasterDto updateDto, ProductMaster productMaster)
+        {
+            bool isPass = false;
+
+            _mockProductMasterDao
+                .Setup(x => x.GetByIdAsync(updateDto.Id))
+                .ReturnsAsync(productMaster);
+
+            _mockProductMasterDao
+                .Setup(x => x.UpdateAsync(updateDto.SetEntity(productMaster)))
+                .Callback<ProductMaster>(inputParams =>
+                {
+                    if (inputParams.Id == updateDto.Id &&
+                        inputParams.Name == updateDto.Name &&
+                        JsonSerializer.Serialize(inputParams.VariantAttribute) ==
+                        JsonSerializer.Serialize(updateDto.VariantAttributes) &&
+                        inputParams.UpdateUser == updateDto.UpdateUser &&
+                        inputParams.UpdateDate == updateDto.UpdateDate &&
+                        inputParams.Remarks == updateDto.Remarks &&
+                        JsonSerializer.Serialize(inputParams.Language) ==
+                        JsonSerializer.Serialize(updateDto.Languages))
+                    {
+                        isPass = true;
+                    }
+                })
+                .Returns(Task.CompletedTask);
+
+            try
+            {
+                await _productMasterService.UpdateAsync(updateDto);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.That(isPass, Is.True);
+        }
+
+        /// <summary>
+        /// 測試啟用 (找不到id)
+        /// </summary>
+        /// <param name="productMaster">要被啟用的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_enableCases))]
+        public void TaskEnableNotFindIdAsync(ProductMaster productMaster)
+        {
+            _mockProductMasterDao
+                .Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            _mockProductMasterDao
+                .Setup(x => x.UpdateAsync(productMaster))
+                .Returns(Task.CompletedTask);
+
+            var ex = Assert.ThrowsAsync<EShopException>(async () =>
+                await _productMasterService.EnableAsync(productMaster.Id, true));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試啟用 (成功)
+        /// </summary>
+        /// <param name="productMaster">要被啟用的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_enableCases))]
+        public async Task TaskEnableSuccessAsync(ProductMaster productMaster)
+        {
+            bool isPass = false;
+
+            _mockProductMasterDao
+                .Setup(x => x.GetByIdAsync(productMaster.Id))
+                .ReturnsAsync(productMaster);
+
+            _mockProductMasterDao
+                .Setup(x => x.UpdateAsync(productMaster))
+                .Callback<ProductMaster>(inputParams =>
+                {
+                    if (inputParams.Id == productMaster.Id &&
+                        inputParams.IsEnable)
+                    {
+                        isPass = true;
+                    }
+                })
+                .Returns(Task.CompletedTask);
+
+            try
+            {
+                await _productMasterService.EnableAsync(productMaster.Id, true);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.That(isPass, Is.True);
+        }
+
+        /// <summary>
+        /// 測試停用 (找不到id)
+        /// </summary>
+        /// <param name="productMaster">要被停用的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_disableCases))]
+        public void TaskDisableNotFindIdAsync(ProductMaster productMaster)
+        {
+            _mockProductMasterDao
+                .Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            _mockProductMasterDao
+                .Setup(x => x.UpdateAsync(productMaster))
+                .Returns(Task.CompletedTask);
+
+            var ex = Assert.ThrowsAsync<EShopException>(async () =>
+                await _productMasterService.EnableAsync(productMaster.Id, false));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試停用 (成功)
+        /// </summary>
+        /// <param name="productMaster">要被停用的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_disableCases))]
+        public async Task TaskDisableSuccessAsync(ProductMaster productMaster)
+        {
+            bool isPass = false;
+
+            _mockProductMasterDao
+                .Setup(x => x.GetByIdAsync(productMaster.Id))
+                .ReturnsAsync(productMaster);
+
+            _mockProductMasterDao
+                .Setup(x => x.UpdateAsync(productMaster))
+                .Callback<ProductMaster>(inputParams =>
+                {
+                    if (inputParams.Id == productMaster.Id &&
+                        !inputParams.IsEnable)
+                    {
+                        isPass = true;
+                    }
+                })
+                .Returns(Task.CompletedTask);
+
+            try
+            {
+                await _productMasterService.EnableAsync(productMaster.Id, false);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.That(isPass, Is.True);
         }
 
         /// <summary>

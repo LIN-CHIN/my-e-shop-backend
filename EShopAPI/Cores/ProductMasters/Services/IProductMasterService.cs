@@ -44,5 +44,20 @@ namespace EShopAPI.Cores.ProductMasters.Services
         /// <param name="insertDto">要新增的資料</param>
         /// <returns></returns>
         Task<ProductMaster> InsertAsync(InsertProductMasterDto insertDto);
+
+        /// <summary>
+        /// 編輯產品主檔
+        /// </summary>
+        /// <param name="updateDto">要編輯的資料</param>
+        /// <returns></returns>
+        Task UpdateAsync(UpdateProductMasterDto updateDto);
+
+        /// <summary>
+        /// 啟用/停用產品主檔
+        /// </summary>
+        /// <param name="id">要停用/啟用的id</param>
+        /// <param name="isEnable">true = 啟用, false = 停用</param>
+        /// <returns></returns>
+        Task EnableAsync(long id, bool isEnable);
     }
 }

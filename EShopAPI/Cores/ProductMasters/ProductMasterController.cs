@@ -54,5 +54,46 @@ namespace EShopAPI.Cores.ProductMasters
                 ProductMasterDto.Parse(await _productMasterService.InsertAsync(insertDto))
             ));
         }
+
+        /// <summary>
+        /// 編輯產品主檔
+        /// </summary>
+        /// <param name="updateDto">要編輯的產品主檔資料</param>
+        /// <returns></returns>
+        [HttpPut()]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateAsync(UpdateProductMasterDto updateDto)
+        {
+            await _productMasterService.UpdateAsync(updateDto);
+
+            return Ok(GenericResponse<string>.GetSuccess());
+        }
+
+        /// <summary>
+        /// 啟用產品主檔
+        /// </summary>
+        /// <returns></returns>
+        [HttpPatch("Enable/{id}")]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EnableAsync(long id)
+        {
+            await _productMasterService.EnableAsync(id, true);
+            return Ok(GenericResponse<string>.GetSuccess());
+        }
+
+        /// <summary>
+        /// 停用產品主檔
+        /// </summary>
+        /// <returns></returns>
+        [HttpPatch("Disable/{id}")]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DisableAsync(long id)
+        {
+            await _productMasterService.EnableAsync(id, false);
+            return Ok(GenericResponse<string>.GetSuccess());
+        }
     }
 }

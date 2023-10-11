@@ -66,5 +66,20 @@ namespace EShopAPI.Cores.ProductMasters.Services
             await ThrowExistByNumberAsync(insertDto.Number);
             return await _productMasterDao.InsertAsync(insertDto.ToEntity());
         }
+
+        ///<inheritdoc/>
+        public async Task UpdateAsync(UpdateProductMasterDto updateDto)
+        {
+            ProductMaster productMaster = await ThrowNotFindByIdAsync(updateDto.Id);
+            await _productMasterDao.UpdateAsync(updateDto.SetEntity(productMaster));
+        }
+
+        ///<inheritdoc/>
+        public async Task EnableAsync(long id, bool isEnable)
+        {
+            ProductMaster productMaster = await ThrowNotFindByIdAsync(id);
+            productMaster.IsEnable = isEnable;
+            await _productMasterDao.UpdateAsync(productMaster);
+        }
     }
 }
