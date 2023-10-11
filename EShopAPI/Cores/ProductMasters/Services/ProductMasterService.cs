@@ -23,6 +23,12 @@ namespace EShopAPI.Cores.ProductMasters.Services
         }
 
         ///<inheritdoc/>
+        public IQueryable<ProductMaster> Get(QueryProductMasterDto queryDto)
+        {
+            return _productMasterDao.Get(queryDto);
+        }
+
+        ///<inheritdoc/>
         public async Task<ProductMaster?> GetByIdAsync(long id)
         {
             return await _productMasterDao.GetByIdAsync(id);

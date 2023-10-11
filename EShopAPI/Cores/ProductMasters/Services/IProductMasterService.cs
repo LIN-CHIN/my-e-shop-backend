@@ -9,6 +9,13 @@ namespace EShopAPI.Cores.ProductMasters.Services
     public interface IProductMasterService
     {
         /// <summary>
+        /// 取得產品主檔清單
+        /// </summary>
+        /// <param name="queryDto">搜尋條件</param>
+        /// <returns></returns>
+        IQueryable<ProductMaster> Get(QueryProductMasterDto queryDto);
+
+        /// <summary>
         /// 根據id取得產品主檔
         /// </summary>
         /// <param name="id">產品主檔id</param>

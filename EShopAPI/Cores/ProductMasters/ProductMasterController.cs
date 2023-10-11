@@ -1,6 +1,7 @@
 ﻿using EShopAPI.Cores.ProductMasters.DTOs;
 using EShopAPI.Cores.ProductMasters.Services;
 using EShopAPI.Cores.ShopUsers.DTOs;
+using EShopCores.Models;
 using EShopCores.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,28 @@ namespace EShopAPI.Cores.ProductMasters
         public ProductMasterController(IProductMasterService productMasterService) 
         {
             _productMasterService = productMasterService;   
+        }
+
+        /// <summary>
+        /// 查詢產品主檔清單
+        /// </summary>
+        /// <param name="pageDto">分頁參數</param>
+        /// <param name="queryDto">搜尋條件</param>
+        /// <returns></returns>
+        [HttpGet()]
+        [ProducesResponseType(typeof(PaginationResponse<ProductMasterDto?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+        public IActionResult Get(
+            [FromQuery] QueryPaginationDto pageDto,
+            [FromQuery] QueryProductMasterDto queryDto) 
+        {
+            return Ok(PaginationResponse<ProductMasterDto?>.GetSuccess(
+                pageDto.Page,
+                pageDto.PageCount,
+                _productMasterService
+                    .Get(queryDto)
+                    .Select(pm => ProductMasterDto.Parse(pm))
+            ));
         }
 
         /// <summary>

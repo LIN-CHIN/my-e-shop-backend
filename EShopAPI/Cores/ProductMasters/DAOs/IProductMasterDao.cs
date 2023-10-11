@@ -1,10 +1,19 @@
-﻿namespace EShopAPI.Cores.ProductMasters.DAOs
+﻿using EShopAPI.Cores.ProductMasters.DTOs;
+
+namespace EShopAPI.Cores.ProductMasters.DAOs
 {
     /// <summary>
     /// 產品主檔的 DAO Interface
     /// </summary>
     public interface IProductMasterDao
     {
+        /// <summary>
+        /// 取得產品主檔清單
+        /// </summary>
+        /// <param name="queryDto">搜尋條件</param>
+        /// <returns></returns>
+        IQueryable<ProductMaster> Get(QueryProductMasterDto queryDto);
+
         /// <summary>
         /// 根據id取得產品主檔
         /// </summary>

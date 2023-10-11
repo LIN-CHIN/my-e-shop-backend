@@ -1,4 +1,6 @@
 ﻿using EShopAPI.Context;
+using EShopAPI.Cores.ProductMasters.DTOs;
+using EShopCores.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI.Cores.ProductMasters.DAOs
@@ -17,6 +19,38 @@ namespace EShopAPI.Cores.ProductMasters.DAOs
         public ProductMasterDao(EShopContext eShopContext) 
         {
             _eShopContext = eShopContext;
+        }
+
+        ///<inheritdoc/>
+        public IQueryable<ProductMaster> Get(QueryProductMasterDto queryDto)
+        {
+            IQueryable<ProductMaster> productMasters = _eShopContext.ProductMasters;
+
+            if (!string.IsNullOrWhiteSpace(queryDto.Number)) 
+            {
+                productMasters = productMasters
+                    .Where(pm => EF.Functions.Like(pm.Number, $"%{queryDto.Number}%"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryDto.Name))
+            {
+                productMasters = productMasters
+                    .Where(pm => EF.Functions.Like(pm.Name, $"%{queryDto.Name}%"));
+            }
+
+            if (queryDto.ProductType != null)
+            {
+                productMasters = productMasters
+                    .Where(pm => pm.ProductType == queryDto.ProductType);
+            }
+
+            if (queryDto.IsEnable != null)
+            {
+                productMasters = productMasters
+                    .Where(pm => pm.IsEnable == queryDto.IsEnable);
+            }
+
+            return productMasters;
         }
 
         ///<inheritdoc/>
