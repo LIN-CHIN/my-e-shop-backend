@@ -495,9 +495,12 @@ namespace EshopTest.Cores.ProductMasters
                 Assert.Fail("should not get the error");
             }
 
-            Assert.That(productMaster, Is.Not.Null);
-            Assert.That(productMaster.Id, Is.Not.Zero);
-            Assert.That(isPass, Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(productMaster, Is.Not.Null);
+                Assert.That(productMaster.Id, Is.Not.Zero);
+                Assert.That(isPass, Is.True);
+            });
         }
 
         /// <summary>
