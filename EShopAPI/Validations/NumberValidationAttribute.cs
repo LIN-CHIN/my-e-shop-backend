@@ -9,8 +9,8 @@ namespace EShopAPI.Validations
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class NumberValidationAttribute : ValidationAttribute
     {
-        private readonly string _invaildStr =
-            "[^a-zA-Z0-9-_]";
+        private readonly string _validStr =
+            "^[a-zA-Z0-9-_]+$";
 
         ///<inheritdoc/>
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
@@ -27,9 +27,9 @@ namespace EShopAPI.Validations
 
             string str = value.ToString()!;
 
-            Regex regex = new Regex(_invaildStr);
+            Regex regex = new Regex(_validStr);
 
-            if (regex.IsMatch(str))
+            if (!regex.IsMatch(str))
             {
                 return new ValidationResult(ErrorMessage ?? $"Name cannot contains invalid characters : {str}");
             }
