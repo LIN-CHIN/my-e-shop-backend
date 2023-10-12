@@ -27,7 +27,7 @@ namespace EShopAPI.Validations
 
             string str = value.ToString()!;
 
-            Regex regex = new Regex(_validStr);
+            Regex regex = new Regex(_validStr, RegexOptions.None, TimeSpan.FromMilliseconds(100)); 
 
             if (!regex.IsMatch(str)) 
             {
