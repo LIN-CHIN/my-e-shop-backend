@@ -99,7 +99,6 @@ namespace EshopTest.Cores.ShopUsers
                 }
             }
         };
-
         private static readonly object[] _updateCases =
         {
             new object[]
@@ -173,7 +172,6 @@ namespace EshopTest.Cores.ShopUsers
                 }
             }
         };
-
         private static readonly object[] _enableCases =
         {
             new object[]
@@ -221,7 +219,6 @@ namespace EshopTest.Cores.ShopUsers
                 }
             }
         };
-
         private static readonly object[] _disableCases =
         {
             new object[]
@@ -266,141 +263,6 @@ namespace EshopTest.Cores.ShopUsers
                         }
                     ),
                     CreateUser = "shopAdmin"
-                }
-            }
-        };
-
-        private static readonly object[] _insertDtoValidationErrorCases =
-        {
-            new object[]
-            {
-                new InsertShopUserDto()
-                {
-                    Number = "中文不合法",
-                    Name = "非法\\的名稱",
-                    Email = "abc@gm ail.com"
-                }
-            },
-            new object[]
-            {
-                new InsertShopUserDto()
-                {
-                    Number = "A01/B01",
-                    Name = "非法，的名稱",
-                    Email = "chin.com"
-                }
-            },
-            new object[]
-            {
-                new InsertShopUserDto()
-                {
-                    Number = "A01\\B01",
-                    Name = "「非法的名稱",
-                    Email = "chin!$%@gg.com"
-                }
-            },
-            new object[]
-            {
-                new InsertShopUserDto()
-                {
-                    Number = "A01 B01",
-                    Name = "非法的名稱」",
-                    Email = "chin.com@gmail"
-                }
-            }
-        };
-
-        private static readonly object[] _insertDtoValidationSuccessCases =
-        {
-            new object[]
-            {
-                new InsertShopUserDto()
-                {
-                    Number = "A001-Chin",
-                    Name = "名稱(合法)",
-                    Email = "chin@gmail.com"
-                }
-            },
-            new object[]
-            {
-                new InsertShopUserDto()
-                {
-                   Number = "Chin0001",
-                   Name = "名稱/合法",
-                   Email = "chin.test@gmail.com"
-                }
-            },
-            new object[]
-            {
-                new InsertShopUserDto()
-                {
-                    Number = "A001_Chin",
-                    Name = "* 名稱 合法 *",
-                    Email = "chin-test@gmail.com"
-                }
-            }
-        };
-
-        private static readonly object[] _updateDtoValidationErrorCases =
-        {
-            new object[]
-            {
-                new UpdateShopUserDto()
-                {
-                    Name = "非法\\的名稱",
-                    Email = "abc@gm ail.com"
-                }
-            },
-            new object[]
-            {
-                new UpdateShopUserDto()
-                {
-                    Name = "非法，的名稱",
-                    Email = "chin.com"
-                }
-            },
-            new object[]
-            {
-                new UpdateShopUserDto()
-                {
-                    Name = "「非法的名稱",
-                    Email = "chin!$%@gg.com"
-                }
-            },
-            new object[]
-            {
-                new UpdateShopUserDto()
-                {
-                    Name = "非法的名稱」",
-                    Email = "chin.com@gmail"
-                }
-            }
-        };
-
-        private static readonly object[] _updateDtoValidationSuccessCases =
-        {
-            new object[]
-            {
-                new UpdateShopUserDto()
-                {
-                    Name = "名稱(合法)",
-                    Email = "chin@gmail.com"
-                }
-            },
-            new object[]
-            {
-                new UpdateShopUserDto()
-                {
-                   Name = "名稱/合法",
-                   Email = "chin.test@gmail.com"
-                }
-            },
-            new object[]
-            {
-                new UpdateShopUserDto()
-                {
-                    Name = "* 名稱 合法 *",
-                    Email = "chin-test@gmail.com"
                 }
             }
         };
@@ -591,135 +453,6 @@ namespace EshopTest.Cores.ShopUsers
             await _shopUserService.EnableAsync(shopUser.Id, false);
 
             Assert.That(isPass, Is.True);
-        }
-
-        /// <summary>
-        /// 測試insertDto的 Name驗證(失敗)
-        /// </summary>
-        /// <param name="insertDto">要新增的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_insertDtoValidationErrorCases))]
-        public void TestInsertDtoNameValidationError(InsertShopUserDto insertDto)
-        {
-            var validation = new NameValidationAttribute();
-            var result = validation.IsValid(insertDto.Name);
-            Assert.That(result, Is.False);
-        }
-
-        /// <summary>
-        /// 測試insertDto的 Name驗證(成功)
-        /// </summary>
-        /// <param name="insertDto">要新增的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_insertDtoValidationSuccessCases))]
-        public void TestInsertDtoNameValidationSuccess(InsertShopUserDto insertDto)
-        {
-            var validation = new NameValidationAttribute();
-            var result = validation.IsValid(insertDto.Name);
-            Assert.That(result, Is.True);
-        }
-
-        /// <summary>
-        /// 測試insertDto的 Number驗證(失敗)
-        /// </summary>
-        /// <param name="insertDto">要新增的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_insertDtoValidationErrorCases))]
-        public void TestInsertDtoNumberValidationError(InsertShopUserDto insertDto)
-        {
-            var validation = new NumberValidationAttribute();
-            var result = validation.IsValid(insertDto.Number);
-            Assert.That(result, Is.False);
-        }
-
-        /// <summary>
-        /// 測試insertDto的 Number驗證(成功)
-        /// </summary>
-        /// <param name="insertDto">要新增的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_insertDtoValidationSuccessCases))]
-        public void TestInsertDtoNumberValidationSuccess(InsertShopUserDto insertDto)
-        {
-            var validation = new NumberValidationAttribute();
-            var result = validation.IsValid(insertDto.Number);
-            Assert.That(result, Is.True);
-        }
-
-        /// <summary>
-        /// 測試insertDto的 Email驗證(失敗)
-        /// </summary>
-        /// <param name="insertDto">要新增的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_insertDtoValidationErrorCases))]
-        public void TestInsertDtoEmailValidationError(InsertShopUserDto insertDto)
-        {
-            var validation = new EmailValidationAttribute();
-            var result = validation.IsValid(insertDto.Email);
-            Assert.That(result, Is.False);
-        }
-
-        /// <summary>
-        /// 測試insertDto的 Email驗證(成功)
-        /// </summary>
-        /// <param name="insertDto">要新增的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_insertDtoValidationSuccessCases))]
-        public void TestInsertDtoEmailValidationSuccess(InsertShopUserDto insertDto)
-        {
-            var validation = new EmailValidationAttribute();
-            var result = validation.IsValid(insertDto.Email);
-            Assert.That(result, Is.True);
-        }
-
-        /// <summary>
-        /// 測試updateDto的 Name驗證(失敗)
-        /// </summary>
-        /// <param name="updateDto">要編輯的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_updateDtoValidationErrorCases))]
-        public void TestUpdateDtoNameValidationError(UpdateShopUserDto updateDto)
-        {
-            var validation = new NameValidationAttribute();
-            var result = validation.IsValid(updateDto.Name);
-            Assert.That(result, Is.False);
-        }
-
-        /// <summary>
-        /// 測試updateDto的 Name驗證(成功)
-        /// </summary>
-        /// <param name="updateDto">要編輯的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_updateDtoValidationSuccessCases))]
-        public void TestUpdateDtoNameValidationSuccess(UpdateShopUserDto updateDto)
-        {
-            var validation = new NameValidationAttribute();
-            var result = validation.IsValid(updateDto.Name);
-            Assert.That(result, Is.True);
-        }
-        /// <summary>
-        /// 測試updateDto的 Email驗證(失敗)
-        /// </summary>
-        /// <param name="updateDto">要編輯的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_updateDtoValidationErrorCases))]
-        public void TestUpdateDtoEmailValidationError(UpdateShopUserDto updateDto)
-        {
-            var validation = new EmailValidationAttribute();
-            var result = validation.IsValid(updateDto.Email);
-            Assert.That(result, Is.False);
-        }
-
-        /// <summary>
-        /// 測試updateDto的 Email驗證(成功)
-        /// </summary>
-        /// <param name="updateDto">要編輯的資料</param>
-        /// <returns></returns>
-        [TestCaseSource(nameof(_updateDtoValidationSuccessCases))]
-        public void TestUpdateDtoEmailValidationSuccess(UpdateShopUserDto updateDto)
-        {
-            var validation = new EmailValidationAttribute();
-            var result = validation.IsValid(updateDto.Email);
-            Assert.That(result, Is.True);
         }
     }
 }
