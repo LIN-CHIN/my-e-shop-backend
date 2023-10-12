@@ -3,6 +3,7 @@ using EShopAPI.Cores.ProductMasters.DAOs;
 using EShopAPI.Cores.ProductMasters.DTOs;
 using EShopAPI.Cores.ProductMasters.Json;
 using EShopAPI.Cores.ProductMasters.Services;
+using EShopAPI.Validations;
 using EShopCores.Enums;
 using EShopCores.Errors;
 using EShopCores.Extensions;
@@ -10,6 +11,7 @@ using EShopCores.Json;
 using EShopCores.Responses;
 using Moq;
 using NUnit.Framework;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -441,6 +443,134 @@ namespace EshopTest.Cores.ProductMasters
             }
         };
 
+        private static readonly object[] _insertDtoValidationErrorCases =
+        {
+            new object[]
+            {
+                new InsertProductMasterDto()
+                {
+                    Number = "中文不合法",
+                    Name = "非法\\的名稱",
+                    ProductType = (ProductType)500
+                },
+            },
+            new object[]
+            {
+                new InsertProductMasterDto()
+                {
+                    Number = "A01/B01",
+                    Name = "非法，的名稱",
+                    ProductType = (ProductType)100
+                }
+            },
+            new object[]
+            {
+                new InsertProductMasterDto()
+                {
+                    Number = "A01\\B01",
+                    Name = "「非法的名稱",
+                    ProductType = (ProductType)50
+                }
+            },
+            new object[]
+            {
+                new InsertProductMasterDto()
+                {
+                    Number = "A01 B01",
+                    Name = "非法的名稱」",
+                    ProductType = (ProductType)50
+                }
+            }
+        };
+
+        private static readonly object[] _insertDtoValidationSuccessCases =
+        {
+            new object[]
+            {
+                new InsertProductMasterDto()
+                {
+                    Number = "2023-10-12-0001",
+                    Name = "名稱(合法)",
+                    ProductType = ProductType.Fiexd
+                }
+            },
+            new object[]
+            {
+                new InsertProductMasterDto()
+                {
+                    Number = "ABC202310120001",
+                    Name = "名稱/合法",
+                    ProductType = ProductType.Variant
+                }
+            },
+            new object[]
+            {
+                new InsertProductMasterDto()
+                {
+                    Number = "20231012_0001",
+                    Name = "* 名稱 合法 *",
+                    ProductType = ProductType.Software
+                }
+            }
+        };
+
+        private static readonly object[] _updateDtoValidationErrorCases =
+        {
+            new object[]
+            {
+                new UpdateProductMasterDto()
+                {
+                    Name = "非法\\的名稱",
+                },
+            },
+            new object[]
+            {
+                new UpdateProductMasterDto()
+                {
+                    Name = "非法，的名稱",
+                }
+            },
+            new object[]
+            {
+                new UpdateProductMasterDto()
+                {
+                    Name = "「非法的名稱",
+                }
+            },
+            new object[]
+            {
+                new UpdateProductMasterDto()
+                {
+                    Name = "非法的名稱」",
+                }
+            }
+        };
+
+        private static readonly object[] _updateDtoValidationSuccessCases =
+        {
+            new object[]
+            {
+                new UpdateProductMasterDto()
+                {
+                    Name = "名稱(合法)",
+                }
+            },
+            new object[]
+            {
+                new UpdateProductMasterDto()
+                {
+                    Name = "名稱/合法",
+                }
+            },
+            new object[]
+            {
+                new UpdateProductMasterDto()
+                {
+                    Name = "* 名稱 合法 *",
+                }
+            }
+        };
+
         /// <summary>
         /// Setup 
         /// </summary>
@@ -749,6 +879,110 @@ namespace EshopTest.Cores.ProductMasters
                 await _productMasterService.ThrowNotFindByIdAsync(It.IsAny<long>()));
 
             Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試insertDto的 Enum驗證(失敗)
+        /// </summary>
+        /// <param name="insertDto">要新增的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_insertDtoValidationErrorCases))]
+        public void TaskEnumValidationError(InsertProductMasterDto insertDto)
+        {
+            var validation = new EnumValidationAttribute();
+            var result = validation.IsValid(insertDto.ProductType);
+            Assert.That(result, Is.False);
+        }
+
+        /// <summary>
+        /// 測試insertDto的 Enum驗證(成功)
+        /// </summary>
+        /// <param name="insertDto">要新增的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_insertDtoValidationSuccessCases))]
+        public void TaskEnumValidationSuccess(InsertProductMasterDto insertDto)
+        {
+            var validation = new EnumValidationAttribute();
+            var result = validation.IsValid(insertDto.ProductType);
+            Assert.That(result, Is.True);
+        }
+
+        /// <summary>
+        /// 測試insertDto的 Name驗證(失敗)
+        /// </summary>
+        /// <param name="insertDto">要新增的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_insertDtoValidationErrorCases))]
+        public void TaskInsertDtoNameValidationError(InsertProductMasterDto insertDto)
+        {
+            var validation = new NameValidationAttribute();
+            var result = validation.IsValid(insertDto.Name);
+            Assert.That(result, Is.False);
+        }
+
+        /// <summary>
+        /// 測試insertDto的 Name驗證(成功)
+        /// </summary>
+        /// <param name="insertDto">要新增的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_insertDtoValidationSuccessCases))]
+        public void TaskInsertDtoNameValidationSuccess(InsertProductMasterDto insertDto)
+        {
+            var validation = new NameValidationAttribute();
+            var result = validation.IsValid(insertDto.Name);
+            Assert.That(result, Is.True);
+        }
+
+        /// <summary>
+        /// 測試insertDto的 Number驗證(失敗)
+        /// </summary>
+        /// <param name="insertDto">要新增的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_insertDtoValidationErrorCases))]
+        public void TaskInsertDtoNumberValidationError(InsertProductMasterDto insertDto)
+        {
+            var validation = new NumberValidationAttribute();
+            var result = validation.IsValid(insertDto.Number);
+            Assert.That(result, Is.False);
+        }
+
+        /// <summary>
+        /// 測試insertDto的 Number驗證(成功)
+        /// </summary>
+        /// <param name="insertDto">要新增的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_insertDtoValidationSuccessCases))]
+        public void TaskInsertDtoNumberValidationSuccess(InsertProductMasterDto insertDto)
+        {
+            var validation = new NumberValidationAttribute();
+            var result = validation.IsValid(insertDto.Number);
+            Assert.That(result, Is.True);
+        }
+
+        /// <summary>
+        /// 測試updateDto的 Name驗證(失敗)
+        /// </summary>
+        /// <param name="updateDto">要編輯的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_updateDtoValidationErrorCases))]
+        public void TaskUpdateDtoNameValidationError(UpdateProductMasterDto updateDto)
+        {
+            var validation = new NameValidationAttribute();
+            var result = validation.IsValid(updateDto.Name);
+            Assert.That(result, Is.False);
+        }
+
+        /// <summary>
+        /// 測試updateDto的 Name驗證(成功)
+        /// </summary>
+        /// <param name="updateDto">要編輯的資料</param>
+        /// <returns></returns>
+        [TestCaseSource(nameof(_updateDtoValidationSuccessCases))]
+        public void TaskUpdateDtoNameValidationSuccess(UpdateProductMasterDto updateDto)
+        {
+            var validation = new NameValidationAttribute();
+            var result = validation.IsValid(updateDto.Name);
+            Assert.That(result, Is.True);
         }
     }
 }
