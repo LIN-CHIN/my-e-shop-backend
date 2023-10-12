@@ -1,4 +1,5 @@
 ﻿using EShopAPI.Cores.ProductMasters.Json;
+using EShopAPI.Validations;
 using EShopCores.Enums;
 using EShopCores.Extensions;
 using EShopCores.Json;
@@ -18,6 +19,7 @@ namespace EShopAPI.Cores.ProductMasters.DTOs
         /// </summary>
         [JsonRequired]
         [StringLength(25)]
+        [NumberValidation]
         public string Number { get; set; } = null!;
 
         /// <summary>
@@ -25,12 +27,14 @@ namespace EShopAPI.Cores.ProductMasters.DTOs
         /// </summary>
         [JsonRequired]
         [StringLength(50)]
+        [NameValidation]
         public string Name { get; set; } = null!;
 
         /// <summary>
         /// 產品類型
         /// </summary>
         [JsonRequired]
+        [EnumValidation]
         public ProductType ProductType { get; set; }
 
         /// <summary>

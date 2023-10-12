@@ -3,6 +3,7 @@ using EShopAPI.Cores.ProductMasters.DAOs;
 using EShopAPI.Cores.ProductMasters.DTOs;
 using EShopAPI.Cores.ProductMasters.Json;
 using EShopAPI.Cores.ProductMasters.Services;
+using EShopAPI.Validations;
 using EShopCores.Enums;
 using EShopCores.Errors;
 using EShopCores.Extensions;
@@ -10,6 +11,7 @@ using EShopCores.Json;
 using EShopCores.Responses;
 using Moq;
 using NUnit.Framework;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -222,7 +224,6 @@ namespace EshopTest.Cores.ProductMasters
                 }
             }
         };
-
         private static readonly object[] _updateCases =
        {
             new object[]
@@ -378,7 +379,6 @@ namespace EshopTest.Cores.ProductMasters
                 }
             }
         };
-
         private static readonly object[] _enableCases =
         {
             new object[]
@@ -409,7 +409,6 @@ namespace EshopTest.Cores.ProductMasters
                 }
             }
         };
-
         private static readonly object[] _disableCases =
         {
             new object[]

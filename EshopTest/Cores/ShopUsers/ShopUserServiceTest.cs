@@ -1,11 +1,12 @@
-﻿using EShopAPI.Cores.ShopRoles;
-using EShopAPI.Cores.ShopUsers;
+﻿using EShopAPI.Cores.ShopUsers;
 using EShopAPI.Cores.ShopUsers.DAOs;
 using EShopAPI.Cores.ShopUsers.DTOs;
 using EShopAPI.Cores.ShopUsers.Services;
+using EShopAPI.Validations;
 using EShopCores.Errors;
 using EShopCores.Responses;
 using Moq;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace EshopTest.Cores.ShopUsers
@@ -98,7 +99,6 @@ namespace EshopTest.Cores.ShopUsers
                 }
             }
         };
-
         private static readonly object[] _updateCases =
         {
             new object[]
@@ -172,7 +172,6 @@ namespace EshopTest.Cores.ShopUsers
                 }
             }
         };
-
         private static readonly object[] _enableCases =
         {
             new object[]
@@ -220,7 +219,6 @@ namespace EshopTest.Cores.ShopUsers
                 }
             }
         };
-
         private static readonly object[] _disableCases =
         {
             new object[]

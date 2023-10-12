@@ -1,4 +1,5 @@
-﻿using EShopCores.Extensions;
+﻿using EShopAPI.Validations;
+using EShopCores.Extensions;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -14,6 +15,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// </summary>
         [JsonRequired]
         [StringLength(50)]
+        [NumberValidation]
         public string Number { get; set; } = null!;
 
         /// <summary>
@@ -21,6 +23,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// </summary>
         [JsonRequired]
         [StringLength(50)]
+        [NameValidation]  
         public string Name { get; set; } = null!;
 
         /// <summary>
@@ -39,6 +42,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// Email
         /// </summary>
         [StringLength(50)]
+        [EmailValidation]
         public string? Email { get; set; }
 
         /// <summary>
