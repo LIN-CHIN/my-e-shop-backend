@@ -1,6 +1,7 @@
 ﻿using EShopAPI.Common;
 using EShopAPI.Cores.Auth.JWTs;
 using EShopCores.Responses;
+using Jose;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -41,9 +42,25 @@ namespace EShopAPI.Filters
                 return;
             }
 
-            JwtPayload jwtPayload = _jwtService.DecryptToken(token!);
+            JwtPayload jwtPayload;
 
-            if (!jwtPayload.IsAdmin) 
+            try
+            {
+                jwtPayload = _jwtService.DecryptToken(token!);
+            }
+            catch (IntegrityException integrityException)
+            {
+                context.Result = new ObjectResult(
+                    GenericResponse<string>.GetResult(ResponseCodeType.InvalidToken,
+                    $"Token decode Error. exception:{integrityException}"))
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                };
+
+                return;
+            }
+
+            if (!jwtPayload.IsAdmin)
             {
                 context.Result = new ObjectResult(
                     GenericResponse<string>.GetResult(ResponseCodeType.TokenForbidden, "權限不足，驗證失敗"))
@@ -53,6 +70,7 @@ namespace EShopAPI.Filters
 
                 return;
             }
+
             jwtPayload.SetLoginUserData(_loginUserData);
         }
     }

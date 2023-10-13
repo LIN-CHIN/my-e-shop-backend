@@ -1,6 +1,7 @@
 ﻿using EShopAPI.Common;
 using EShopAPI.Cores.Auth.JWTs;
 using EShopCores.Responses;
+using Jose;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -29,7 +30,6 @@ namespace EShopAPI.Filters
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             string? token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
-
             if (string.IsNullOrWhiteSpace(token)) 
             {
                 context.Result = new ObjectResult(
@@ -41,7 +41,23 @@ namespace EShopAPI.Filters
                 return;
             }
 
-            JwtPayload jwtPayload = _jwtService.DecryptToken(token!);
+            JwtPayload jwtPayload;
+            try
+            {
+                jwtPayload  = _jwtService.DecryptToken(token!);
+            }
+            catch (IntegrityException integrityException) 
+            {
+                context.Result = new ObjectResult(
+                    GenericResponse<string>.GetResult(ResponseCodeType.InvalidToken,
+                    $"Token decode Error. exception:{integrityException}"))
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                };
+
+                return;
+            }
+
             jwtPayload.SetLoginUserData(_loginUserData);
         }
     }
