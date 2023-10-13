@@ -69,6 +69,9 @@ namespace EShopAPI.Cores.Auth.JWTs
         ///<inheritdoc/>
         public JwtPayload DecryptToken(string token)
         {
+            //remove prefix 
+            token = token.Replace("Bearer ", "");
+
             string json = JWT.Decode(token, Encoding.UTF8.GetBytes(_jwtTokenSettings.SignKey), JwsAlgorithm.HS256);
             JwtPayload? payload = JsonSerializer.Deserialize<JwtPayload>(json);
             if (payload == null) 
