@@ -64,18 +64,6 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         public bool IsAdmin { get; set; } = false;
 
         /// <summary>
-        /// 建立者
-        /// </summary>
-        [JsonRequired]
-        public string CreateUser { get; set; } = null!;
-
-        /// <summary>
-        /// 建立時間
-        /// </summary>
-        [JsonIgnore]
-        public long CreateDate { get; set; } = DateTime.UtcNow.GetUnixTimeMillisecond();
-
-        /// <summary>
         /// 備註
         /// </summary>
         public string? Remarks { get; set; }
@@ -88,8 +76,9 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// <summary>
         /// 轉成實體
         /// </summary>
+        /// <param name="createUser">建立者</param>
         /// <returns></returns>
-        public ShopUser ToEntity()
+        public ShopUser ToEntity(string createUser)
         {
             return new ShopUser
             {
@@ -101,8 +90,8 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
                 Phone = Phone,
                 IsEnable = IsEnable,
                 IsAdmin = IsAdmin,
-                CreateUser = CreateUser,
-                CreateDate = CreateDate,
+                CreateUser = createUser,
+                CreateDate = DateTime.UtcNow.GetUnixTimeMillisecond(),
                 Remarks = Remarks,
                 Language = System.Text.Json.JsonSerializer.SerializeToDocument(Language)
             };

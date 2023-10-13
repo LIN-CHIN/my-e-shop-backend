@@ -53,18 +53,6 @@ namespace EShopAPI.Cores.ProductMasters.DTOs
         public IEnumerable<VariantAttributeJson>? VariantAttributes { get; set; }
 
         /// <summary>
-        /// 建立者
-        /// </summary>
-        [JsonRequired]
-        public string CreateUser { get; set; } = null!;
-
-        /// <summary>
-        /// 建立時間
-        /// </summary>
-        [JsonIgnore]
-        public long CreateDate { get; set; } = DateTime.UtcNow.GetUnixTimeMillisecond();
-
-        /// <summary>
         /// 備註
         /// </summary>
         public string? Remarks { get; set; }
@@ -77,8 +65,9 @@ namespace EShopAPI.Cores.ProductMasters.DTOs
         /// <summary>
         /// 轉成實體
         /// </summary>
+        /// <param name="createUser">建立者</param>
         /// <returns></returns>
-        public ProductMaster ToEntity() 
+        public ProductMaster ToEntity(string createUser) 
         {
             return new ProductMaster
             {
@@ -87,8 +76,8 @@ namespace EShopAPI.Cores.ProductMasters.DTOs
                 ProductType = ProductType,
                 IsEnable = IsEnable,
                 VariantAttribute = JsonSerializer.SerializeToDocument(VariantAttributes),
-                CreateUser = CreateUser,
-                CreateDate = CreateDate,
+                CreateUser = createUser,
+                CreateDate = DateTime.UtcNow.GetUnixTimeMillisecond(),
                 Remarks = Remarks
             };
         }

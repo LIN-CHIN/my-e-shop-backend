@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.ShopUsers;
+﻿using EShopAPI.Common;
+using EShopAPI.Cores.ShopUsers;
 using EShopAPI.Cores.ShopUsers.DAOs;
 using EShopAPI.Cores.ShopUsers.DTOs;
 using EShopAPI.Cores.ShopUsers.Services;
@@ -19,6 +20,7 @@ namespace EshopTest.Cores.ShopUsers
     {
         private IShopUserService _shopUserService;
         private Mock<IShopUserDao> _mockShopUserDao;
+        private LoginUserData _loginUserData;
 
         private static readonly object[] _insertCases =
         {
@@ -38,8 +40,7 @@ namespace EshopTest.Cores.ShopUsers
                     Language = new Dictionary<string, string>()
                     {
                         { "insert01", "value01"}
-                    },
-                    CreateUser = "shopAdmin"
+                    }
                 },
                 new ShopUser()
                 {
@@ -78,8 +79,7 @@ namespace EshopTest.Cores.ShopUsers
                     Language = new Dictionary<string, string>()
                     {
                         { "insert02", "value02"}
-                    },
-                    CreateUser = "shopAdmin"
+                    }
                 },
                 new ShopUser()
                 {
@@ -115,7 +115,6 @@ namespace EshopTest.Cores.ShopUsers
                     Address = "測試編輯地址",
                     Email = "update@gmail.com",
                     Phone = "0998765432",
-                    UpdateUser = "shopAdmin",
                     Remarks = "編輯備註",
                     Language = new Dictionary<string, string>()
                     {
@@ -150,7 +149,6 @@ namespace EshopTest.Cores.ShopUsers
                     Address = "測試編輯地址02",
                     Email = "update02@gmail.com",
                     Phone = "0998765432",
-                    UpdateUser = "shopAdmin",
                     Remarks = "編輯備註02",
                     Language = new Dictionary<string, string>()
                     {
@@ -277,8 +275,13 @@ namespace EshopTest.Cores.ShopUsers
         [SetUp]
         public void Setup()
         {
+            _loginUserData = new LoginUserData()
+            {
+                UserNumber = "shopAdmin"
+            };
+
             _mockShopUserDao = new Mock<IShopUserDao>(MockBehavior.Strict);
-            _shopUserService = new ShopUserService(_mockShopUserDao.Object);
+            _shopUserService = new ShopUserService(_mockShopUserDao.Object, _loginUserData);
         }
 
         /// <summary>
@@ -344,7 +347,7 @@ namespace EshopTest.Cores.ShopUsers
                         inputEntity.Address == updateDto.Address &&
                         inputEntity.Email == updateDto.Email &&
                         inputEntity.Phone == updateDto.Phone &&
-                        inputEntity.UpdateUser == updateDto.UpdateUser &&
+                        inputEntity.UpdateUser == _loginUserData.UserNumber &&
                         inputEntity.Remarks == updateDto.Remarks &&
                         JsonSerializer.Serialize(inputEntity.Language) == JsonSerializer.Serialize(updateDto.Language))
                     {
