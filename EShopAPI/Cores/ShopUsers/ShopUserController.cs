@@ -1,5 +1,6 @@
 ﻿using EShopAPI.Cores.ShopUsers.DTOs;
 using EShopAPI.Cores.ShopUsers.Services;
+using EShopAPI.Filters;
 using EShopCores.Models;
 using EShopCores.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -68,9 +69,14 @@ namespace EShopAPI.Cores.ShopUsers
         /// <param name="insertDto">要新增的使用者資訊</param>
         /// <returns></returns>
         /// <response code="200">新增成功</response>
+        /// <response code="401">Token驗證失敗</response>
+        /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">新增失敗</response>
         [HttpPost]
+        [TypeFilter(typeof(RequiredAdminFilter))]
         [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Insert([FromBody] InsertShopUserDto insertDto) 
         {
@@ -84,9 +90,14 @@ namespace EShopAPI.Cores.ShopUsers
         /// <param name="updateDto">要編輯的使用者資訊</param>
         /// <returns></returns>
         /// <response code="200">編輯成功</response>
+        /// <response code="401">Token驗證失敗</response>
+        /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">編輯失敗</response>
         [HttpPut]
+        [TypeFilter(typeof(RequiredAdminFilter))]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update([FromBody] UpdateShopUserDto updateDto)
         {
@@ -100,9 +111,14 @@ namespace EShopAPI.Cores.ShopUsers
         /// <param name="id">要設定啟用的 使用者id</param>
         /// <returns></returns>
         /// <response code="200">編輯成功</response>
+        /// <response code="401">Token驗證失敗</response>
+        /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">編輯失敗</response>
         [HttpPatch("Enable/{id}")]
+        [TypeFilter(typeof(RequiredAdminFilter))]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> SetEnable(long id)
         {
@@ -116,9 +132,14 @@ namespace EShopAPI.Cores.ShopUsers
         /// <param name="id">要設定啟用的 使用者id</param>
         /// <returns></returns>
         /// <response code="200">編輯成功</response>
+        /// <response code="401">Token驗證失敗</response>
+        /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">編輯失敗</response>
         [HttpPatch("Disable/{id}")]
+        [TypeFilter(typeof(RequiredAdminFilter))]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> SetDesable(long id)
         {

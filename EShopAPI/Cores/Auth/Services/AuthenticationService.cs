@@ -38,7 +38,7 @@ namespace EShopAPI.Cores.Auth.Services
 
             if (shopUser.Pwd != loginDto.Pwd) 
             {
-                throw new EShopException(ResponseCodeType.AccountAndPwdError, "密碼不存在");
+                throw new EShopException(ResponseCodeType.PwdError, "密碼錯誤");
             }
 
             string accessToken = await _jwtService.GenerateAccessTokenAsync(shopUser);

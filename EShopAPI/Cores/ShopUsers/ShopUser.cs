@@ -76,6 +76,14 @@ namespace EShopAPI.Cores.ShopUsers
         public bool IsEnable { get; set; }
 
         /// <summary>
+        /// 是否為管理員
+        /// </summary>
+        [JsonRequired]
+        [Column("is_admin")]
+        [Comment("是否為管理員")]
+        public bool IsAdmin { get; set; } = false;
+
+        /// <summary>
         /// 使用者與角色的關聯
         /// </summary>
         public ICollection<MapUserRole>? MapUserRoles { get; set; }

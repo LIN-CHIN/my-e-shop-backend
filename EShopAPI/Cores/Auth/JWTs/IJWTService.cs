@@ -21,5 +21,11 @@ namespace EShopAPI.Cores.Auth.JWTs
         /// <returns></returns>
         string GenerateRefreshToken(ShopUser shopUser);
 
+        /// <summary>
+        /// 解析Token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        JwtPayload DecryptToken(string token);
     }
 }

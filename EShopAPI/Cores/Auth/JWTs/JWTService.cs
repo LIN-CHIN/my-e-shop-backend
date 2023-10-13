@@ -3,7 +3,9 @@ using EShopAPI.Cores.MapUserRoles.Services;
 using EShopAPI.Cores.ShopActions;
 using EShopAPI.Cores.ShopUsers;
 using EShopAPI.Settings;
+using EShopCores.Errors;
 using EShopCores.Extensions;
+using EShopCores.Responses;
 using Jose;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
@@ -64,6 +66,24 @@ namespace EShopAPI.Cores.Auth.JWTs
             return GetToken(shopUser, RefreshTokenExpireTime);
         }
 
+        ///<inheritdoc/>
+        public JwtPayload DecryptToken(string token)
+        {
+            string json = JWT.Decode(token, Encoding.UTF8.GetBytes(_jwtTokenSettings.SignKey), JwsAlgorithm.HS256);
+            JwtPayload? payload = JsonSerializer.Deserialize<JwtPayload>(json);
+            if (payload == null) 
+            {
+                throw new EShopException(ResponseCodeType.InvalidToken, "payload為null，Token解析失敗");
+            }
+
+            if (payload.Expiration < DateTime.UtcNow.GetUnixTimestampSecond()) 
+            {
+                throw new EShopException(ResponseCodeType.TokenOverDue, "token已經過期");
+            }
+
+            return payload;
+        }
+
         /// <summary>
         /// 取得Token
         /// </summary>
@@ -83,6 +103,7 @@ namespace EShopAPI.Cores.Auth.JWTs
                 IssuedAt = iat.GetUnixTimestampSecond(),
                 Expiration = exp.GetUnixTimestampSecond(),
                 ShopActions = shopActions,
+                IsAdmin = shopUser.IsAdmin
             };
 
             string json = JsonSerializer.Serialize(payload);

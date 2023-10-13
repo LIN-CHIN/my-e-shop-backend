@@ -33,6 +33,7 @@ namespace EshopTest.Cores.ShopUsers
                     Email = "新增email01",
                     Phone = "0912345678",
                     IsEnable = true,
+                    IsAdmin = true,
                     Remarks = "新增備註01",
                     Language = new Dictionary<string, string>()
                     {
@@ -50,6 +51,7 @@ namespace EshopTest.Cores.ShopUsers
                     Email = "新增email01",
                     Phone = "0912345678",
                     IsEnable = true,
+                    IsAdmin = true,
                     Remarks = "新增備註01",
                     Language = JsonSerializer.SerializeToDocument(
                         new Dictionary<string, string>()
@@ -71,6 +73,7 @@ namespace EshopTest.Cores.ShopUsers
                     Email = "新增email02",
                     Phone = "0912345678",
                     IsEnable = false,
+                    IsAdmin = false,
                     Remarks = "新增備註02",
                     Language = new Dictionary<string, string>()
                     {
@@ -88,6 +91,7 @@ namespace EshopTest.Cores.ShopUsers
                     Email = "新增email02",
                     Phone = "0912345678",
                     IsEnable = false,
+                    IsAdmin = false,
                     Remarks = "新增備註02",
                     Language = JsonSerializer.SerializeToDocument(
                         new Dictionary<string, string>()

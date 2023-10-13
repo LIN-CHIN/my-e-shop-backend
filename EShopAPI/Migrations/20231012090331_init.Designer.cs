@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EShopAPI.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20230928075753_init")]
+    [Migration("20231012090331_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -2655,6 +2655,13 @@ namespace EShopAPI.Migrations
                         .HasColumnName("email")
                         .HasComment("Email");
 
+                    b.Property<bool>("IsAdmin")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_admin")
+                        .HasComment("是否為管理員");
+
                     b.Property<bool>("IsEnable")
                         .HasColumnType("boolean")
                         .HasColumnName("is_enable")
@@ -2722,6 +2729,7 @@ namespace EShopAPI.Migrations
                             Id = 1L,
                             CreateDate = 1695285957713L,
                             CreateUser = "shopAdmin",
+                            IsAdmin = true,
                             IsEnable = true,
                             Name = "商店管理員",
                             Number = "shopAdmin",
@@ -2733,6 +2741,7 @@ namespace EShopAPI.Migrations
                             Id = 2L,
                             CreateDate = 1695285957713L,
                             CreateUser = "shopUser",
+                            IsAdmin = false,
                             IsEnable = true,
                             Name = "商店使用者(測試用)",
                             Number = "shopUser",

@@ -41,6 +41,11 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         public bool IsEnable { get; set; }
 
         /// <summary>
+        /// 是否為管理員
+        /// </summary>
+        public bool IsAdmin { get; set; }
+
+        /// <summary>
         /// 將實體解析成ShopUserDTO
         /// </summary>
         /// <param name="shopUser"></param>
@@ -59,7 +64,8 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
                 Address = shopUser.Address,
                 Email = shopUser.Email,
                 Phone = shopUser.Phone,
-                IsEnable = shopUser.IsEnable
+                IsEnable = shopUser.IsEnable,
+                IsAdmin = shopUser.IsAdmin
             };
 
             shopUserDTO.ParseBaseObject(shopUser);

@@ -1,4 +1,5 @@
-﻿using EShopAPI.Context;
+﻿using EShopAPI.Common;
+using EShopAPI.Context;
 using EShopAPI.Cores.Auth.JWTs;
 using EShopAPI.Cores.Auth.Services;
 using EShopAPI.Cores.MapUserRoles.DAOs;
@@ -48,6 +49,9 @@ namespace EShopAPI
 
             //Authentication
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            //LoginUserData
+            services.AddScoped<LoginUserData>();
 
             //JWTs
             services.AddScoped<IJwtService, JwtService>();

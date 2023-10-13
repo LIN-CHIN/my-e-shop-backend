@@ -58,6 +58,12 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         public bool IsEnable { get; set; } = true;
 
         /// <summary>
+        /// 是否為管理員
+        /// </summary>
+        [JsonRequired]
+        public bool IsAdmin { get; set; } = false;
+
+        /// <summary>
         /// 建立者
         /// </summary>
         [JsonRequired]
@@ -94,6 +100,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
                 Email = Email,
                 Phone = Phone,
                 IsEnable = IsEnable,
+                IsAdmin = IsAdmin,
                 CreateUser = CreateUser,
                 CreateDate = CreateDate,
                 Remarks = Remarks,

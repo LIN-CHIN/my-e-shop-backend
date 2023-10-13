@@ -570,6 +570,13 @@ namespace EShopAPI.Context
                .OnDelete(DeleteBehavior.Cascade);
             #endregion
 
+            #region Set Default value
+            modelBuilder.Entity<ShopUser>()
+                .Property(x => x.IsAdmin)
+                .HasDefaultValue(false);
+                
+            #endregion
+
             #region Add Seed
             modelBuilder.Entity<EShopUnit>()
                 .HasData(GetDefaultUnits());
@@ -720,7 +727,8 @@ namespace EShopAPI.Context
                     Address = null,
                     Email = null,
                     Phone = null,
-                    IsEnable = true
+                    IsEnable = true,
+                    IsAdmin = true,
                 },
                 new ShopUser
                 {
@@ -737,8 +745,9 @@ namespace EShopAPI.Context
                     Address = null,
                     Email = null,
                     Phone = null,
-                    IsEnable = true
-                },
+                    IsEnable = true,
+                    IsAdmin = false
+                }
             };
         }
 
