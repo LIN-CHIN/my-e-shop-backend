@@ -1,6 +1,6 @@
-﻿using EShopAPI.Cores.MapUserRoles;
+﻿using EShopAPI.Cores.MapRolePermissions.DTOs;
+using EShopAPI.Cores.MapUserRoles;
 using EShopAPI.Cores.MapUserRoles.Services;
-using EShopAPI.Cores.ShopActions;
 using EShopAPI.Cores.ShopUsers;
 using EShopAPI.Settings;
 using EShopCores.Errors;
@@ -41,23 +41,20 @@ namespace EShopAPI.Cores.Auth.JWTs
         ///<inheritdoc/>
         public async Task<string> GenerateAccessTokenAsync(ShopUser shopUser)
         {
-            //查詢該user的角色>權限>功能
+            //查詢該user的角色>權限
             IList<MapUserRole> mapUserRoles = await _mapUserRoleService.GetByUserId(shopUser.Id)
                 .Include(user => user.ShopRole!)
                     .ThenInclude(role => role.MapRolePermissions!)
                     .ThenInclude(map => map.ShopPermission!)
-                    .ThenInclude(per => per.MapPermissionActions!)
-                    .ThenInclude(action => action.ShopAction)
                 .ToListAsync();
 
-            //組功能清單
-            IList<ShopAction> shopActions = mapUserRoles.SelectMany(m => m.ShopRole!.MapRolePermissions!)
-                    .Select(map => map.ShopPermission!)
-                    .SelectMany(m => m.MapPermissionActions!)
-                    .Select(s => s.ShopAction!)
+            //組權限清單
+            IList<MapRolePermissionDto?> shopPermissions = 
+                mapUserRoles.SelectMany(m => m.ShopRole!.MapRolePermissions!)
+                    .Select(map => MapRolePermissionDto.Parse(map))
                     .ToList();
 
-            return GetToken(shopUser, AccessTokenExpireTime, shopActions);
+            return GetToken(shopUser, AccessTokenExpireTime, shopPermissions);
         }
 
         ///<inheritdoc/>
@@ -92,9 +89,9 @@ namespace EShopAPI.Cores.Auth.JWTs
         /// </summary>
         /// <param name="shopUser">使用者資訊</param>
         /// <param name="expireTime">到期時間</param>
-        /// <param name="shopActions">功能列表</param>
+        /// <param name="mapRolePermissions">角色與權限關係的列表</param>
         /// <returns></returns>
-        private string GetToken(ShopUser shopUser, int expireTime, IList<ShopAction>? shopActions = null ) 
+        private string GetToken(ShopUser shopUser, int expireTime, IList<MapRolePermissionDto?>? mapRolePermissions = null) 
         {
             DateTime iat = DateTime.Now;
             DateTime exp = iat.AddSeconds(expireTime);
@@ -105,7 +102,7 @@ namespace EShopAPI.Cores.Auth.JWTs
                 Issuer = _jwtTokenSettings.Issuer,
                 IssuedAt = iat.GetUnixTimestampSecond(),
                 Expiration = exp.GetUnixTimestampSecond(),
-                ShopActions = shopActions,
+                MapRolePermissions = mapRolePermissions,
                 IsAdmin = shopUser.IsAdmin
             };
 

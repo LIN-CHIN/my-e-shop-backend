@@ -1,4 +1,7 @@
-﻿using EShopAPI.Cores.ShopActions;
+﻿using EShopAPI.Cores.MapRolePermissions.DTOs;
+using EShopAPI.Cores.ShopActions;
+using EShopAPI.Cores.ShopPermissions;
+using EShopAPI.Cores.ShopPermissions.DTOs;
 
 namespace EShopAPI.Common
 {
@@ -18,8 +21,8 @@ namespace EShopAPI.Common
         public bool IsAdmin { get; set; }
 
         /// <summary>
-        /// 商店功能清單
+        /// 角色與權限關係的清單
         /// </summary>
-        public IList<ShopAction>? ShopActions { get; set; } = new List<ShopAction>();
+        public IList<MapRolePermissionDto?>? MapRolePermissions { get; set; }
     }
 }

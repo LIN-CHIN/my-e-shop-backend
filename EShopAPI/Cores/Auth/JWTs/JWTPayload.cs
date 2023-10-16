@@ -1,5 +1,5 @@
 ﻿using EShopAPI.Common;
-using EShopAPI.Cores.ShopActions;
+using EShopAPI.Cores.MapRolePermissions.DTOs;
 
 namespace EShopAPI.Cores.Auth.JWTs
 {
@@ -14,9 +14,9 @@ namespace EShopAPI.Cores.Auth.JWTs
         public bool IsAdmin { get; set; }
 
         /// <summary>
-        /// 商店功能清單
+        /// 權限清單
         /// </summary>
-        public IList<ShopAction>? ShopActions { get; set; } = new List<ShopAction>();
+        public IList<MapRolePermissionDto?>? MapRolePermissions { get; set; }
 
         /// <summary>
         /// 設定登入者資料
@@ -27,7 +27,7 @@ namespace EShopAPI.Cores.Auth.JWTs
         {
             loginUserData.UserNumber = Subject;
             loginUserData.IsAdmin = IsAdmin;
-            loginUserData.ShopActions = ShopActions;
+            loginUserData.MapRolePermissions = MapRolePermissions;
         }
     }
 }
