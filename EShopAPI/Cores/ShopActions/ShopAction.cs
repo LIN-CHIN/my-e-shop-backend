@@ -10,7 +10,9 @@ namespace EShopAPI.Cores.ShopActions
     /// 商店Action(功能)實體
     /// </summary>
     /// <remarks>
-    /// 儲存角色權限可以用哪些API (Controller Action)
+    /// 目前規劃不想將權限分得那麼細，
+    /// 未來也許有機會可以用
+    /// 不刪除該table，但不會使用到
     /// </remarks>
     [Table("shop_action", Schema = "eshop")]
     [Comment("商店Action(功能)實體, 存角色權限可以用哪些API (Controller Action)")]

@@ -32,6 +32,38 @@ namespace EShopAPI.Cores.MapRolePermissions
         public long PermissionId { get; set; }
 
         /// <summary>
+        /// 是否有新增的權限
+        /// </summary>
+        [Required]
+        [Column("is_create_permission")]
+        [Comment("是否有新增的權限")]
+        public bool IsCreatePermission { get; set; }
+
+        /// <summary>
+        /// 是否有讀取的權限
+        /// </summary>
+        [Required]
+        [Column("is_read_permission")]
+        [Comment("是否有讀取的權限")]
+        public bool IsReadPermission { get; set; }
+
+        /// <summary>
+        /// 是否有編輯的權限
+        /// </summary>
+        [Required]
+        [Column("is_update_permission")]
+        [Comment("是否有編輯的權限")]
+        public bool IsUpdatePermission { get; set; }
+
+        /// <summary>
+        /// 是否有刪除的權限
+        /// </summary>
+        [Required]
+        [Column("is_delete_permission")]
+        [Comment("是否有刪除的權限")]
+        public bool IsDeletePermission { get; set; }
+
+        /// <summary>
         /// 商店角色實體
         /// </summary>
         public ShopRole? ShopRole { get; set; } 

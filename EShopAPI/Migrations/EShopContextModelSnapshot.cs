@@ -893,6 +893,26 @@ namespace EShopAPI.Migrations
                         .HasColumnName("create_user")
                         .HasComment("建立者");
 
+                    b.Property<bool>("IsCreatePermission")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_create_permission")
+                        .HasComment("是否有新增的權限");
+
+                    b.Property<bool>("IsDeletePermission")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_delete_permission")
+                        .HasComment("是否有刪除的權限");
+
+                    b.Property<bool>("IsReadPermission")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_read_permission")
+                        .HasComment("是否有讀取的權限");
+
+                    b.Property<bool>("IsUpdatePermission")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_update_permission")
+                        .HasComment("是否有編輯的權限");
+
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
                         .HasColumnName("language")
@@ -933,6 +953,128 @@ namespace EShopAPI.Migrations
                     b.ToTable("map_role_permission", "eshop", t =>
                         {
                             t.HasComment("角色與權限關聯的實體");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = true,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = true,
+                            PermissionId = 6L,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = true,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = true,
+                            PermissionId = 7L,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = true,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = true,
+                            PermissionId = 8L,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = true,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = true,
+                            PermissionId = 9L,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = true,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = true,
+                            PermissionId = 10L,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = false,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = false,
+                            PermissionId = 6L,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = false,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = false,
+                            PermissionId = 7L,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = false,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = false,
+                            PermissionId = 8L,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = false,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = false,
+                            PermissionId = 9L,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsCreatePermission = false,
+                            IsDeletePermission = false,
+                            IsReadPermission = true,
+                            IsUpdatePermission = false,
+                            PermissionId = 10L,
+                            RoleId = 2L
                         });
                 });
 
@@ -998,6 +1140,35 @@ namespace EShopAPI.Migrations
                     b.ToTable("map_user_role", "eshop", t =>
                         {
                             t.HasComment("使用者與角色關聯的實體");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            Remarks = "員工測試帳號對應的員工角色",
+                            RoleId = 1L,
+                            UserId = 2L
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopUser",
+                            Remarks = "一般使用者帳號對應的基礎使用者角色",
+                            RoleId = 2L,
+                            UserId = 3L
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopUser",
+                            Remarks = "VIP帳號對應的VIP使用者角色",
+                            RoleId = 3L,
+                            UserId = 4L
                         });
                 });
 
@@ -2502,6 +2673,269 @@ namespace EShopAPI.Migrations
                         {
                             t.HasComment("商店權限實體");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "商店使用者",
+                            Number = "ShopUser"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "商店角色",
+                            Number = "ShopRole"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "商店使用者與角色關係",
+                            Number = "MapUserRole"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "商店權限",
+                            Number = "ShopPermission"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "商店角色與權限關係",
+                            Number = "MapRolePermission"
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "產品主檔",
+                            Number = "ProductMaster"
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "產品細項",
+                            Number = "ProductDetail"
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "組合產品主檔",
+                            Number = "CompositeProductMaster"
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "組合產品細項",
+                            Number = "CompositeProductDetail"
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "組合產品細項的項目",
+                            Number = "CompositeProductItem"
+                        },
+                        new
+                        {
+                            Id = 11L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "商店庫存",
+                            Number = "ShopInventory"
+                        },
+                        new
+                        {
+                            Id = 12L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "商店單位",
+                            Number = "EshopUnit"
+                        },
+                        new
+                        {
+                            Id = 13L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "產品類型",
+                            Number = "ProductCategory"
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "產品與產品類型的關係",
+                            Number = "MapProductCategory"
+                        },
+                        new
+                        {
+                            Id = 15L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "物流類型",
+                            Number = "DeliveryCategory"
+                        },
+                        new
+                        {
+                            Id = 16L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "組合產品與物流的關係",
+                            Number = "MapCompositeProductDelivery"
+                        },
+                        new
+                        {
+                            Id = 17L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "產品與物流的關係",
+                            Number = "MapProductDeliveryCategory"
+                        },
+                        new
+                        {
+                            Id = 18L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "物流偏好",
+                            Number = "DeliveryPreference"
+                        },
+                        new
+                        {
+                            Id = 19L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "訂單主檔",
+                            Number = "OrderMaster"
+                        },
+                        new
+                        {
+                            Id = 20L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "產品訂單",
+                            Number = "OrderForProduct"
+                        },
+                        new
+                        {
+                            Id = 21L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "組合產品訂單細項",
+                            Number = "OrderForCompositeDetail"
+                        },
+                        new
+                        {
+                            Id = 22L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "組合產品訂單細項的項目",
+                            Number = "OrderForCompositeItem"
+                        },
+                        new
+                        {
+                            Id = 23L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "購物車",
+                            Number = "ShopCart"
+                        },
+                        new
+                        {
+                            Id = 24L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "訂單主檔紀錄",
+                            Number = "RecordOrderMaster"
+                        },
+                        new
+                        {
+                            Id = 25L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "產品訂單紀錄",
+                            Number = "RecordOrderForProduct"
+                        },
+                        new
+                        {
+                            Id = 26L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "組合產品訂單細項紀錄",
+                            Number = "RecordOrderForCompositeDetail"
+                        },
+                        new
+                        {
+                            Id = 27L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "組合產品訂單細項的項目紀錄",
+                            Number = "RecordOrderForCompositeItem"
+                        },
+                        new
+                        {
+                            Id = 28L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "商店優惠券",
+                            Number = "ShopCoupon"
+                        },
+                        new
+                        {
+                            Id = 29L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsEnable = true,
+                            Name = "付款類型",
+                            Number = "PaymentCategory"
+                        });
                 });
 
             modelBuilder.Entity("EShopAPI.Cores.ShopRoles.ShopRole", b =>
@@ -2582,39 +3016,29 @@ namespace EShopAPI.Migrations
                             CreateDate = 1695285957713L,
                             CreateUser = "shopAdmin",
                             IsEnable = true,
-                            Name = "商店管理者權限",
-                            Number = "shopAdminRole",
-                            Remarks = "商店管理者權限"
+                            Name = "商店員工角色",
+                            Number = "shop_employee",
+                            Remarks = "員工角色"
                         },
                         new
                         {
                             Id = 2L,
                             CreateDate = 1695285957713L,
-                            CreateUser = "shopUser",
+                            CreateUser = "shopAdmin",
                             IsEnable = true,
-                            Name = "商店使用者(測試用)",
-                            Number = "shopUser",
-                            Remarks = "預設的一般使用者(測試用)"
+                            Name = "一般客戶角色",
+                            Number = "custom",
+                            Remarks = "一般客戶角色"
                         },
                         new
                         {
                             Id = 3L,
                             CreateDate = 1695285957713L,
-                            CreateUser = "shopUser",
+                            CreateUser = "shopAdmin",
                             IsEnable = true,
-                            Name = "一般客戶",
-                            Number = "custom",
-                            Remarks = "一般客戶"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            CreateDate = 1695285957713L,
-                            CreateUser = "shopUser",
-                            IsEnable = true,
-                            Name = "VIP客戶",
+                            Name = "VIP客戶角色",
                             Number = "vip_custom",
-                            Remarks = "VIP客戶"
+                            Remarks = "VIP客戶角色"
                         });
                 });
 
@@ -2737,13 +3161,37 @@ namespace EShopAPI.Migrations
                         {
                             Id = 2L,
                             CreateDate = 1695285957713L,
-                            CreateUser = "shopUser",
+                            CreateUser = "shopAdmin",
                             IsAdmin = false,
                             IsEnable = true,
-                            Name = "商店使用者(測試用)",
+                            Name = "員工1(測試用)",
+                            Number = "shopEmployee1",
+                            Pwd = "shopEmployee1",
+                            Remarks = "預設的員工(測試用)"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsAdmin = false,
+                            IsEnable = true,
+                            Name = "一般客戶1(測試用)",
                             Number = "shopUser",
                             Pwd = "shopUser",
                             Remarks = "預設的一般使用者(測試用)"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            CreateDate = 1695285957713L,
+                            CreateUser = "shopAdmin",
+                            IsAdmin = false,
+                            IsEnable = true,
+                            Name = "VIP客戶1(測試用)",
+                            Number = "shopVipUser",
+                            Pwd = "shopVipUser",
+                            Remarks = "預設的VIP使用者(測試用)"
                         });
                 });
 

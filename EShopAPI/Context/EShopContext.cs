@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.CompositeProductDetails;
+﻿using EShopAPI.Common.Enums;
+using EShopAPI.Cores.CompositeProductDetails;
 using EShopAPI.Cores.CompositeProductItems;
 using EShopAPI.Cores.CompositeProductMasters;
 using EShopAPI.Cores.DeliveryCategories;
@@ -586,6 +587,16 @@ namespace EShopAPI.Context
 
             modelBuilder.Entity<ShopRole>()
                .HasData(GetDefaultRoles());
+
+            modelBuilder.Entity<MapUserRole>()
+              .HasData(GetDefaultMapUserRoles());
+
+            modelBuilder.Entity<ShopPermission>()
+               .HasData(GetDefaultPermissions());
+
+            modelBuilder.Entity<MapRolePermission>()
+               .HasData(GetDefaultMapRolePermissions());
+            
             #endregion
         }
 
@@ -733,20 +744,103 @@ namespace EShopAPI.Context
                 new ShopUser
                 {
                     Id = 2,
-                    CreateUser = "shopUser",
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "預設的員工(測試用)",
+                    Language = null,
+                    Number = "shopEmployee1",
+                    Name = "員工1(測試用)",
+                    Pwd = "shopEmployee1",
+                    Address = null,
+                    Email = null,
+                    Phone = null,
+                    IsEnable = true,
+                    IsAdmin = false
+                },
+                new ShopUser
+                {
+                    Id = 3,
+                    CreateUser = "shopAdmin",
                     CreateDate = 1695285957713,
                     UpdateUser = null,
                     UpdateDate = null,
                     Remarks = "預設的一般使用者(測試用)",
                     Language = null,
                     Number = "shopUser",
-                    Name = "商店使用者(測試用)",
+                    Name = "一般客戶1(測試用)",
                     Pwd = "shopUser",
                     Address = null,
                     Email = null,
                     Phone = null,
                     IsEnable = true,
                     IsAdmin = false
+                },
+                new ShopUser
+                {
+                    Id = 4,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "預設的VIP使用者(測試用)",
+                    Language = null,
+                    Number = "shopVipUser",
+                    Name = "VIP客戶1(測試用)",
+                    Pwd = "shopVipUser",
+                    Address = null,
+                    Email = null,
+                    Phone = null,
+                    IsEnable = true,
+                    IsAdmin = false
+                }
+            };
+        }
+
+        /// <summary>
+        /// 取得預設的使用者與角色的關係清單
+        /// </summary>
+        /// <returns></returns>
+        private static IList<MapUserRole> GetDefaultMapUserRoles()
+        {
+            return new List<MapUserRole>
+            {
+                new MapUserRole
+                {
+                    Id = 1,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "員工測試帳號對應的員工角色",
+                    Language = null,
+                    UserId = 2,
+                    RoleId = 1
+                },
+                new MapUserRole
+                {
+                    Id = 2,
+                    CreateUser = "shopUser",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "一般使用者帳號對應的基礎使用者角色",
+                    Language = null,
+                    UserId = 3,
+                    RoleId = 2
+                },
+                new MapUserRole
+                {
+                    Id = 3,
+                    CreateUser = "shopUser",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = "VIP帳號對應的VIP使用者角色",
+                    Language = null,
+                    UserId = 4,
+                    RoleId = 3
                 }
             };
         }
@@ -766,51 +860,597 @@ namespace EShopAPI.Context
                     CreateDate = 1695285957713,
                     UpdateUser = null,
                     UpdateDate = null,
-                    Remarks = "商店管理者權限",
+                    Remarks = "員工角色",
                     Language = null,
-                    Number = "shopAdminRole",
-                    Name = "商店管理者權限",
+                    Number = "shop_employee",
+                    Name = "商店員工角色",
                     IsEnable = true
                 },
                 new ShopRole
                 {
                     Id = 2,
-                    CreateUser = "shopUser",
+                    CreateUser = "shopAdmin",
                     CreateDate = 1695285957713,
                     UpdateUser = null,
                     UpdateDate = null,
-                    Remarks = "預設的一般使用者(測試用)",
+                    Remarks = "一般客戶角色",
                     Language = null,
-                    Number = "shopUser",
-                    Name = "商店使用者(測試用)",
+                    Number = "custom",
+                    Name = "一般客戶角色",
                     IsEnable = true
                 },
                 new ShopRole
                 {
                     Id = 3,
-                    CreateUser = "shopUser",
+                    CreateUser = "shopAdmin",
                     CreateDate = 1695285957713,
                     UpdateUser = null,
                     UpdateDate = null,
-                    Remarks = "一般客戶",
-                    Language = null,
-                    Number = "custom",
-                    Name = "一般客戶",
-                    IsEnable = true
-                },
-                new ShopRole
-                {
-                    Id = 4,
-                    CreateUser = "shopUser",
-                    CreateDate = 1695285957713,
-                    UpdateUser = null,
-                    UpdateDate = null,
-                    Remarks = "VIP客戶",
+                    Remarks = "VIP客戶角色",
                     Language = null,
                     Number = "vip_custom",
-                    Name = "VIP客戶",
+                    Name = "VIP客戶角色",
                     IsEnable = true
                 },
+            };
+        }
+
+        /// <summary>
+        /// 取得預設的權限清單
+        /// </summary>
+        /// <returns></returns>
+        private static IList<ShopPermission> GetDefaultPermissions()
+        {
+            return new List<ShopPermission>
+            {
+                new ShopPermission
+                {
+                    Id = 1,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "ShopUser",
+                    Name = "商店使用者",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 2,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "ShopRole",
+                    Name = "商店角色",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 3,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "MapUserRole",
+                    Name = "商店使用者與角色關係",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 4,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "ShopPermission",
+                    Name = "商店權限",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 5,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "MapRolePermission",
+                    Name = "商店角色與權限關係",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 6,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "ProductMaster",
+                    Name = "產品主檔",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 7,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "ProductDetail",
+                    Name = "產品細項",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 8,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "CompositeProductMaster",
+                    Name = "組合產品主檔",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 9,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "CompositeProductDetail",
+                    Name = "組合產品細項",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 10,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "CompositeProductItem",
+                    Name = "組合產品細項的項目",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 11,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "ShopInventory",
+                    Name = "商店庫存",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 12,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "EshopUnit",
+                    Name = "商店單位",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 13,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "ProductCategory",
+                    Name = "產品類型",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 14,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "MapProductCategory",
+                    Name = "產品與產品類型的關係",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 15,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "DeliveryCategory",
+                    Name = "物流類型",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 16,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "MapCompositeProductDelivery",
+                    Name = "組合產品與物流的關係",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 17,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "MapProductDeliveryCategory",
+                    Name = "產品與物流的關係",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 18,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "DeliveryPreference",
+                    Name = "物流偏好",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 19,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "OrderMaster",
+                    Name = "訂單主檔",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 20,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "OrderForProduct",
+                    Name = "產品訂單",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 21,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "OrderForCompositeDetail",
+                    Name = "組合產品訂單細項",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 22,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "OrderForCompositeItem",
+                    Name = "組合產品訂單細項的項目",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 23,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "ShopCart",
+                    Name = "購物車",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 24,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "RecordOrderMaster",
+                    Name = "訂單主檔紀錄",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 25,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "RecordOrderForProduct",
+                    Name = "產品訂單紀錄",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 26,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "RecordOrderForCompositeDetail",
+                    Name = "組合產品訂單細項紀錄",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 27,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "RecordOrderForCompositeItem",
+                    Name = "組合產品訂單細項的項目紀錄",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 28,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "ShopCoupon",
+                    Name = "商店優惠券",
+                    IsEnable = true
+                },
+                new ShopPermission
+                {
+                    Id = 29,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "PaymentCategory",
+                    Name = "付款類型",
+                    IsEnable = true
+                }
+            };
+        }
+
+        /// <summary>
+        /// 取得預設的清單
+        /// </summary>
+        /// <returns></returns>
+        private static IList<MapRolePermission> GetDefaultMapRolePermissions()
+        {
+            return new List<MapRolePermission>
+            {
+                new MapRolePermission
+                {
+                    Id = 1,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 1,
+                    PermissionId = (long)ShopPermissionType.ProductMaster,
+                    IsCreatePermission = true,
+                    IsReadPermission = true,
+                    IsUpdatePermission = true,
+                    IsDeletePermission = false
+                },
+                new MapRolePermission
+                {
+                    Id = 2,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 1,
+                    PermissionId = (long)ShopPermissionType.ProductDetail,
+                    IsCreatePermission = true,
+                    IsReadPermission = true,
+                    IsUpdatePermission = true,
+                    IsDeletePermission = false
+                },
+                new MapRolePermission
+                {
+                    Id = 3,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 1,
+                    PermissionId = (long)ShopPermissionType.CompositeProductMaster,
+                    IsCreatePermission = true,
+                    IsReadPermission = true,
+                    IsUpdatePermission = true,
+                    IsDeletePermission = false
+                },
+                new MapRolePermission
+                {
+                    Id = 4,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 1,
+                    PermissionId = (long)ShopPermissionType.CompositeProductDetail,
+                    IsCreatePermission = true,
+                    IsReadPermission = true,
+                    IsUpdatePermission = true,
+                    IsDeletePermission = false
+                },
+                new MapRolePermission
+                {
+                    Id = 5,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 1,
+                    PermissionId = (long)ShopPermissionType.CompositeProductItem,
+                    IsCreatePermission = true,
+                    IsReadPermission = true,
+                    IsUpdatePermission = true,
+                    IsDeletePermission = false
+                },
+                new MapRolePermission
+                {
+                    Id = 6,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 2,
+                    PermissionId = (long)ShopPermissionType.ProductMaster,
+                    IsCreatePermission = false,
+                    IsReadPermission = true,
+                    IsUpdatePermission = false,
+                    IsDeletePermission = false
+                },
+                new MapRolePermission
+                {
+                    Id = 7,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 2,
+                    PermissionId = (long)ShopPermissionType.ProductDetail,
+                    IsCreatePermission = false,
+                    IsReadPermission = true,
+                    IsUpdatePermission = false,
+                    IsDeletePermission = false
+                },
+                new MapRolePermission
+                {
+                    Id = 8,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 2,
+                    PermissionId = (long)ShopPermissionType.CompositeProductMaster,
+                    IsCreatePermission = false,
+                    IsReadPermission = true,
+                    IsUpdatePermission = false,
+                    IsDeletePermission = false
+                },
+                new MapRolePermission
+                {
+                    Id = 9,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 2,
+                    PermissionId = (long)ShopPermissionType.CompositeProductDetail,
+                    IsCreatePermission = false,
+                    IsReadPermission = true,
+                    IsUpdatePermission = false,
+                    IsDeletePermission = false
+                },
+                new MapRolePermission
+                {
+                    Id = 10,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    RoleId = 2,
+                    PermissionId = (long)ShopPermissionType.CompositeProductItem,
+                    IsCreatePermission = false,
+                    IsReadPermission = true,
+                    IsUpdatePermission = false,
+                    IsDeletePermission = false
+                }
             };
         }
     }
