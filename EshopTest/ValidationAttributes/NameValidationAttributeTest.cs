@@ -2,7 +2,7 @@
 using EShopCores.Enums;
 using NUnit.Framework;
 
-namespace EshopTest.Cores.ValidationAttributes
+namespace EshopTest.ValidationAttributes
 {
     /// <summary>
     /// 測試Name驗證屬性

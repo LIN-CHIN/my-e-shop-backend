@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EshopTest.Cores.ValidationAttributes
+namespace EshopTest.ValidationAttributes
 {
     /// <summary>
     /// 測試Number驗證屬性
