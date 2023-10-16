@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.MapRolePermissions.DTOs;
+﻿using EShopAPI.Cores.Auth.JWTs;
+using EShopAPI.Cores.MapRolePermissions.DTOs;
 using EShopAPI.Cores.ShopActions;
 using EShopAPI.Cores.ShopPermissions;
 using EShopAPI.Cores.ShopPermissions.DTOs;
@@ -24,5 +25,17 @@ namespace EShopAPI.Common
         /// 角色與權限關係的清單
         /// </summary>
         public IList<MapRolePermissionDto?>? MapRolePermissions { get; set; }
+
+        /// <summary>
+        /// 設定登入者資料
+        /// </summary>
+        /// <param name="jwtPayload">解析token取得的payload</param>
+        /// <returns></returns>
+        public void SetLoginUserData(JwtPayload jwtPayload)
+        {
+            UserNumber = jwtPayload.Subject;
+            IsAdmin = jwtPayload.IsAdmin;
+            MapRolePermissions = jwtPayload.MapRolePermissions;
+        }
     }
 }

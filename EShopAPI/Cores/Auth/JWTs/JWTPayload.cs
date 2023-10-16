@@ -17,17 +17,5 @@ namespace EShopAPI.Cores.Auth.JWTs
         /// 權限清單
         /// </summary>
         public IList<MapRolePermissionDto?>? MapRolePermissions { get; set; }
-
-        /// <summary>
-        /// 設定登入者資料
-        /// </summary>
-        /// <param name="loginUserData">要設定資料的實體</param>
-        /// <returns></returns>
-        public void SetLoginUserData(LoginUserData loginUserData) 
-        {
-            loginUserData.UserNumber = Subject;
-            loginUserData.IsAdmin = IsAdmin;
-            loginUserData.MapRolePermissions = MapRolePermissions;
-        }
     }
 }

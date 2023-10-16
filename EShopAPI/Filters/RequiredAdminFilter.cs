@@ -71,7 +71,7 @@ namespace EShopAPI.Filters
                 return;
             }
 
-            jwtPayload.SetLoginUserData(_loginUserData);
+            _loginUserData.SetLoginUserData(jwtPayload);
         }
     }
 }

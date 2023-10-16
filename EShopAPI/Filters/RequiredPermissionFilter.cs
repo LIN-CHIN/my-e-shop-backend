@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace EShopAPI.Filters
 {
     /// <summary>
-    /// 加入該Filter就必須登入才能使用api(也就是要有Token)
+    /// 加入該Filter就必須登入且有權限才能使用功能
     /// </summary>
-    public class RequiredLoginFilter : IAuthorizationFilter
+    public class RequiredPermissionFilter : IAuthorizationFilter
     {
         private readonly IJwtService _jwtService;
         private readonly LoginUserData _loginUserData;
@@ -20,7 +20,7 @@ namespace EShopAPI.Filters
         /// </summary>
         /// <param name="jwtService"></param>
         /// <param name="loginUserData"></param>
-        public RequiredLoginFilter(IJwtService jwtService, LoginUserData loginUserData)
+        public RequiredPermissionFilter(IJwtService jwtService, LoginUserData loginUserData)
         {
             _jwtService = jwtService;
             _loginUserData = loginUserData;
@@ -45,6 +45,8 @@ namespace EShopAPI.Filters
             try
             {
                 jwtPayload  = _jwtService.DecryptToken(token!);
+               
+
             }
             catch (IntegrityException integrityException) 
             {
@@ -58,7 +60,7 @@ namespace EShopAPI.Filters
                 return;
             }
 
-            jwtPayload.SetLoginUserData(_loginUserData);
+            _loginUserData.SetLoginUserData(jwtPayload);
         }
     }
 }
