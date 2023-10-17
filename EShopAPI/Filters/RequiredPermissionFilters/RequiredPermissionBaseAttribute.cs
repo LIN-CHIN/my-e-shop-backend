@@ -111,7 +111,7 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
         /// true = 檢查通過
         /// false = 檢查失敗
         /// </returns>
-        private bool CheckPermission(AuthorizationFilterContext context,
+        private static bool CheckPermission(AuthorizationFilterContext context,
             IList<MapUserRole> mapUserRoles,
             string permissionNumber)
         {
