@@ -1,6 +1,7 @@
 ﻿using EShopAPI.Cores.ShopUsers.DTOs;
 using EShopAPI.Cores.ShopUsers.Services;
 using EShopAPI.Filters;
+using EShopAPI.Filters.RequiredAdminFilters;
 using EShopCores.Models;
 using EShopCores.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,7 @@ namespace EShopAPI.Cores.ShopUsers
         [HttpGet]
         [ProducesResponseType(typeof(PaginationResponse<ShopUserDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+
         public IActionResult Get(
             [FromQuery] QueryPaginationDto pageDto, 
             [FromQuery] QueryShopUserDto queryDto)
@@ -73,7 +75,7 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">新增失敗</response>
         [HttpPost]
-        [TypeFilter(typeof(RequiredAdminFilter))]
+        [RequiredAdminFilter]
         [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
@@ -94,7 +96,7 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">編輯失敗</response>
         [HttpPut]
-        [TypeFilter(typeof(RequiredAdminFilter))]
+        [RequiredAdminFilter]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
@@ -115,7 +117,7 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">編輯失敗</response>
         [HttpPatch("Enable/{id}")]
-        [TypeFilter(typeof(RequiredAdminFilter))]
+        [RequiredAdminFilter]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
@@ -136,7 +138,7 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">編輯失敗</response>
         [HttpPatch("Disable/{id}")]
-        [TypeFilter(typeof(RequiredAdminFilter))]
+        [RequiredAdminFilter]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]

@@ -63,7 +63,7 @@ namespace EShopCores.Responses
         /// </summary>
         [Description("帳號不存在")]
         [ResponseMessage("NotFindAccount", Description = "帳號不存在")]
-        AccountAndPwdError = 1004,
+        NotFindAccount = 1004,
 
         /// <summary>
         /// 密碼錯誤

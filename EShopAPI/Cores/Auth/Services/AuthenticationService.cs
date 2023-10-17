@@ -33,7 +33,7 @@ namespace EShopAPI.Cores.Auth.Services
             ShopUser? shopUser = await _shopUserService.GetByNumberAsync(loginDto.UserNumber);
             if(shopUser == null) 
             {
-                throw new EShopException(ResponseCodeType.AccountAndPwdError, "帳號不存在");
+                throw new EShopException(ResponseCodeType.NotFindAccount, "帳號不存在");
             }
 
             if (shopUser.Pwd != loginDto.Pwd) 
@@ -41,7 +41,7 @@ namespace EShopAPI.Cores.Auth.Services
                 throw new EShopException(ResponseCodeType.PwdError, "密碼錯誤");
             }
 
-            string accessToken = await _jwtService.GenerateAccessTokenAsync(shopUser);
+            string accessToken = _jwtService.GenerateAccessToken(shopUser);
             string refreshToken = _jwtService.GenerateRefreshToken(shopUser);
 
             return new LoginResponseDto

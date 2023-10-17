@@ -9,13 +9,13 @@ namespace EShopAPI.Cores.Auth.JWTs
     public class JwtPayload : JwtBasePayload
     {
         /// <summary>
+        /// 使用者id
+        /// </summary>
+        public long UserId { get; set; }
+
+        /// <summary>
         /// 是否為管理員
         /// </summary>
         public bool IsAdmin { get; set; }
-
-        /// <summary>
-        /// 權限清單
-        /// </summary>
-        public IList<MapRolePermissionDto?>? MapRolePermissions { get; set; }
     }
 }

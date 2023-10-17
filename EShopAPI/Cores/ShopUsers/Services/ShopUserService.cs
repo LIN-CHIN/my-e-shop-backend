@@ -72,6 +72,19 @@ namespace EShopAPI.Cores.ShopUsers.Services
         }
 
         ///<inheritdoc/>
+        public async Task<ShopUser> ThrowNotFindByNumberAsync(string number)
+        {
+            ShopUser? shopUser = await _shopUserDao.GetByNumberAsync(number);
+
+            if (shopUser == null)
+            {
+                throw new EShopException(ResponseCodeType.NotFindAccount, "帳號不存在");
+            }
+
+            return shopUser;
+        }
+
+        ///<inheritdoc/>
         public async Task<ShopUser> InsertAsync(InsertShopUserDto insertDto)
         {
             await ThrowExistByNumberAsync(insertDto.Number);

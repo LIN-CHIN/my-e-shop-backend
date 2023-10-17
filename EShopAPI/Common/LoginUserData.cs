@@ -12,6 +12,11 @@ namespace EShopAPI.Common
     public class LoginUserData
     {
         /// <summary>
+        /// 使用者id
+        /// </summary>
+        public long UserId { get; set; } 
+
+        /// <summary>
         /// 使用者帳號
         /// </summary>
         public string UserNumber { get; set; } = null!;
@@ -22,20 +27,15 @@ namespace EShopAPI.Common
         public bool IsAdmin { get; set; }
 
         /// <summary>
-        /// 角色與權限關係的清單
-        /// </summary>
-        public IList<MapRolePermissionDto?>? MapRolePermissions { get; set; }
-
-        /// <summary>
         /// 設定登入者資料
         /// </summary>
         /// <param name="jwtPayload">解析token取得的payload</param>
         /// <returns></returns>
         public void SetLoginUserData(JwtPayload jwtPayload)
         {
+            UserId = jwtPayload.UserId;
             UserNumber = jwtPayload.Subject;
             IsAdmin = jwtPayload.IsAdmin;
-            MapRolePermissions = jwtPayload.MapRolePermissions;
         }
     }
 }

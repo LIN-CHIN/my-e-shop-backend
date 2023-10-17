@@ -8,7 +8,7 @@ namespace EShopAPI.Cores.Auth.JWTs
     public class JwtBasePayload
     {
         /// <summary>
-        /// JWT用戶
+        /// JWT用戶(使用者帳號)
         /// </summary>
         [JsonPropertyName("sub")]
         public string Subject { get; set; } = null!;
