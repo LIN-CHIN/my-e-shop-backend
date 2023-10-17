@@ -10,7 +10,7 @@ namespace EShopAPI.Filters.RequiredAdminFilters
     /// <summary>
     /// RequiredAdmin Base Filter
     /// </summary>
-    public class RequiredAdminBaseFilter : IAuthorizationFilter
+    public class RequiredAdminBaseAttribute : IAuthorizationFilter
     {
         private readonly IJwtService _jwtService;
         private readonly LoginUserData _loginUserData;
@@ -20,7 +20,7 @@ namespace EShopAPI.Filters.RequiredAdminFilters
         /// </summary>
         /// <param name="jwtService"></param>
         /// <param name="loginUserData"></param>
-        public RequiredAdminBaseFilter(IJwtService jwtService, LoginUserData loginUserData)
+        public RequiredAdminBaseAttribute(IJwtService jwtService, LoginUserData loginUserData)
         {
             _jwtService = jwtService;
             _loginUserData = loginUserData;
