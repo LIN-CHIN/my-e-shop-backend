@@ -7,12 +7,12 @@ namespace EShopAPI.Filters.RequiredAdminFilters
     /// <summary>
     /// 必須具備Admin的權限
     /// </summary>
-    public class RequiredAdminFilter : TypeFilterAttribute
+    public class RequiredAdminAttribute : TypeFilterAttribute
     {
         /// <summary>
         /// RequiredAdminFilter Constructor
         /// </summary>
-        public RequiredAdminFilter() : base(typeof(RequiredAdminBaseFilter))
+        public RequiredAdminAttribute() : base(typeof(RequiredAdminBaseAttribute))
         {
         }
     }

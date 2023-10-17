@@ -16,7 +16,7 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
     /// <summary>
     /// RequiredPermission Base Filter
     /// </summary>
-    public class RequiredPermissionBaseFilter : IAuthorizationFilter
+    public class RequiredPermissionBaseAttribute : IAuthorizationFilter
     {
         private readonly IJwtService _jwtService;
         private readonly IMapUserRoleService _mapUserRoleService;
@@ -32,7 +32,7 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
         /// <param name="loginUserData"></param>
         /// <param name="type"></param>
         /// <param name="cruds"></param>
-        public RequiredPermissionBaseFilter(IJwtService jwtService,
+        public RequiredPermissionBaseAttribute(IJwtService jwtService,
             IMapUserRoleService mapUserRoleService,
             LoginUserData loginUserData,
             ShopPermissionType type,
@@ -155,28 +155,28 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
             bool isPass = false;
             foreach (HttpMethodType crud in _cruds)
             {
-                if (crud == HttpMethodType.GET)
+                if (crud == HttpMethodType.GET &&
+                    mapRolePermissions.Any(mrp => mrp.IsReadPermission))
                 {
-                    if (mapRolePermissions.Where(mrp => mrp.IsReadPermission).Any())
-                    {
-                        isPass = true;
-                    }
+                    isPass = true;
                 }
 
-                if (crud == HttpMethodType.POST)
+                if (crud == HttpMethodType.POST &&
+                    mapRolePermissions.Any(mrp => mrp.IsCreatePermission))
                 {
-                    if (mapRolePermissions.Where(mrp => mrp.IsCreatePermission).Any())
-                    {
-                        isPass = true;
-                    }
+                    isPass = true;
                 }
 
-                if (crud == HttpMethodType.PATCH || crud == HttpMethodType.PUT)
+                if ((crud == HttpMethodType.PATCH || crud == HttpMethodType.PUT ) &&
+                    mapRolePermissions.Any(mrp => mrp.IsUpdatePermission))
                 {
-                    if (mapRolePermissions.Where(mrp => mrp.IsUpdatePermission).Any())
-                    {
-                        isPass = true;
-                    }
+                    isPass = true;
+                }
+
+                if (crud == HttpMethodType.DELETE &&
+                    mapRolePermissions.Any(mrp => mrp.IsDeletePermission))
+                {
+                    isPass = true;
                 }
             }
 
