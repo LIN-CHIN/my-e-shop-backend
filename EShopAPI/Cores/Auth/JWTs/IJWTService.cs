@@ -12,7 +12,7 @@ namespace EShopAPI.Cores.Auth.JWTs
         /// </summary>
         /// <param name="shopUser">使用者實體</param>
         /// <returns></returns>
-        Task<string> GenerateAccessTokenAsync(ShopUser shopUser);
+        string GenerateAccessToken(ShopUser shopUser);
 
         /// <summary>
         /// 產生Refresh Token
@@ -21,5 +21,11 @@ namespace EShopAPI.Cores.Auth.JWTs
         /// <returns></returns>
         string GenerateRefreshToken(ShopUser shopUser);
 
+        /// <summary>
+        /// 解析Token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        JwtPayload DecryptToken(string token);
     }
 }

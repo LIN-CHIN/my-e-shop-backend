@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <Folder Include="Errors\" />
-    <Folder Include="Filters\NewFolder\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

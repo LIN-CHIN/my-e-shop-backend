@@ -294,6 +294,7 @@ namespace EShopAPI.Migrations
                     email = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true, comment: "Email"),
                     phone = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true, comment: "手機"),
                     is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
+                    is_admin = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false, comment: "是否為管理員"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -562,6 +563,10 @@ namespace EShopAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     role_id = table.Column<long>(type: "bigint", nullable: false, comment: "角色id"),
                     permission_id = table.Column<long>(type: "bigint", nullable: false, comment: "權限id"),
+                    is_create_permission = table.Column<bool>(type: "boolean", nullable: false, comment: "是否有新增的權限"),
+                    is_read_permission = table.Column<bool>(type: "boolean", nullable: false, comment: "是否有讀取的權限"),
+                    is_update_permission = table.Column<bool>(type: "boolean", nullable: false, comment: "是否有編輯的權限"),
+                    is_delete_permission = table.Column<bool>(type: "boolean", nullable: false, comment: "是否有刪除的權限"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -1075,15 +1080,57 @@ namespace EShopAPI.Migrations
 
             migrationBuilder.InsertData(
                 schema: "eshop",
+                table: "shop_permission",
+                columns: new[] { "id", "create_date", "create_user", "is_enable", "language", "name", "number", "remarks", "update_date", "update_user" },
+                values: new object[,]
+                {
+                    { 1L, 1695285957713L, "shopAdmin", true, null, "商店使用者", "ShopUser", null, null, null },
+                    { 2L, 1695285957713L, "shopAdmin", true, null, "商店角色", "ShopRole", null, null, null },
+                    { 3L, 1695285957713L, "shopAdmin", true, null, "商店使用者與角色關係", "MapUserRole", null, null, null },
+                    { 4L, 1695285957713L, "shopAdmin", true, null, "商店權限", "ShopPermission", null, null, null },
+                    { 5L, 1695285957713L, "shopAdmin", true, null, "商店角色與權限關係", "MapRolePermission", null, null, null },
+                    { 6L, 1695285957713L, "shopAdmin", true, null, "產品主檔", "ProductMaster", null, null, null },
+                    { 7L, 1695285957713L, "shopAdmin", true, null, "產品細項", "ProductDetail", null, null, null },
+                    { 8L, 1695285957713L, "shopAdmin", true, null, "組合產品主檔", "CompositeProductMaster", null, null, null },
+                    { 9L, 1695285957713L, "shopAdmin", true, null, "組合產品細項", "CompositeProductDetail", null, null, null },
+                    { 10L, 1695285957713L, "shopAdmin", true, null, "組合產品細項的項目", "CompositeProductItem", null, null, null },
+                    { 11L, 1695285957713L, "shopAdmin", true, null, "商店庫存", "ShopInventory", null, null, null },
+                    { 12L, 1695285957713L, "shopAdmin", true, null, "商店單位", "EshopUnit", null, null, null },
+                    { 13L, 1695285957713L, "shopAdmin", true, null, "產品類型", "ProductCategory", null, null, null },
+                    { 14L, 1695285957713L, "shopAdmin", true, null, "產品與產品類型的關係", "MapProductCategory", null, null, null },
+                    { 15L, 1695285957713L, "shopAdmin", true, null, "物流類型", "DeliveryCategory", null, null, null },
+                    { 16L, 1695285957713L, "shopAdmin", true, null, "組合產品與物流的關係", "MapCompositeProductDelivery", null, null, null },
+                    { 17L, 1695285957713L, "shopAdmin", true, null, "產品與物流的關係", "MapProductDeliveryCategory", null, null, null },
+                    { 18L, 1695285957713L, "shopAdmin", true, null, "物流偏好", "DeliveryPreference", null, null, null },
+                    { 19L, 1695285957713L, "shopAdmin", true, null, "訂單主檔", "OrderMaster", null, null, null },
+                    { 20L, 1695285957713L, "shopAdmin", true, null, "產品訂單", "OrderForProduct", null, null, null },
+                    { 21L, 1695285957713L, "shopAdmin", true, null, "組合產品訂單細項", "OrderForCompositeDetail", null, null, null },
+                    { 22L, 1695285957713L, "shopAdmin", true, null, "組合產品訂單細項的項目", "OrderForCompositeItem", null, null, null },
+                    { 23L, 1695285957713L, "shopAdmin", true, null, "購物車", "ShopCart", null, null, null },
+                    { 24L, 1695285957713L, "shopAdmin", true, null, "訂單主檔紀錄", "RecordOrderMaster", null, null, null },
+                    { 25L, 1695285957713L, "shopAdmin", true, null, "產品訂單紀錄", "RecordOrderForProduct", null, null, null },
+                    { 26L, 1695285957713L, "shopAdmin", true, null, "組合產品訂單細項紀錄", "RecordOrderForCompositeDetail", null, null, null },
+                    { 27L, 1695285957713L, "shopAdmin", true, null, "組合產品訂單細項的項目紀錄", "RecordOrderForCompositeItem", null, null, null },
+                    { 28L, 1695285957713L, "shopAdmin", true, null, "商店優惠券", "ShopCoupon", null, null, null },
+                    { 29L, 1695285957713L, "shopAdmin", true, null, "付款類型", "PaymentCategory", null, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "eshop",
                 table: "shop_role",
                 columns: new[] { "id", "create_date", "create_user", "is_enable", "language", "name", "number", "remarks", "update_date", "update_user" },
                 values: new object[,]
                 {
-                    { 1L, 1695285957713L, "shopAdmin", true, null, "商店管理者權限", "shopAdminRole", "商店管理者權限", null, null },
-                    { 2L, 1695285957713L, "shopUser", true, null, "商店使用者(測試用)", "shopUser", "預設的一般使用者(測試用)", null, null },
-                    { 3L, 1695285957713L, "shopUser", true, null, "一般客戶", "custom", "一般客戶", null, null },
-                    { 4L, 1695285957713L, "shopUser", true, null, "VIP客戶", "vip_custom", "VIP客戶", null, null }
+                    { 1L, 1695285957713L, "shopAdmin", true, null, "商店員工角色", "shop_employee", "員工角色", null, null },
+                    { 2L, 1695285957713L, "shopAdmin", true, null, "一般客戶角色", "custom", "一般客戶角色", null, null },
+                    { 3L, 1695285957713L, "shopAdmin", true, null, "VIP客戶角色", "vip_custom", "VIP客戶角色", null, null }
                 });
+
+            migrationBuilder.InsertData(
+                schema: "eshop",
+                table: "shop_user",
+                columns: new[] { "id", "address", "create_date", "create_user", "email", "is_admin", "is_enable", "language", "name", "number", "phone", "pwd", "remarks", "update_date", "update_user" },
+                values: new object[] { 1L, null, 1695285957713L, "shopAdmin", null, true, true, null, "商店管理員", "shopAdmin", null, "shopAdmin", "預設的最高權限帳號", null, null });
 
             migrationBuilder.InsertData(
                 schema: "eshop",
@@ -1091,8 +1138,38 @@ namespace EShopAPI.Migrations
                 columns: new[] { "id", "address", "create_date", "create_user", "email", "is_enable", "language", "name", "number", "phone", "pwd", "remarks", "update_date", "update_user" },
                 values: new object[,]
                 {
-                    { 1L, null, 1695285957713L, "shopAdmin", null, true, null, "商店管理員", "shopAdmin", null, "shopAdmin", "預設的最高權限帳號", null, null },
-                    { 2L, null, 1695285957713L, "shopUser", null, true, null, "商店使用者(測試用)", "shopUser", null, "shopUser", "預設的一般使用者(測試用)", null, null }
+                    { 2L, null, 1695285957713L, "shopAdmin", null, true, null, "員工1(測試用)", "shopEmployee1", null, "shopEmployee1", "預設的員工(測試用)", null, null },
+                    { 3L, null, 1695285957713L, "shopAdmin", null, true, null, "一般客戶1(測試用)", "shopUser", null, "shopUser", "預設的一般使用者(測試用)", null, null },
+                    { 4L, null, 1695285957713L, "shopAdmin", null, true, null, "VIP客戶1(測試用)", "shopVipUser", null, "shopVipUser", "預設的VIP使用者(測試用)", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "eshop",
+                table: "map_role_permission",
+                columns: new[] { "id", "create_date", "create_user", "is_create_permission", "is_delete_permission", "is_read_permission", "is_update_permission", "language", "permission_id", "remarks", "role_id", "update_date", "update_user" },
+                values: new object[,]
+                {
+                    { 1L, 1695285957713L, "shopAdmin", true, false, true, true, null, 6L, null, 1L, null, null },
+                    { 2L, 1695285957713L, "shopAdmin", true, false, true, true, null, 7L, null, 1L, null, null },
+                    { 3L, 1695285957713L, "shopAdmin", true, false, true, true, null, 8L, null, 1L, null, null },
+                    { 4L, 1695285957713L, "shopAdmin", true, false, true, true, null, 9L, null, 1L, null, null },
+                    { 5L, 1695285957713L, "shopAdmin", true, false, true, true, null, 10L, null, 1L, null, null },
+                    { 6L, 1695285957713L, "shopAdmin", false, false, true, false, null, 6L, null, 2L, null, null },
+                    { 7L, 1695285957713L, "shopAdmin", false, false, true, false, null, 7L, null, 2L, null, null },
+                    { 8L, 1695285957713L, "shopAdmin", false, false, true, false, null, 8L, null, 2L, null, null },
+                    { 9L, 1695285957713L, "shopAdmin", false, false, true, false, null, 9L, null, 2L, null, null },
+                    { 10L, 1695285957713L, "shopAdmin", false, false, true, false, null, 10L, null, 2L, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "eshop",
+                table: "map_user_role",
+                columns: new[] { "id", "create_date", "create_user", "language", "remarks", "role_id", "update_date", "update_user", "user_id" },
+                values: new object[,]
+                {
+                    { 1L, 1695285957713L, "shopAdmin", null, "員工測試帳號對應的員工角色", 1L, null, null, 2L },
+                    { 2L, 1695285957713L, "shopUser", null, "一般使用者帳號對應的基礎使用者角色", 2L, null, null, 3L },
+                    { 3L, 1695285957713L, "shopUser", null, "VIP帳號對應的VIP使用者角色", 3L, null, null, 4L }
                 });
 
             migrationBuilder.CreateIndex(

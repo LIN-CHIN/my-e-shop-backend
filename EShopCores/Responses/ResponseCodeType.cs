@@ -59,11 +59,18 @@ namespace EShopCores.Responses
         DuplicateData = 1003,
 
         /// <summary>
-        /// 帳號密碼錯誤
+        /// 帳號不存在
         /// </summary>
-        [Description("帳號密碼錯誤")]
-        [ResponseMessage("AccountAndPwdError", Description = "帳號密碼錯誤")]
-        AccountAndPwdError = 1004,
+        [Description("帳號不存在")]
+        [ResponseMessage("NotFindAccount", Description = "帳號不存在")]
+        NotFindAccount = 1004,
+
+        /// <summary>
+        /// 密碼錯誤
+        /// </summary>
+        [Description("密碼錯誤")]
+        [ResponseMessage("PwdError", Description = "密碼錯誤")]
+        PwdError = 1005,
         #endregion
 
         #region 資料庫、資料問題  2000-3000
@@ -87,8 +94,38 @@ namespace EShopCores.Responses
         /// </summary>
         [Description("違反ForeignKey")]
         [ResponseMessage("DbForeignKeyViolation", Description = "違反ForeignKey")]
-        DbForeignKeyViolation = 2002
+        DbForeignKeyViolation = 2002,
 
+        #endregion
+
+        #region 身分驗證問題 3001-4000
+        /// <summary>
+        /// 無效的Token
+        /// </summary>
+        [Description("無效的Token")]
+        [ResponseMessage("InvalidToken", Description = "無效的Token")]
+        InvalidToken = 3001,
+
+        /// <summary>
+        /// Token已過期
+        /// </summary>
+        [Description("Token已過期")]
+        [ResponseMessage("TokenOverDue", Description = "Token已過期")]
+        TokenOverDue = 3002,
+
+        /// <summary>
+        /// Token為空
+        /// </summary>
+        [Description("Token為空")]
+        [ResponseMessage("TokenIsNullOrEmpty", Description = "Token為空")]
+        TokenIsNullOrEmpty = 3003,
+
+        /// <summary>
+        /// 沒有權限
+        /// </summary>
+        [Description("沒有權限")]
+        [ResponseMessage("TokenForbidden", Description = "沒有權限")]
+        TokenForbidden = 3004,
         #endregion
     }
 }

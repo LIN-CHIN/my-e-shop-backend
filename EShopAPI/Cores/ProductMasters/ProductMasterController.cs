@@ -1,9 +1,10 @@
-﻿using EShopAPI.Cores.ProductMasters.DTOs;
+﻿using EShopAPI.Common.Enums;
+using EShopAPI.Cores.ProductMasters.DTOs;
 using EShopAPI.Cores.ProductMasters.Services;
-using EShopAPI.Cores.ShopUsers.DTOs;
+using EShopAPI.Filters.RequiredAdminFilters;
+using EShopAPI.Filters.RequiredPermissionFilters;
 using EShopCores.Models;
 using EShopCores.Responses;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShopAPI.Cores.ProductMasters
@@ -68,8 +69,15 @@ namespace EShopAPI.Cores.ProductMasters
         /// </summary>
         /// <param name="insertDto">要新增的產品主檔資料</param>
         /// <returns></returns>
+        /// <response code="200">新增成功</response>
+        /// <response code="401">Token驗證失敗</response>
+        /// <response code="403">權限不足，驗證失敗</response>
+        /// <response code="500">新增失敗</response>
         [HttpPost()]
+        [RequiredPermissionFilter(ShopPermissionType.ProductMaster, HttpMethodType.POST)]
         [ProducesResponseType(typeof(GenericResponse<ProductMasterDto?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> InsertAsync(InsertProductMasterDto insertDto)
         {
@@ -83,8 +91,15 @@ namespace EShopAPI.Cores.ProductMasters
         /// </summary>
         /// <param name="updateDto">要編輯的產品主檔資料</param>
         /// <returns></returns>
+        /// <response code="200">編輯成功</response>
+        /// <response code="401">Token驗證失敗</response>
+        /// <response code="403">權限不足，驗證失敗</response>
+        /// <response code="500">編輯失敗</response>
         [HttpPut()]
+        [RequiredAdminFilter]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateAsync(UpdateProductMasterDto updateDto)
         {
@@ -97,8 +112,15 @@ namespace EShopAPI.Cores.ProductMasters
         /// 啟用產品主檔
         /// </summary>
         /// <returns></returns>
+        /// <response code="200">啟用成功</response>
+        /// <response code="401">Token驗證失敗</response>
+        /// <response code="403">權限不足，驗證失敗</response>
+        /// <response code="500">啟用失敗</response>
         [HttpPatch("Enable/{id}")]
+        [RequiredAdminFilter]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> EnableAsync(long id)
         {
@@ -110,8 +132,15 @@ namespace EShopAPI.Cores.ProductMasters
         /// 停用產品主檔
         /// </summary>
         /// <returns></returns>
+        /// <response code="200">停用成功</response>
+        /// <response code="401">Token驗證失敗</response>
+        /// <response code="403">權限不足，驗證失敗</response>
+        /// <response code="500">停用失敗</response>
         [HttpPatch("Disable/{id}")]
+        [RequiredAdminFilter]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DisableAsync(long id)
         {

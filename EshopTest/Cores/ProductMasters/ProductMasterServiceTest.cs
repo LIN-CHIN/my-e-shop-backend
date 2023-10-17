@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.ProductMasters;
+﻿using EShopAPI.Common;
+using EShopAPI.Cores.ProductMasters;
 using EShopAPI.Cores.ProductMasters.DAOs;
 using EShopAPI.Cores.ProductMasters.DTOs;
 using EShopAPI.Cores.ProductMasters.Json;
@@ -22,6 +23,7 @@ namespace EshopTest.Cores.ProductMasters
     {
         private Mock<IProductMasterDao> _mockProductMasterDao;
         private IProductMasterService _productMasterService;
+        private LoginUserData _loginUserData;
 
         private static readonly object[] _insertCases = 
         {
@@ -46,7 +48,6 @@ namespace EshopTest.Cores.ProductMasters
                             AttributeValue = new List<string>(){ "L", "M" }
                         }
                     },
-                    CreateUser = "shopAdmin",
                     Remarks = "新增備註01",
                     Languages = new List<LanguageJson>()
                     {
@@ -124,7 +125,6 @@ namespace EshopTest.Cores.ProductMasters
                             AttributeValue = new List<string>(){ "L", "M" }
                         }
                     },
-                    CreateUser = "shopAdmin",
                     Remarks = "新增備註02",
                     Languages = new List<LanguageJson>()
                     {
@@ -190,7 +190,6 @@ namespace EshopTest.Cores.ProductMasters
                     ProductType = ProductType.Fiexd,
                     IsEnable = true,
                     VariantAttributes = null,
-                    CreateUser = "shopAdmin",
                     Remarks = null,
                     Languages = new List<LanguageJson>()
                     {
@@ -245,7 +244,6 @@ namespace EshopTest.Cores.ProductMasters
                             AttributeValue = new List<string>(){ "edit-L", "edit-M" }
                         }
                     },
-                    UpdateUser = "shopAdmin",
                     Remarks = "編輯備註01",
                     Languages = new List<LanguageJson>()
                     {
@@ -321,7 +319,6 @@ namespace EshopTest.Cores.ProductMasters
                             AttributeValue = new List<string>(){ "edit-L", "edit-M" }
                         }
                     },
-                    UpdateUser = "shopAdmin",
                     Remarks = "編輯備註02",
                     Languages = new List<LanguageJson>()
                     {
@@ -446,8 +443,13 @@ namespace EshopTest.Cores.ProductMasters
         [SetUp]
         public void Setup()
         {
+            _loginUserData = new LoginUserData
+            {
+                UserNumber = "shopAdmin"
+            };
+
             _mockProductMasterDao = new Mock<IProductMasterDao>(MockBehavior.Strict);
-            _productMasterService = new ProductMasterService(_mockProductMasterDao.Object);
+            _productMasterService = new ProductMasterService(_mockProductMasterDao.Object, _loginUserData);
         }
 
         /// <summary>
@@ -475,7 +477,7 @@ namespace EshopTest.Cores.ProductMasters
                         insertDto.IsEnable == entity.IsEnable &&
                         JsonSerializer.Serialize(insertDto.VariantAttributes) ==
                         JsonSerializer.Serialize(entity.VariantAttribute) &&
-                        insertDto.CreateUser == entity.CreateUser &&
+                        _loginUserData.UserNumber == entity.CreateUser &&
                         insertDto.Remarks == entity.Remarks) 
                     {
                         isPass = true;
@@ -516,7 +518,8 @@ namespace EshopTest.Cores.ProductMasters
                 .ReturnsAsync(new ProductMaster());
 
             _mockProductMasterDao
-                .Setup(x => x.InsertAsync(insertDto.ToEntity()))
+                .Setup(x => x.InsertAsync(
+                    insertDto.ToEntity(_loginUserData.UserNumber)))
                 .ReturnsAsync(productMaster);
 
             var ex = Assert.ThrowsAsync<EShopException>(async () =>
@@ -539,7 +542,8 @@ namespace EshopTest.Cores.ProductMasters
                 .ReturnsAsync(value: null);
 
             _mockProductMasterDao
-                .Setup(x => x.UpdateAsync(updateDto.SetEntity(productMaster)))
+                .Setup(x => x.UpdateAsync(
+                    updateDto.SetEntity(productMaster, _loginUserData.UserNumber)))
                 .Returns(Task.CompletedTask);
 
             var ex = Assert.ThrowsAsync<EShopException>(async () =>
@@ -564,15 +568,15 @@ namespace EshopTest.Cores.ProductMasters
                 .ReturnsAsync(productMaster);
 
             _mockProductMasterDao
-                .Setup(x => x.UpdateAsync(updateDto.SetEntity(productMaster)))
+                .Setup(x => x.UpdateAsync(
+                    updateDto.SetEntity(productMaster, _loginUserData.UserNumber)))
                 .Callback<ProductMaster>(inputParams =>
                 {
                     if (inputParams.Id == updateDto.Id &&
                         inputParams.Name == updateDto.Name &&
                         JsonSerializer.Serialize(inputParams.VariantAttribute) ==
                         JsonSerializer.Serialize(updateDto.VariantAttributes) &&
-                        inputParams.UpdateUser == updateDto.UpdateUser &&
-                        inputParams.UpdateDate == updateDto.UpdateDate &&
+                        inputParams.UpdateUser == _loginUserData.UserNumber &&
                         inputParams.Remarks == updateDto.Remarks &&
                         JsonSerializer.Serialize(inputParams.Language) ==
                         JsonSerializer.Serialize(updateDto.Languages))

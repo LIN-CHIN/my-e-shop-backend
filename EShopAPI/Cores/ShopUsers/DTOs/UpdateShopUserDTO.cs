@@ -1,4 +1,5 @@
-﻿using EShopAPI.Validations;
+﻿using EShopAPI.Common;
+using EShopAPI.Validations;
 using EShopCores.Extensions;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
@@ -51,18 +52,6 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         public string? Phone { get; set; }
 
         /// <summary>
-        /// 編輯者
-        /// </summary>
-        [JsonRequired]
-        public string UpdateUser { get; set; } = null!;
-
-        /// <summary>
-        /// 建立時間
-        /// </summary>
-        [JsonIgnore]
-        public long UpdateDate { get; set; } = DateTime.UtcNow.GetUnixTimeMillisecond();
-
-        /// <summary>
         /// 備註
         /// </summary>
         public string? Remarks { get; set; }
@@ -75,18 +64,20 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// <summary>
         /// 設定實體
         /// </summary>
+        /// <param name="shopUser"></param>
+        /// <param name="updateUser">編輯者帳號</param>
         /// <returns></returns>
-        public ShopUser SetEntity(ShopUser shopUser) 
+        public ShopUser SetEntity(ShopUser shopUser, string updateUser) 
         {
             shopUser.Name = Name;
             shopUser.Pwd = Pwd;
             shopUser.Address = Address;
             shopUser.Email = Email;
             shopUser.Phone = Phone;
-            shopUser.UpdateUser = UpdateUser;
-            shopUser.UpdateDate = UpdateDate;
             shopUser.Remarks = Remarks;
             shopUser.Language = JsonSerializer.SerializeToDocument(Language);
+            shopUser.UpdateUser = updateUser;
+            shopUser.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond();
             return shopUser;
         }
     }

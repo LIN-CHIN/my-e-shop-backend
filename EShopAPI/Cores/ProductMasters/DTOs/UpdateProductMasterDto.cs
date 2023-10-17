@@ -38,18 +38,6 @@ namespace EShopAPI.Cores.ProductMasters.DTOs
         public IEnumerable<VariantAttributeJson>? VariantAttributes { get; set; }
 
         /// <summary>
-        /// 編輯者
-        /// </summary>
-        [JsonRequired]
-        public string UpdateUser { get; set; } = null!;
-
-        /// <summary>
-        /// 編輯時間
-        /// </summary>
-        [JsonIgnore]
-        public long UpdateDate { get; set; } = DateTime.UtcNow.GetUnixTimeMillisecond();
-
-        /// <summary>
         /// 備註
         /// </summary>
         public string? Remarks { get; set; }
@@ -63,13 +51,14 @@ namespace EShopAPI.Cores.ProductMasters.DTOs
         /// 設定實體
         /// </summary>
         /// <param name="productMaster">要被修改的實體</param>
+        /// <param name="updateUser">修改者帳號</param>
         /// <returns></returns>
-        public ProductMaster SetEntity(ProductMaster productMaster) 
+        public ProductMaster SetEntity(ProductMaster productMaster, string updateUser) 
         {
             productMaster.Name = Name;
             productMaster.VariantAttribute = JsonSerializer.SerializeToDocument(VariantAttributes);
-            productMaster.UpdateUser = UpdateUser;
-            productMaster.UpdateDate = UpdateDate;
+            productMaster.UpdateUser = updateUser;
+            productMaster.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond() ;
             productMaster.Remarks = Remarks;
             productMaster.Language = JsonSerializer.SerializeToDocument(Languages);
 

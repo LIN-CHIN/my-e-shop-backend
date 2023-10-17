@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.ShopActions;
+﻿using EShopAPI.Common;
+using EShopAPI.Cores.MapRolePermissions.DTOs;
 
 namespace EShopAPI.Cores.Auth.JWTs
 {
@@ -8,8 +9,13 @@ namespace EShopAPI.Cores.Auth.JWTs
     public class JwtPayload : JwtBasePayload
     {
         /// <summary>
-        /// 商店功能清單
+        /// 使用者id
         /// </summary>
-        public IList<ShopAction>? ShopActions { get; set; } = new List<ShopAction>();
+        public long UserId { get; set; }
+
+        /// <summary>
+        /// 是否為管理員
+        /// </summary>
+        public bool IsAdmin { get; set; }
     }
 }

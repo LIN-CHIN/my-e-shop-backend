@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.ProductMasters.DAOs;
+﻿using EShopAPI.Common;
+using EShopAPI.Cores.ProductMasters.DAOs;
 using EShopAPI.Cores.ProductMasters.DTOs;
 using EShopCores.Errors;
 using EShopCores.Extensions;
@@ -12,14 +13,18 @@ namespace EShopAPI.Cores.ProductMasters.Services
     public class ProductMasterService : IProductMasterService
     {
         private readonly IProductMasterDao _productMasterDao;
+        private readonly LoginUserData _loginUserData;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="productMasterDao"></param>
-        public ProductMasterService(IProductMasterDao productMasterDao) 
+        /// <param name="loginUserData"></param>
+        public ProductMasterService(IProductMasterDao productMasterDao,
+            LoginUserData loginUserData) 
         {
             _productMasterDao = productMasterDao;
+            _loginUserData = loginUserData;
         }
 
         ///<inheritdoc/>
@@ -70,14 +75,18 @@ namespace EShopAPI.Cores.ProductMasters.Services
         public async Task<ProductMaster> InsertAsync(InsertProductMasterDto insertDto)
         {
             await ThrowExistByNumberAsync(insertDto.Number);
-            return await _productMasterDao.InsertAsync(insertDto.ToEntity());
+            return await _productMasterDao.InsertAsync(
+                insertDto.ToEntity(_loginUserData.UserNumber)
+            );
         }
 
         ///<inheritdoc/>
         public async Task UpdateAsync(UpdateProductMasterDto updateDto)
         {
             ProductMaster productMaster = await ThrowNotFindByIdAsync(updateDto.Id);
-            await _productMasterDao.UpdateAsync(updateDto.SetEntity(productMaster));
+            await _productMasterDao.UpdateAsync(
+                updateDto.SetEntity(productMaster, _loginUserData.UserNumber)
+            );
         }
 
         ///<inheritdoc/>
@@ -85,6 +94,7 @@ namespace EShopAPI.Cores.ProductMasters.Services
         {
             ProductMaster productMaster = await ThrowNotFindByIdAsync(id);
             productMaster.IsEnable = isEnable;
+            productMaster.UpdateUser = _loginUserData.UserNumber;
             productMaster.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond();
             await _productMasterDao.UpdateAsync(productMaster);
         }

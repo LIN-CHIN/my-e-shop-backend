@@ -23,7 +23,7 @@ namespace EShopAPI.Cores.ShopPermissions
         public string Number { get; set; } = null!;
 
         /// <summary>
-        /// 使用者名稱
+        /// 權限名稱
         /// </summary>
         [Required]
         [Column("name", TypeName = "varchar(50)")]

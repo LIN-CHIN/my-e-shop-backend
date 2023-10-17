@@ -11,6 +11,11 @@ namespace EShopAPI.Cores.MapPermissionActions
     /// <summary>
     /// 權限與功能的實體
     /// </summary>
+    /// <remarks>
+    /// 目前規劃不想將權限分得那麼細，
+    /// 未來也許有機會可以用
+    /// 不刪除該table，但不會使用到
+    /// </remarks>
     [Table("map_permission_action", Schema = "eshop")]
     [Comment("權限與功能的實體")]
     public class MapPermissionAction : EShopObject
