@@ -10,6 +10,7 @@ using Jose;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace EShopAPI.Filters.RequiredPermissionFilters
 {
@@ -152,35 +153,48 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
                 .Where(mrp => mrp.ShopPermission!.Number == permissionNumber)
                 .ToList();
 
-            bool isPass = false;
+            //要檢查的CURD項目
+            Dictionary<HttpMethodType, bool> checkDic = new Dictionary<HttpMethodType, bool>();
+
             foreach (HttpMethodType crud in _cruds)
             {
-                if (crud == HttpMethodType.GET &&
+                checkDic.Add(crud, false);
+            }
+
+            foreach (KeyValuePair<HttpMethodType, bool> keyValuePair in checkDic)
+            {
+                //對應的CRUD如果有權限 才會將key值改為true
+                if (keyValuePair.Key == HttpMethodType.GET &&
                     mapRolePermissions.Any(mrp => mrp.IsReadPermission))
                 {
-                    isPass = true;
+                    checkDic[keyValuePair.Key] = true;
+                    continue;
                 }
 
-                if (crud == HttpMethodType.POST &&
+                if (keyValuePair.Key == HttpMethodType.POST &&
                     mapRolePermissions.Any(mrp => mrp.IsCreatePermission))
                 {
-                    isPass = true;
+                    checkDic[keyValuePair.Key] = true;
+                    continue;
                 }
 
-                if ((crud == HttpMethodType.PATCH || crud == HttpMethodType.PUT ) &&
+                if ((keyValuePair.Key == HttpMethodType.PATCH || keyValuePair.Key == HttpMethodType.PUT) &&
                     mapRolePermissions.Any(mrp => mrp.IsUpdatePermission))
                 {
-                    isPass = true;
+                    checkDic[keyValuePair.Key] = true;
+                    continue;
                 }
 
-                if (crud == HttpMethodType.DELETE &&
+                if (keyValuePair.Key == HttpMethodType.DELETE &&
                     mapRolePermissions.Any(mrp => mrp.IsDeletePermission))
                 {
-                    isPass = true;
+                    checkDic[keyValuePair.Key] = true;
+                    continue;
                 }
             }
 
-            if (!isPass)
+            //只要有任何一個沒權限，就不可以使用
+            if (checkDic.Any(x => x.Value == false))
             {
                 AccessDenied(context);
                 return false;
