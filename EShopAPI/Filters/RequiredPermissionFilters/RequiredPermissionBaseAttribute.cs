@@ -163,7 +163,7 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
 
                 return permissions[httpMethodType];
             })
-            .All(crud => crud == true);
+            .All(crud => crud);
 
             return result;
         }
