@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace EShopAPI.Cores.ProductMasters.Json
+﻿namespace EShopAPI.Common.Json
 {
     /// <summary>
     /// 用來定義產品主檔設定變種屬性時的Json格式

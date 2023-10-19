@@ -1,4 +1,4 @@
-﻿using EShopAPI.Cores.ProductMasters.Json;
+﻿using EShopAPI.Common.Json;
 using EShopAPI.Validations;
 using EShopCores.Enums;
 using EShopCores.Extensions;

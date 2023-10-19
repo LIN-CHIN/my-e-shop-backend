@@ -1,8 +1,8 @@
 ﻿using EShopAPI.Common;
+using EShopAPI.Common.Json;
 using EShopAPI.Cores.ProductMasters;
 using EShopAPI.Cores.ProductMasters.DAOs;
 using EShopAPI.Cores.ProductMasters.DTOs;
-using EShopAPI.Cores.ProductMasters.Json;
 using EShopAPI.Cores.ProductMasters.Services;
 using EShopAPI.Validations;
 using EShopCores.Enums;
