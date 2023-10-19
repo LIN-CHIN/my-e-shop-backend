@@ -98,23 +98,24 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
 
             string permissionNumber = Enum.GetName(typeof(ShopPermissionType), _type)!;
 
-            if (!CheckPermission(context, mapUserRoles, permissionNumber)) return;
-            if (!CheckCrud(context, mapUserRoles, permissionNumber)) return;
+            if (!CheckPermission(mapUserRoles, permissionNumber) ||
+                !CheckCrud(mapUserRoles, permissionNumber))
+            {
+                AccessDenied(context);
+                return;
+            }
         }
 
         /// <summary>
         /// 檢查是否有該method的權限
         /// </summary>
-        /// <param name="context"></param>
         /// <param name="mapUserRoles">該user的所有角色清單</param>
         /// <param name="permissionNumber">權限代碼</param>
         /// <returns> 
         /// true = 檢查通過
         /// false = 檢查失敗
         /// </returns>
-        private static bool CheckPermission(AuthorizationFilterContext context,
-            IList<MapUserRole> mapUserRoles,
-            string permissionNumber)
+        private static bool CheckPermission(IList<MapUserRole> mapUserRoles, string permissionNumber)
         {
             //取得所有角色有關該次Request的權限清單
             IList<ShopPermission> permissions = mapUserRoles
@@ -126,7 +127,6 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
             //如果沒有該權限 就return 403
             if (permissions.Count <= 0)
             {
-                AccessDenied(context);
                 return false;
             }
 
@@ -136,16 +136,13 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
         /// <summary>
         /// 檢查該user對method crud 的權限
         /// </summary>
-        /// <param name="context"></param>
         /// <param name="mapUserRoles">該user的所有角色清單</param>
         /// <param name="permissionNumber">權限代碼</param>
         /// <returns> 
         /// true = 檢查通過
         /// false = 檢查失敗
         /// </returns>
-        private bool CheckCrud(AuthorizationFilterContext context
-            , IList<MapUserRole> mapUserRoles,
-            string permissionNumber)
+        private bool CheckCrud(IList<MapUserRole> mapUserRoles, string permissionNumber)
         {
             //取得該功能的CRUD權限
             IList<MapRolePermission> mapRolePermissions = mapUserRoles
@@ -153,54 +150,22 @@ namespace EShopAPI.Filters.RequiredPermissionFilters
                 .Where(mrp => mrp.ShopPermission!.Number == permissionNumber)
                 .ToList();
 
-            //要檢查的CURD項目
-            Dictionary<HttpMethodType, bool> checkDic = new Dictionary<HttpMethodType, bool>();
-
-            foreach (HttpMethodType crud in _cruds)
+            bool result = _cruds.Select(httpMethodType =>
             {
-                checkDic.Add(crud, false);
-            }
-
-            foreach (KeyValuePair<HttpMethodType, bool> keyValuePair in checkDic)
-            {
-                //對應的CRUD如果有權限 才會將key值改為true
-                if (keyValuePair.Key == HttpMethodType.GET &&
-                    mapRolePermissions.Any(mrp => mrp.IsReadPermission))
+                Dictionary<HttpMethodType, bool> permissions = new()
                 {
-                    checkDic[keyValuePair.Key] = true;
-                    continue;
-                }
+                    { HttpMethodType.GET,  mapRolePermissions.Any(mrp => mrp.IsReadPermission)},
+                    { HttpMethodType.POST,  mapRolePermissions.Any(mrp => mrp.IsCreatePermission)},
+                    { HttpMethodType.PATCH,  mapRolePermissions.Any(mrp => mrp.IsUpdatePermission)},
+                    { HttpMethodType.PUT,  mapRolePermissions.Any(mrp => mrp.IsUpdatePermission)},
+                    { HttpMethodType.DELETE,  mapRolePermissions.Any(mrp => mrp.IsDeletePermission)},
+                };
 
-                if (keyValuePair.Key == HttpMethodType.POST &&
-                    mapRolePermissions.Any(mrp => mrp.IsCreatePermission))
-                {
-                    checkDic[keyValuePair.Key] = true;
-                    continue;
-                }
+                return permissions[httpMethodType];
+            })
+            .All(crud => crud == true);
 
-                if ((keyValuePair.Key == HttpMethodType.PATCH || keyValuePair.Key == HttpMethodType.PUT) &&
-                    mapRolePermissions.Any(mrp => mrp.IsUpdatePermission))
-                {
-                    checkDic[keyValuePair.Key] = true;
-                    continue;
-                }
-
-                if (keyValuePair.Key == HttpMethodType.DELETE &&
-                    mapRolePermissions.Any(mrp => mrp.IsDeletePermission))
-                {
-                    checkDic[keyValuePair.Key] = true;
-                    continue;
-                }
-            }
-
-            //只要有任何一個沒權限，就不可以使用
-            if (checkDic.Any(x => x.Value == false))
-            {
-                AccessDenied(context);
-                return false;
-            }
-
-            return true;
+            return result;
         }
 
         /// <summary>
