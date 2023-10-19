@@ -74,7 +74,7 @@ namespace EShopAPI.Cores.ProductMasters
         /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">新增失敗</response>
         [HttpPost()]
-        [RequiredPermissionAttribute(ShopPermissionType.ProductMaster, HttpMethodType.POST)]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<ProductMasterDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
@@ -96,7 +96,7 @@ namespace EShopAPI.Cores.ProductMasters
         /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">編輯失敗</response>
         [HttpPut()]
-        [RequiredAdminAttribute]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
@@ -117,7 +117,7 @@ namespace EShopAPI.Cores.ProductMasters
         /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">啟用失敗</response>
         [HttpPatch("Enable/{id}")]
-        [RequiredAdminAttribute]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
@@ -137,7 +137,7 @@ namespace EShopAPI.Cores.ProductMasters
         /// <response code="403">權限不足，驗證失敗</response>
         /// <response code="500">停用失敗</response>
         [HttpPatch("Disable/{id}")]
-        [RequiredAdminAttribute]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
