@@ -1,25 +1,25 @@
-﻿using EShopAPI.Cores.RecordOrderMasters;
+﻿using EShopAPI.Cores.RecordOrderCompositeProducts;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EShopAPI.Cores.RecordOrderForProducts
+namespace EShopAPI.Cores.RecordOrderCompositeProductItems
 {
     /// <summary>
-    /// 訂單紀錄(針對非組合產品)
+    /// 訂單紀錄(針對組合產品item)
     /// </summary>
-    [Table("record_order_for_product", Schema = "eshop")]
-    [Comment("訂單紀錄(針對非組合產品)")]
-    public class RecordOrderForProduct : EShopObject
+    [Table("record_order_composite_product_item", Schema = "eshop")]
+    [Comment("訂單紀錄(針對組合產品item)")]
+    public class RecordOrderCompositeProductItem : EShopObject
     {
         /// <summary>
-        /// 訂單紀錄主檔id
+        /// 訂單主檔id
         /// </summary>
         [Required]
-        [Column("master_id")]
-        [Comment("訂單紀錄主檔id")]
-        [ForeignKey("RecordOrderMaster")]
-        public long MasterId { get; set; }
+        [Column("detail_id")]
+        [Comment("訂單紀錄(針對組合產品detail)的id")]
+        [ForeignKey("RecordOrderCompositeProduct")]
+        public long DetailId { get; set; }
 
         /// <summary>
         /// 產品代碼
@@ -87,8 +87,8 @@ namespace EShopAPI.Cores.RecordOrderForProducts
         public double? Discount { get; set; }
 
         /// <summary>
-        /// 訂單主檔實體
+        /// 訂單紀錄 (針對組合產品)的實體
         /// </summary>
-        public RecordOrderMaster? RecordOrderMaster { get; set; }
+        public RecordOrderCompositeProduct? RecordOrderCompositeProduct { get; set; }
     }
 }

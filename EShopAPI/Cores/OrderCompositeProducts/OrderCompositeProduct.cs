@@ -1,17 +1,18 @@
-﻿using EShopAPI.Cores.OrderMasters;
+﻿using EShopAPI.Cores.OrderForCompositeItems;
+using EShopAPI.Cores.OrderMasters;
 using EShopAPI.Cores.ShopInventories;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EShopAPI.Cores.OrderForProducts
+namespace EShopAPI.Cores.OrderCompositeProducts
 {
     /// <summary>
-    /// 訂單 (針對非組合產品)
+    /// 訂單 (針對組合產品)
     /// </summary>
-    [Table("order_for_product", Schema = "eshop")]
-    [Comment("訂單 (針對非組合產品)")]
-    public class OrderForProduct : EShopObject
+    [Table("order_composite_product", Schema = "eshop")]
+    [Comment("訂單 (針對組合產品)")]
+    public class OrderCompositeProduct : EShopObject
     {
         /// <summary>
         /// 訂單主檔id
@@ -40,29 +41,6 @@ namespace EShopAPI.Cores.OrderForProducts
         public int Count { get; set; }
 
         /// <summary>
-        /// 單筆價格(原價)
-        /// </summary>
-        [Required]
-        [Column("price")]
-        [Comment("單筆價格(原價)")]
-        public int Price { get; set; }
-
-        /// <summary>
-        /// 是否特價
-        /// </summary>
-        [Required]
-        [Column("is_sale")]
-        [Comment("是否特價")]
-        public bool IsSale { get; set; }
-
-        /// <summary>
-        /// 折扣數
-        /// </summary>
-        [Column("discount")]
-        [Comment("折扣數")]
-        public double? Discount { get; set; }
-
-        /// <summary>
         /// 訂單主檔實體
         /// </summary>
         public OrderMaster? OrderMaster { get; set; }
@@ -71,5 +49,10 @@ namespace EShopAPI.Cores.OrderForProducts
         /// 商店產品庫存實體
         /// </summary>
         public ShopInventory? ShopInventory { get; set; }
+
+        /// <summary>
+        /// 訂單 (針對組合產品item)實體清單
+        /// </summary>
+        public ICollection<OrderCompositeProductItem>? OrderCompositeProductItems { get; set; }
     }
 }

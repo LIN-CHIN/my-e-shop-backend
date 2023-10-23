@@ -1,8 +1,8 @@
-﻿using EShopAPI.Cores.CompositeProductMasters;
-using EShopAPI.Cores.DeliveryCategories;
+﻿using EShopAPI.Cores.DeliveryCategories;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using EShopAPI.Cores.CompositeProducts;
 
 namespace EShopAPI.Cores.MapCompositeProductDeliveries
 {
@@ -10,17 +10,17 @@ namespace EShopAPI.Cores.MapCompositeProductDeliveries
     /// 組合產品主表與物流種類關聯的實體
     /// </summary>
     [Table("map_composite_product_delivery", Schema = "eshop")]
-    [Comment("組合產品主表與物流種類關聯的實體")]
+    [Comment("組合產品與物流種類關聯的實體")]
     public class MapCompositeProductDelivery : EShopObject
     {
         /// <summary>
         /// 組合產品主表id
         /// </summary>
         [Required]
-        [Column("composite_product_master_id")]
-        [Comment("組合產品主表id")]
-        [ForeignKey("CompositeProductMaster")]
-        public long CompositeProductMasterId { get; set; }
+        [Column("composite_product_id")]
+        [Comment("組合產品id")]
+        [ForeignKey("CompositeProduct")]
+        public long CompositeProductId { get; set; }
 
         /// <summary>
         /// 物流種類id
@@ -32,9 +32,9 @@ namespace EShopAPI.Cores.MapCompositeProductDeliveries
         public long DeliveryCategoryId { get; set; }
 
         /// <summary>
-        /// 組合產品主表實體
+        /// 組合產品實體
         /// </summary>
-        public CompositeProductMaster? CompositeProductMaster { get; set; }
+        public CompositeProduct? CompositeProduct { get; set; }
 
         /// <summary>
         /// 物流種類的實體

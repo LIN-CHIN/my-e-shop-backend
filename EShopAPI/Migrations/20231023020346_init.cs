@@ -18,31 +18,6 @@ namespace EShopAPI.Migrations
                 name: "eshop");
 
             migrationBuilder.CreateTable(
-                name: "composite_product_master",
-                schema: "eshop",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    number = table.Column<string>(type: "varchar(25)", maxLength: 25, nullable: false, comment: "組合產品代碼"),
-                    name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "組合產品名稱"),
-                    composite_product_type = table.Column<int>(type: "integer", nullable: false, comment: "組合產品類型"),
-                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
-                    variant_attribute = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "變種屬性, 這些變種屬性有哪些值? ex: color:[red, blue], size[S,M]"),
-                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
-                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
-                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
-                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
-                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
-                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_composite_product_master", x => x.id);
-                },
-                comment: "組合產品主檔");
-
-            migrationBuilder.CreateTable(
                 name: "delivery_category",
                 schema: "eshop",
                 columns: table => new
@@ -134,31 +109,6 @@ namespace EShopAPI.Migrations
                 comment: "產品類別");
 
             migrationBuilder.CreateTable(
-                name: "product_master",
-                schema: "eshop",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    number = table.Column<string>(type: "varchar(25)", maxLength: 25, nullable: false, comment: "產品主編號"),
-                    name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "產品主名稱"),
-                    product_type = table.Column<int>(type: "integer", nullable: false, comment: "產品類型"),
-                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
-                    variant_attribute = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "變種屬性, 這些變種屬性有哪些值? ex: color:[red, blue], size[S,M]"),
-                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
-                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
-                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
-                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
-                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
-                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_product_master", x => x.id);
-                },
-                comment: "產品主檔");
-
-            migrationBuilder.CreateTable(
                 name: "shop_action",
                 schema: "eshop",
                 columns: table => new
@@ -220,7 +170,11 @@ namespace EShopAPI.Migrations
                     inventory_alert = table.Column<int>(type: "integer", nullable: false, comment: "商品庫存警告數"),
                     supplier = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true, comment: "供應商"),
                     brand = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true, comment: "品牌"),
+                    product_type = table.Column<int>(type: "integer", nullable: false, comment: "產品類型"),
+                    is_composite = table.Column<bool>(type: "boolean", nullable: false, comment: "是否為組合產品"),
+                    is_composite_only = table.Column<bool>(type: "boolean", nullable: false, comment: "是否只能讓組合產品使用"),
                     is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
+                    variant_attribute = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "變種屬性, 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值 ex: color:[red, blue], size[S,M]"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -309,127 +263,14 @@ namespace EShopAPI.Migrations
                 comment: "商店使用者實體");
 
             migrationBuilder.CreateTable(
-                name: "map_composite_product_delivery",
+                name: "composite_product",
                 schema: "eshop",
                 columns: table => new
                 {
                     id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    composite_product_master_id = table.Column<long>(type: "bigint", nullable: false, comment: "組合產品主表id"),
-                    delivery_category_id = table.Column<long>(type: "bigint", nullable: false, comment: "物流種類id"),
-                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
-                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
-                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
-                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
-                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
-                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_map_composite_product_delivery", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_map_composite_product_delivery_composite_product_master_com~",
-                        column: x => x.composite_product_master_id,
-                        principalSchema: "eshop",
-                        principalTable: "composite_product_master",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_map_composite_product_delivery_delivery_category_delivery_c~",
-                        column: x => x.delivery_category_id,
-                        principalSchema: "eshop",
-                        principalTable: "delivery_category",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                },
-                comment: "組合產品主表與物流種類關聯的實體");
-
-            migrationBuilder.CreateTable(
-                name: "map_product_category",
-                schema: "eshop",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    product_master_id = table.Column<long>(type: "bigint", nullable: false, comment: "組合產品主表id"),
-                    product_category_id = table.Column<long>(type: "bigint", nullable: false, comment: "產品種類id"),
-                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
-                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
-                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
-                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
-                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
-                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_map_product_category", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_map_product_category_product_category_product_category_id",
-                        column: x => x.product_category_id,
-                        principalSchema: "eshop",
-                        principalTable: "product_category",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_map_product_category_product_master_product_master_id",
-                        column: x => x.product_master_id,
-                        principalSchema: "eshop",
-                        principalTable: "product_master",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                },
-                comment: "產品主表與產品類別關聯的實體");
-
-            migrationBuilder.CreateTable(
-                name: "map_product_delivery_category",
-                schema: "eshop",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    product_master_id = table.Column<long>(type: "bigint", nullable: false, comment: "組合產品主表id"),
-                    delivery_category_id = table.Column<long>(type: "bigint", nullable: false, comment: "物流種類id"),
-                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
-                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
-                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
-                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
-                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
-                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_map_product_delivery_category", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_map_product_delivery_category_delivery_category_delivery_ca~",
-                        column: x => x.delivery_category_id,
-                        principalSchema: "eshop",
-                        principalTable: "delivery_category",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_map_product_delivery_category_product_master_product_master~",
-                        column: x => x.product_master_id,
-                        principalSchema: "eshop",
-                        principalTable: "product_master",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                },
-                comment: "產品主表與物流種類關係的實體");
-
-            migrationBuilder.CreateTable(
-                name: "composite_product_detail",
-                schema: "eshop",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    master_id = table.Column<long>(type: "bigint", nullable: false, comment: "組合產品主檔id"),
                     shop_inventory_id = table.Column<long>(type: "bigint", nullable: false, comment: "庫存id"),
                     eshop_unit_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店單位id"),
-                    price = table.Column<int>(type: "integer", nullable: false, comment: "單件價格(原價)"),
-                    discount = table.Column<double>(type: "double precision", nullable: false, comment: "折扣數"),
-                    sale_start_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價起始日期"),
-                    sale_end_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價結束日期"),
                     is_use_coupon = table.Column<bool>(type: "boolean", nullable: false, comment: "是否可以使用優惠券"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
@@ -440,39 +281,31 @@ namespace EShopAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_composite_product_detail", x => x.id);
+                    table.PrimaryKey("PK_composite_product", x => x.id);
                     table.ForeignKey(
-                        name: "FK_composite_product_detail_composite_product_master_master_id",
-                        column: x => x.master_id,
-                        principalSchema: "eshop",
-                        principalTable: "composite_product_master",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_composite_product_detail_eshop_unit_eshop_unit_id",
+                        name: "FK_composite_product_eshop_unit_eshop_unit_id",
                         column: x => x.eshop_unit_id,
                         principalSchema: "eshop",
                         principalTable: "eshop_unit",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_composite_product_detail_shop_inventory_shop_inventory_id",
+                        name: "FK_composite_product_shop_inventory_shop_inventory_id",
                         column: x => x.shop_inventory_id,
                         principalSchema: "eshop",
                         principalTable: "shop_inventory",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 },
-                comment: "組合產品子檔");
+                comment: "要販售的組合產品");
 
             migrationBuilder.CreateTable(
-                name: "product_detail",
+                name: "product",
                 schema: "eshop",
                 columns: table => new
                 {
                     id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    master_id = table.Column<long>(type: "bigint", nullable: false, comment: "產品主檔id"),
                     shop_inventory_id = table.Column<long>(type: "bigint", nullable: false, comment: "庫存id"),
                     price = table.Column<int>(type: "integer", nullable: false, comment: "價格"),
                     eshop_unit_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店單位id"),
@@ -493,30 +326,23 @@ namespace EShopAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_product_detail", x => x.id);
+                    table.PrimaryKey("PK_product", x => x.id);
                     table.ForeignKey(
-                        name: "FK_product_detail_eshop_unit_eshop_unit_id",
+                        name: "FK_product_eshop_unit_eshop_unit_id",
                         column: x => x.eshop_unit_id,
                         principalSchema: "eshop",
                         principalTable: "eshop_unit",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_product_detail_product_master_master_id",
-                        column: x => x.master_id,
-                        principalSchema: "eshop",
-                        principalTable: "product_master",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_product_detail_shop_inventory_shop_inventory_id",
+                        name: "FK_product_shop_inventory_shop_inventory_id",
                         column: x => x.shop_inventory_id,
                         principalSchema: "eshop",
                         principalTable: "shop_inventory",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 },
-                comment: "產品子檔, 產品的細節、變種");
+                comment: "要販售的產品");
 
             migrationBuilder.CreateTable(
                 name: "map_permission_action",
@@ -791,7 +617,7 @@ namespace EShopAPI.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    detail_id = table.Column<long>(type: "bigint", nullable: false, comment: "組合產品detail的id"),
+                    composite_product_id = table.Column<long>(type: "bigint", nullable: false, comment: "組合產品detail的id"),
                     shop_inventory_id = table.Column<long>(type: "bigint", nullable: false, comment: "庫存id"),
                     price = table.Column<int>(type: "integer", nullable: false, comment: "單筆價格"),
                     count = table.Column<int>(type: "integer", nullable: false, comment: "數量"),
@@ -811,10 +637,10 @@ namespace EShopAPI.Migrations
                 {
                     table.PrimaryKey("PK_composite_product_item", x => x.id);
                     table.ForeignKey(
-                        name: "FK_composite_product_item_composite_product_detail_detail_id",
-                        column: x => x.detail_id,
+                        name: "FK_composite_product_item_composite_product_composite_product_~",
+                        column: x => x.composite_product_id,
                         principalSchema: "eshop",
-                        principalTable: "composite_product_detail",
+                        principalTable: "composite_product",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -835,18 +661,14 @@ namespace EShopAPI.Migrations
                 comment: "組合產品實際的內容物");
 
             migrationBuilder.CreateTable(
-                name: "order_for_composite_detail",
+                name: "map_composite_product_delivery",
                 schema: "eshop",
                 columns: table => new
                 {
                     id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    master_id = table.Column<long>(type: "bigint", nullable: false, comment: "訂單主檔id"),
-                    shop_inventory_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店產品庫存id"),
-                    count = table.Column<int>(type: "integer", nullable: false, comment: "數量"),
-                    price = table.Column<int>(type: "integer", nullable: false, comment: "單筆價格(原價)"),
-                    is_sale = table.Column<bool>(type: "boolean", nullable: false, comment: "是否特價"),
-                    discount = table.Column<double>(type: "double precision", nullable: true, comment: "折扣數"),
+                    composite_product_id = table.Column<long>(type: "bigint", nullable: false, comment: "組合產品id"),
+                    delivery_category_id = table.Column<long>(type: "bigint", nullable: false, comment: "物流種類id"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -856,26 +678,135 @@ namespace EShopAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_order_for_composite_detail", x => x.id);
+                    table.PrimaryKey("PK_map_composite_product_delivery", x => x.id);
                     table.ForeignKey(
-                        name: "FK_order_for_composite_detail_order_master_master_id",
+                        name: "FK_map_composite_product_delivery_composite_product_composite_~",
+                        column: x => x.composite_product_id,
+                        principalSchema: "eshop",
+                        principalTable: "composite_product",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_map_composite_product_delivery_delivery_category_delivery_c~",
+                        column: x => x.delivery_category_id,
+                        principalSchema: "eshop",
+                        principalTable: "delivery_category",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                },
+                comment: "組合產品與物流種類關聯的實體");
+
+            migrationBuilder.CreateTable(
+                name: "map_product_category",
+                schema: "eshop",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    product_id = table.Column<long>(type: "bigint", nullable: false, comment: "產品id"),
+                    product_category_id = table.Column<long>(type: "bigint", nullable: false, comment: "產品種類id"),
+                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
+                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
+                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
+                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
+                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
+                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_map_product_category", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_map_product_category_product_category_product_category_id",
+                        column: x => x.product_category_id,
+                        principalSchema: "eshop",
+                        principalTable: "product_category",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_map_product_category_product_product_id",
+                        column: x => x.product_id,
+                        principalSchema: "eshop",
+                        principalTable: "product",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                },
+                comment: "產品與產品類別關聯的實體");
+
+            migrationBuilder.CreateTable(
+                name: "map_product_delivery_category",
+                schema: "eshop",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    product_id = table.Column<long>(type: "bigint", nullable: false, comment: "產品id"),
+                    delivery_category_id = table.Column<long>(type: "bigint", nullable: false, comment: "物流種類id"),
+                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
+                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
+                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
+                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
+                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
+                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_map_product_delivery_category", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_map_product_delivery_category_delivery_category_delivery_ca~",
+                        column: x => x.delivery_category_id,
+                        principalSchema: "eshop",
+                        principalTable: "delivery_category",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_map_product_delivery_category_product_product_id",
+                        column: x => x.product_id,
+                        principalSchema: "eshop",
+                        principalTable: "product",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                },
+                comment: "產品與物流種類關係的實體");
+
+            migrationBuilder.CreateTable(
+                name: "order_composite_product",
+                schema: "eshop",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    master_id = table.Column<long>(type: "bigint", nullable: false, comment: "訂單主檔id"),
+                    shop_inventory_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店產品庫存id"),
+                    count = table.Column<int>(type: "integer", nullable: false, comment: "數量"),
+                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
+                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
+                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
+                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
+                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
+                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_order_composite_product", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_order_composite_product_order_master_master_id",
                         column: x => x.master_id,
                         principalSchema: "eshop",
                         principalTable: "order_master",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_order_for_composite_detail_shop_inventory_shop_inventory_id",
+                        name: "FK_order_composite_product_shop_inventory_shop_inventory_id",
                         column: x => x.shop_inventory_id,
                         principalSchema: "eshop",
                         principalTable: "shop_inventory",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 },
-                comment: "訂單 (針對組合產品detail)");
+                comment: "訂單 (針對組合產品)");
 
             migrationBuilder.CreateTable(
-                name: "order_for_product",
+                name: "order_product",
                 schema: "eshop",
                 columns: table => new
                 {
@@ -896,16 +827,16 @@ namespace EShopAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_order_for_product", x => x.id);
+                    table.PrimaryKey("PK_order_product", x => x.id);
                     table.ForeignKey(
-                        name: "FK_order_for_product_order_master_master_id",
+                        name: "FK_order_product_order_master_master_id",
                         column: x => x.master_id,
                         principalSchema: "eshop",
                         principalTable: "order_master",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_order_for_product_shop_inventory_shop_inventory_id",
+                        name: "FK_order_product_shop_inventory_shop_inventory_id",
                         column: x => x.shop_inventory_id,
                         principalSchema: "eshop",
                         principalTable: "shop_inventory",
@@ -915,7 +846,7 @@ namespace EShopAPI.Migrations
                 comment: "訂單 (針對非組合產品)");
 
             migrationBuilder.CreateTable(
-                name: "record_order_for_composite_detail",
+                name: "record_order_composite_product",
                 schema: "eshop",
                 columns: table => new
                 {
@@ -939,19 +870,19 @@ namespace EShopAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_record_order_for_composite_detail", x => x.id);
+                    table.PrimaryKey("PK_record_order_composite_product", x => x.id);
                     table.ForeignKey(
-                        name: "FK_record_order_for_composite_detail_record_order_master_maste~",
+                        name: "FK_record_order_composite_product_record_order_master_master_id",
                         column: x => x.master_id,
                         principalSchema: "eshop",
                         principalTable: "record_order_master",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 },
-                comment: "訂單紀錄(針對組合產品detail)");
+                comment: "訂單紀錄(針對組合產品)");
 
             migrationBuilder.CreateTable(
-                name: "record_order_for_product",
+                name: "record_order_product",
                 schema: "eshop",
                 columns: table => new
                 {
@@ -975,9 +906,9 @@ namespace EShopAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_record_order_for_product", x => x.id);
+                    table.PrimaryKey("PK_record_order_product", x => x.id);
                     table.ForeignKey(
-                        name: "FK_record_order_for_product_record_order_master_master_id",
+                        name: "FK_record_order_product_record_order_master_master_id",
                         column: x => x.master_id,
                         principalSchema: "eshop",
                         principalTable: "record_order_master",
@@ -987,13 +918,13 @@ namespace EShopAPI.Migrations
                 comment: "訂單紀錄(針對非組合產品)");
 
             migrationBuilder.CreateTable(
-                name: "order_for_composite_item",
+                name: "order_composite_product_item",
                 schema: "eshop",
                 columns: table => new
                 {
                     id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    detail_id = table.Column<long>(type: "bigint", nullable: false, comment: "訂單(針對組合產品detail)的id"),
+                    order_composite_product_id = table.Column<long>(type: "bigint", nullable: false, comment: "訂單(針對組合產品)的id"),
                     shop_inventory_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店產品庫存id"),
                     count = table.Column<int>(type: "integer", nullable: false, comment: "數量"),
                     price = table.Column<int>(type: "integer", nullable: false, comment: "單筆價格(原價)"),
@@ -1008,26 +939,26 @@ namespace EShopAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_order_for_composite_item", x => x.id);
+                    table.PrimaryKey("PK_order_composite_product_item", x => x.id);
                     table.ForeignKey(
-                        name: "FK_order_for_composite_item_order_for_composite_detail_detail_~",
-                        column: x => x.detail_id,
+                        name: "FK_order_composite_product_item_order_composite_product_order_~",
+                        column: x => x.order_composite_product_id,
                         principalSchema: "eshop",
-                        principalTable: "order_for_composite_detail",
+                        principalTable: "order_composite_product",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_order_for_composite_item_shop_inventory_shop_inventory_id",
+                        name: "FK_order_composite_product_item_shop_inventory_shop_inventory_~",
                         column: x => x.shop_inventory_id,
                         principalSchema: "eshop",
                         principalTable: "shop_inventory",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 },
-                comment: "訂單 (針對組合產品item)");
+                comment: "訂單 (針對組合產品項目)");
 
             migrationBuilder.CreateTable(
-                name: "record_order_for_composite_item",
+                name: "record_order_composite_product_item",
                 schema: "eshop",
                 columns: table => new
                 {
@@ -1051,12 +982,12 @@ namespace EShopAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_record_order_for_composite_item", x => x.id);
+                    table.PrimaryKey("PK_record_order_composite_product_item", x => x.id);
                     table.ForeignKey(
-                        name: "FK_record_order_for_composite_item_record_order_for_composite_~",
+                        name: "FK_record_order_composite_product_item_record_order_composite_~",
                         column: x => x.detail_id,
                         principalSchema: "eshop",
-                        principalTable: "record_order_for_composite_detail",
+                        principalTable: "record_order_composite_product",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 },
@@ -1173,29 +1104,23 @@ namespace EShopAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_composite_product_detail_eshop_unit_id",
+                name: "IX_composite_product_eshop_unit_id",
                 schema: "eshop",
-                table: "composite_product_detail",
+                table: "composite_product",
                 column: "eshop_unit_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_composite_product_detail_master_id",
+                name: "IX_composite_product_shop_inventory_id",
                 schema: "eshop",
-                table: "composite_product_detail",
-                column: "master_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_composite_product_detail_shop_inventory_id",
-                schema: "eshop",
-                table: "composite_product_detail",
+                table: "composite_product",
                 column: "shop_inventory_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_composite_product_item_detail_id_shop_inventory_id",
+                name: "IX_composite_product_item_composite_product_id_shop_inventory_~",
                 schema: "eshop",
                 table: "composite_product_item",
-                columns: new[] { "detail_id", "shop_inventory_id" },
+                columns: new[] { "composite_product_id", "shop_inventory_id" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -1209,13 +1134,6 @@ namespace EShopAPI.Migrations
                 schema: "eshop",
                 table: "composite_product_item",
                 column: "shop_inventory_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_composite_product_master_number",
-                schema: "eshop",
-                table: "composite_product_master",
-                column: "number",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_delivery_category_number",
@@ -1251,10 +1169,10 @@ namespace EShopAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_map_composite_product_delivery_composite_product_master_id_~",
+                name: "IX_map_composite_product_delivery_composite_product_id_deliver~",
                 schema: "eshop",
                 table: "map_composite_product_delivery",
-                columns: new[] { "composite_product_master_id", "delivery_category_id" },
+                columns: new[] { "composite_product_id", "delivery_category_id" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -1283,10 +1201,10 @@ namespace EShopAPI.Migrations
                 column: "product_category_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_map_product_category_product_master_id_product_category_id",
+                name: "IX_map_product_category_product_id_product_category_id",
                 schema: "eshop",
                 table: "map_product_category",
-                columns: new[] { "product_master_id", "product_category_id" },
+                columns: new[] { "product_id", "product_category_id" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -1296,10 +1214,10 @@ namespace EShopAPI.Migrations
                 column: "delivery_category_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_map_product_delivery_category_product_master_id_delivery_ca~",
+                name: "IX_map_product_delivery_category_product_id_delivery_category_~",
                 schema: "eshop",
                 table: "map_product_delivery_category",
-                columns: new[] { "product_master_id", "delivery_category_id" },
+                columns: new[] { "product_id", "delivery_category_id" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -1329,42 +1247,29 @@ namespace EShopAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_order_for_composite_detail_master_id_shop_inventory_id",
+                name: "IX_order_composite_product_master_id_shop_inventory_id",
                 schema: "eshop",
-                table: "order_for_composite_detail",
+                table: "order_composite_product",
                 columns: new[] { "master_id", "shop_inventory_id" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_order_for_composite_detail_shop_inventory_id",
+                name: "IX_order_composite_product_shop_inventory_id",
                 schema: "eshop",
-                table: "order_for_composite_detail",
+                table: "order_composite_product",
                 column: "shop_inventory_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_order_for_composite_item_detail_id_shop_inventory_id",
+                name: "IX_order_composite_product_item_order_composite_product_id_sho~",
                 schema: "eshop",
-                table: "order_for_composite_item",
-                columns: new[] { "detail_id", "shop_inventory_id" },
+                table: "order_composite_product_item",
+                columns: new[] { "order_composite_product_id", "shop_inventory_id" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_order_for_composite_item_shop_inventory_id",
+                name: "IX_order_composite_product_item_shop_inventory_id",
                 schema: "eshop",
-                table: "order_for_composite_item",
-                column: "shop_inventory_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_order_for_product_master_id_shop_inventory_id",
-                schema: "eshop",
-                table: "order_for_product",
-                columns: new[] { "master_id", "shop_inventory_id" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_order_for_product_shop_inventory_id",
-                schema: "eshop",
-                table: "order_for_product",
+                table: "order_composite_product_item",
                 column: "shop_inventory_id");
 
             migrationBuilder.CreateIndex(
@@ -1393,10 +1298,36 @@ namespace EShopAPI.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_order_product_master_id_shop_inventory_id",
+                schema: "eshop",
+                table: "order_product",
+                columns: new[] { "master_id", "shop_inventory_id" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_order_product_shop_inventory_id",
+                schema: "eshop",
+                table: "order_product",
+                column: "shop_inventory_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_payment_category_number",
                 schema: "eshop",
                 table: "payment_category",
                 column: "number",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_product_eshop_unit_id",
+                schema: "eshop",
+                table: "product",
+                column: "eshop_unit_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_product_shop_inventory_id",
+                schema: "eshop",
+                table: "product",
+                column: "shop_inventory_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -1407,54 +1338,28 @@ namespace EShopAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_product_detail_eshop_unit_id",
+                name: "IX_record_order_composite_product_master_id",
                 schema: "eshop",
-                table: "product_detail",
-                column: "eshop_unit_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_product_detail_master_id",
-                schema: "eshop",
-                table: "product_detail",
+                table: "record_order_composite_product",
                 column: "master_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_product_detail_shop_inventory_id",
+                name: "IX_record_order_composite_product_item_detail_id",
                 schema: "eshop",
-                table: "product_detail",
-                column: "shop_inventory_id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_product_master_number",
-                schema: "eshop",
-                table: "product_master",
-                column: "number",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_record_order_for_composite_detail_master_id",
-                schema: "eshop",
-                table: "record_order_for_composite_detail",
-                column: "master_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_record_order_for_composite_item_detail_id",
-                schema: "eshop",
-                table: "record_order_for_composite_item",
+                table: "record_order_composite_product_item",
                 column: "detail_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_record_order_for_product_master_id",
-                schema: "eshop",
-                table: "record_order_for_product",
-                column: "master_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_record_order_master_user_id",
                 schema: "eshop",
                 table: "record_order_master",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_record_order_product_master_id",
+                schema: "eshop",
+                table: "record_order_product",
+                column: "master_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_shop_action_number",
@@ -1548,23 +1453,19 @@ namespace EShopAPI.Migrations
                 schema: "eshop");
 
             migrationBuilder.DropTable(
-                name: "order_for_composite_item",
+                name: "order_composite_product_item",
                 schema: "eshop");
 
             migrationBuilder.DropTable(
-                name: "order_for_product",
+                name: "order_product",
                 schema: "eshop");
 
             migrationBuilder.DropTable(
-                name: "product_detail",
+                name: "record_order_composite_product_item",
                 schema: "eshop");
 
             migrationBuilder.DropTable(
-                name: "record_order_for_composite_item",
-                schema: "eshop");
-
-            migrationBuilder.DropTable(
-                name: "record_order_for_product",
+                name: "record_order_product",
                 schema: "eshop");
 
             migrationBuilder.DropTable(
@@ -1576,7 +1477,7 @@ namespace EShopAPI.Migrations
                 schema: "eshop");
 
             migrationBuilder.DropTable(
-                name: "composite_product_detail",
+                name: "composite_product",
                 schema: "eshop");
 
             migrationBuilder.DropTable(
@@ -1588,6 +1489,10 @@ namespace EShopAPI.Migrations
                 schema: "eshop");
 
             migrationBuilder.DropTable(
+                name: "product",
+                schema: "eshop");
+
+            migrationBuilder.DropTable(
                 name: "shop_permission",
                 schema: "eshop");
 
@@ -1596,19 +1501,11 @@ namespace EShopAPI.Migrations
                 schema: "eshop");
 
             migrationBuilder.DropTable(
-                name: "order_for_composite_detail",
+                name: "order_composite_product",
                 schema: "eshop");
 
             migrationBuilder.DropTable(
-                name: "product_master",
-                schema: "eshop");
-
-            migrationBuilder.DropTable(
-                name: "record_order_for_composite_detail",
-                schema: "eshop");
-
-            migrationBuilder.DropTable(
-                name: "composite_product_master",
+                name: "record_order_composite_product",
                 schema: "eshop");
 
             migrationBuilder.DropTable(

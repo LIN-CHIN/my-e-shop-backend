@@ -1,10 +1,4 @@
-﻿using EShopAPI.Cores.ProductMasters.DTOs;
-using EShopAPI.Validations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EShopAPI.Validations;
 
 namespace EshopTest.ValidationAttributes
 {

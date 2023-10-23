@@ -1,6 +1,6 @@
 ﻿using EShopAPI.Cores.DeliveryCategories;
-using EShopAPI.Cores.OrderForCompositeDetails;
-using EShopAPI.Cores.OrderForProducts;
+using EShopAPI.Cores.OrderCompositeProducts;
+using EShopAPI.Cores.OrderProducts;
 using EShopAPI.Cores.PaymentCategories;
 using EShopAPI.Cores.ShopUsers;
 using Microsoft.EntityFrameworkCore;
@@ -96,13 +96,13 @@ namespace EShopAPI.Cores.OrderMasters
         public PaymentCategory? PaymentCategory { get; set; }
 
         /// <summary>
-        /// 訂單 (針對組合產品detail)的實體清單
+        /// 訂單 (針對組合產品)的實體清單
         /// </summary>
-        public ICollection<OrderForCompositeDetail>? OrderForCompositeDetails { get; set; }
+        public ICollection<OrderCompositeProduct>? OrderCompositeProducts { get; set; }
 
         /// <summary>
-        /// 訂單 (針對非組合產品)的實體清單
+        /// 訂單 (針對產品)的實體清單
         /// </summary>
-        public ICollection<OrderForProduct>? OrderForProducts { get; set; }
+        public ICollection<OrderProduct>? OrderProducts { get; set; }
     }
 }
