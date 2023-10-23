@@ -4,7 +4,9 @@ using EShopAPI.Cores.ShopUsers.DAOs;
 using EShopAPI.Cores.ShopUsers.DTOs;
 using EShopAPI.Cores.ShopUsers.Services;
 using EShopAPI.Validations;
+using EShopCores.Enums;
 using EShopCores.Errors;
+using EShopCores.Json;
 using EShopCores.Responses;
 using Moq;
 using System.ComponentModel.DataAnnotations;
@@ -37,9 +39,16 @@ namespace EshopTest.Cores.ShopUsers
                     IsEnable = true,
                     IsAdmin = true,
                     Remarks = "新增備註01",
-                    Language = new Dictionary<string, string>()
+                    Languages = new List<LanguageJson>()
                     {
-                        { "insert01", "value01"}
+                        new LanguageJson() {
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "測試一"
+                        },
+                        new LanguageJson() {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "test001"
+                        }
                     }
                 },
                 new ShopUser()
@@ -55,9 +64,16 @@ namespace EshopTest.Cores.ShopUsers
                     IsAdmin = true,
                     Remarks = "新增備註01",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert01", "value01"}
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "測試一"
+                            },
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "test001"
+                            }
                         }
                     ),
                     CreateUser = "shopAdmin"
@@ -76,9 +92,16 @@ namespace EshopTest.Cores.ShopUsers
                     IsEnable = false,
                     IsAdmin = false,
                     Remarks = "新增備註02",
-                    Language = new Dictionary<string, string>()
+                    Languages = new List<LanguageJson>()
                     {
-                        { "insert02", "value02"}
+                        new LanguageJson() {
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "測試二"
+                        },
+                        new LanguageJson() {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "test002"
+                        }
                     }
                 },
                 new ShopUser()
@@ -94,9 +117,16 @@ namespace EshopTest.Cores.ShopUsers
                     IsAdmin = false,
                     Remarks = "新增備註02",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert02", "value02"}
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "測試二"
+                            },
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "test002"
+                            }
                         }
                     ),
                     CreateUser = "shopAdmin"
@@ -116,9 +146,16 @@ namespace EshopTest.Cores.ShopUsers
                     Email = "update@gmail.com",
                     Phone = "0998765432",
                     Remarks = "編輯備註",
-                    Language = new Dictionary<string, string>()
+                    Languages = new List<LanguageJson>()
                     {
-                        { "update", "test" }
+                        new LanguageJson() {
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "測試更新"
+                        },
+                        new LanguageJson() {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "test_update"
+                        }
                     }
                 },
                 new ShopUser()
@@ -132,9 +169,16 @@ namespace EshopTest.Cores.ShopUsers
                     UpdateUser = "shopAdmin",
                     Remarks = "備註",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "update", "test" }
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "測試更新"
+                            },
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "test_update"
+                            }
                         }
                     )
                 }
@@ -150,9 +194,16 @@ namespace EshopTest.Cores.ShopUsers
                     Email = "update02@gmail.com",
                     Phone = "0998765432",
                     Remarks = "編輯備註02",
-                    Language = new Dictionary<string, string>()
+                    Languages = new List<LanguageJson>()
                     {
-                        { "update02", "test02" }
+                        new LanguageJson() {
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "測試更新02"
+                        },
+                        new LanguageJson() {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "test_update02"
+                        }
                     }
                 },
                 new ShopUser()
@@ -166,9 +217,16 @@ namespace EshopTest.Cores.ShopUsers
                     UpdateUser = "shopAdmin",
                     Remarks = "備註",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "update", "test" }
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "測試更新"
+                            },
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "test_update"
+                            }
                         }
                     )
                 }
@@ -190,9 +248,16 @@ namespace EshopTest.Cores.ShopUsers
                     IsEnable = false,
                     Remarks = "新增備註01",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert01", "value01"}
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "測試01"
+                            },
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "test01"
+                            }
                         }
                     ),
                     CreateUser = "shopAdmin"
@@ -212,9 +277,16 @@ namespace EshopTest.Cores.ShopUsers
                     IsEnable = false,
                     Remarks = "新增備註02",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert02", "value02"}
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "測試02"
+                            },
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "test02"
+                            }
                         }
                     ),
                     CreateUser = "shopAdmin"
@@ -237,9 +309,16 @@ namespace EshopTest.Cores.ShopUsers
                     IsEnable = true,
                     Remarks = "新增備註01",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert01", "value01"}
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "測試01"
+                            },
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "test01"
+                            }
                         }
                     ),
                     CreateUser = "shopAdmin"
@@ -259,9 +338,16 @@ namespace EshopTest.Cores.ShopUsers
                     IsEnable = true,
                     Remarks = "新增備註02",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert02", "value02"}
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "測試02"
+                            },
+                            new LanguageJson() {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "test02"
+                            }
                         }
                     ),
                     CreateUser = "shopAdmin"
@@ -349,7 +435,7 @@ namespace EshopTest.Cores.ShopUsers
                         inputEntity.Phone == updateDto.Phone &&
                         inputEntity.UpdateUser == _loginUserData.UserNumber &&
                         inputEntity.Remarks == updateDto.Remarks &&
-                        JsonSerializer.Serialize(inputEntity.Language) == JsonSerializer.Serialize(updateDto.Language))
+                        JsonSerializer.Serialize(inputEntity.Language) == JsonSerializer.Serialize(updateDto.Languages))
                     {
                         isPass = true;
                     }

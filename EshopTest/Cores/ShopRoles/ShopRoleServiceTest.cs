@@ -7,6 +7,9 @@ using EShopAPI.Cores.ShopRoles.DTOs;
 using System.Text.Json;
 using EShopAPI.Cores.ShopRoles;
 using Jose;
+using EShopCores.Json;
+using EShopCores.Enums;
+using EShopAPI.Common;
 
 namespace EshopTest.Cores.ShopRoles
 {
@@ -18,6 +21,7 @@ namespace EshopTest.Cores.ShopRoles
     {
         private IShopRoleService _shopRoleService;
         private Mock<IShopRoleDao> _mockShopRoleDao;
+        private LoginUserData _loginUserData;
 
         private static readonly object[] _insertCases =
         {
@@ -28,11 +32,17 @@ namespace EshopTest.Cores.ShopRoles
                     Number = "role01",
                     Name = "角色01",
                     IsEnable = true,
-                    CreateUser = "shopAdmin",
                     Remarks = "新增備註01",
-                    Language = new Dictionary<string, string>()
+                    Languages = new List<LanguageJson>()
                     {
-                        { "insert01", "value01"}
+                        new LanguageJson { 
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "角色01"
+                        },
+                        new LanguageJson {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "role01"
+                        }
                     },
 
                 },
@@ -45,9 +55,16 @@ namespace EshopTest.Cores.ShopRoles
                     CreateUser = "shopAdmin",
                     Remarks = "新增備註01",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert01", "value01"}
+                            new LanguageJson {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "角色01"
+                            },
+                            new LanguageJson {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "role01"
+                            }
                         }
                     ),
                 }
@@ -59,12 +76,18 @@ namespace EshopTest.Cores.ShopRoles
                     Number = "role02",
                     Name = "角色02",
                     IsEnable = false,
-                    CreateUser = "shopAdmin",
                     Remarks = "新增備註02",
-                    Language = new Dictionary<string, string>()
+                    Languages = new List<LanguageJson>()
                     {
-                        { "insert02", "value02"}
-                    },
+                        new LanguageJson {
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "角色02"
+                        },
+                        new LanguageJson {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "role02"
+                        }
+                    }
 
                 },
                 new ShopRole()
@@ -76,9 +99,16 @@ namespace EshopTest.Cores.ShopRoles
                     CreateUser = "shopAdmin",
                     Remarks = "新增備註02",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert02", "value02"}
+                            new LanguageJson {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "角色02"
+                            },
+                            new LanguageJson {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "role02"
+                            }
                         }
                     ),
                 }
@@ -93,12 +123,18 @@ namespace EshopTest.Cores.ShopRoles
                 {
                     Id = 1,
                     Name = "TestUpdate01",
-                    UpdateUser = "shopAdmin",
                     Remarks = "編輯備註01",
-                    Language = new Dictionary<string, string>()
+                    Languages = new List<LanguageJson>()
                     {
-                        { "update01", "test01" }
-                    }
+                        new LanguageJson {
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "角色01"
+                        },
+                        new LanguageJson {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "role01"
+                        }
+                    },
                 },
                 new ShopRole()
                 {
@@ -109,9 +145,16 @@ namespace EshopTest.Cores.ShopRoles
                     CreateUser = "shopAdmin",
                     Remarks = "新增備註01",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert01", "value01"}
+                            new LanguageJson {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "角色01"
+                            },
+                            new LanguageJson {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "role01"
+                            }
                         }
                     ),
                 }
@@ -122,11 +165,17 @@ namespace EshopTest.Cores.ShopRoles
                 {
                     Id = 2,
                     Name = "TestUpdate02",
-                    UpdateUser = "shopAdmin",
                     Remarks = "編輯備註02",
-                    Language = new Dictionary<string, string>()
+                    Languages = new List<LanguageJson>()
                     {
-                        { "update02", "test02" }
+                        new LanguageJson {
+                            LanguageKey = LanguageType.TW,
+                            LanguageValue = "角色02"
+                        },
+                        new LanguageJson {
+                            LanguageKey = LanguageType.EN_US,
+                            LanguageValue = "role02"
+                        }
                     }
                 },
                 new ShopRole()
@@ -138,9 +187,16 @@ namespace EshopTest.Cores.ShopRoles
                     CreateUser = "shopAdmin",
                     Remarks = "新增備註02",
                     Language = JsonSerializer.SerializeToDocument(
-                        new Dictionary<string, string>()
+                        new List<LanguageJson>()
                         {
-                            { "insert02", "value02"}
+                            new LanguageJson {
+                                LanguageKey = LanguageType.TW,
+                                LanguageValue = "角色02"
+                            },
+                            new LanguageJson {
+                                LanguageKey = LanguageType.EN_US,
+                                LanguageValue = "role02"
+                            }
                         }
                     ),
                 }
@@ -205,8 +261,13 @@ namespace EshopTest.Cores.ShopRoles
         [SetUp]
         public void Setup()
         {
+            _loginUserData = new LoginUserData()
+            {
+                UserNumber = "shopAdmin"
+            };
+
             _mockShopRoleDao = new Mock<IShopRoleDao>(MockBehavior.Strict);
-            _shopRoleService = new ShopRoleService(_mockShopRoleDao.Object);
+            _shopRoleService = new ShopRoleService(_mockShopRoleDao.Object, _loginUserData);
         }
 
         /// <summary>
@@ -270,9 +331,8 @@ namespace EshopTest.Cores.ShopRoles
                 {
                     if (inputEntity.Id == updateDto.Id &&
                         inputEntity.Name == updateDto.Name &&
-                        inputEntity.UpdateUser == updateDto.UpdateUser &&
                         inputEntity.Remarks == updateDto.Remarks &&
-                        JsonSerializer.Serialize(inputEntity.Language) == JsonSerializer.Serialize(updateDto.Language))
+                        JsonSerializer.Serialize(inputEntity.Language) == JsonSerializer.Serialize(updateDto.Languages))
                     {
                         isPass = true;
                     }

@@ -1,6 +1,6 @@
-﻿using EShopAPI.Common;
-using EShopAPI.Validations;
+﻿using EShopAPI.Validations;
 using EShopCores.Extensions;
+using EShopCores.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -59,7 +59,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// <summary>
         /// 多國語系
         /// </summary>
-        public Dictionary<string, string>? Language { get; set; }
+        public IEnumerable<LanguageJson>? Languages { get; set; }
 
         /// <summary>
         /// 設定實體
@@ -75,7 +75,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
             shopUser.Email = Email;
             shopUser.Phone = Phone;
             shopUser.Remarks = Remarks;
-            shopUser.Language = JsonSerializer.SerializeToDocument(Language);
+            shopUser.Language = JsonSerializer.SerializeToDocument(Languages);
             shopUser.UpdateUser = updateUser;
             shopUser.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond();
             return shopUser;
