@@ -1,5 +1,5 @@
 ﻿using EShopAPI.Cores.ProductCategories;
-using EShopAPI.Cores.ProductMasters;
+using EShopAPI.Cores.Products;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,17 +10,17 @@ namespace EShopAPI.Cores.MapProductCategories
     /// 產品主表與產品類別關聯的實體
     /// </summary>
     [Table("map_product_category", Schema = "eshop")]
-    [Comment("產品主表與產品類別關聯的實體")]
+    [Comment("產品與產品類別關聯的實體")]
     public class MapProductCategory : EShopObject
     {
         /// <summary>
-        /// 組合產品主表id
+        /// 產品主表id
         /// </summary>
         [Required]
-        [Column("product_master_id")]
-        [Comment("組合產品主表id")]
-        [ForeignKey("ProductMaster")]
-        public long ProductMasterId { get; set; }
+        [Column("product_id")]
+        [Comment("產品id")]
+        [ForeignKey("Product")]
+        public long ProductId { get; set; }
 
         /// <summary>
         /// 物流種類id
@@ -32,9 +32,9 @@ namespace EShopAPI.Cores.MapProductCategories
         public long ProductCategoryId { get; set; }
 
         /// <summary>
-        /// 組合產品主表實體
+        /// 產品實體
         /// </summary>
-        public ProductMaster? ProductMaster { get; set; }
+        public Product? Product { get; set; }
 
         /// <summary>
         /// 物流種類的實體

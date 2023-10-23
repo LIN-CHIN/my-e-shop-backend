@@ -23,103 +23,6 @@ namespace EShopAPI.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("EShopAPI.Cores.CompositeProductDetails.CompositeProductDetail", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(0)
-                        .HasComment("系統id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CreateDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("create_date")
-                        .HasComment("建立日期");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("create_user")
-                        .HasComment("建立者");
-
-                    b.Property<double>("Discount")
-                        .HasColumnType("double precision")
-                        .HasColumnName("discount")
-                        .HasComment("折扣數");
-
-                    b.Property<long>("EShopUnitId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("eshop_unit_id")
-                        .HasComment("商店單位id");
-
-                    b.Property<bool>("IsUseCoupon")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_use_coupon")
-                        .HasComment("是否可以使用優惠券");
-
-                    b.Property<JsonDocument>("Language")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("language")
-                        .HasComment("多國語系");
-
-                    b.Property<long>("MasterId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("master_id")
-                        .HasComment("組合產品主檔id");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("integer")
-                        .HasColumnName("price")
-                        .HasComment("單件價格(原價)");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text")
-                        .HasColumnName("remarks")
-                        .HasComment("備註");
-
-                    b.Property<long?>("SaleEndDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("sale_end_date")
-                        .HasComment("特價結束日期");
-
-                    b.Property<long?>("SaleStartDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("sale_start_date")
-                        .HasComment("特價起始日期");
-
-                    b.Property<long>("ShopInventoryId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("shop_inventory_id")
-                        .HasComment("庫存id");
-
-                    b.Property<long?>("UpdateDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("update_date")
-                        .HasComment("更新日期");
-
-                    b.Property<string>("UpdateUser")
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("update_user")
-                        .HasComment("更新者");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EShopUnitId");
-
-                    b.HasIndex("MasterId");
-
-                    b.HasIndex("ShopInventoryId")
-                        .IsUnique();
-
-                    b.ToTable("composite_product_detail", "eshop", t =>
-                        {
-                            t.HasComment("組合產品子檔");
-                        });
-                });
-
             modelBuilder.Entity("EShopAPI.Cores.CompositeProductItems.CompositeProductItem", b =>
                 {
                     b.Property<long>("Id")
@@ -130,6 +33,11 @@ namespace EShopAPI.Migrations
                         .HasComment("系統id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CompositeProductId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("composite_product_id")
+                        .HasComment("組合產品detail的id");
 
                     b.Property<int>("Count")
                         .HasColumnType("integer")
@@ -146,11 +54,6 @@ namespace EShopAPI.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("create_user")
                         .HasComment("建立者");
-
-                    b.Property<long>("DetailId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("detail_id")
-                        .HasComment("組合產品detail的id");
 
                     b.Property<double>("Discount")
                         .HasColumnType("double precision")
@@ -213,7 +116,7 @@ namespace EShopAPI.Migrations
 
                     b.HasIndex("ShopInventoryId");
 
-                    b.HasIndex("DetailId", "ShopInventoryId")
+                    b.HasIndex("CompositeProductId", "ShopInventoryId")
                         .IsUnique();
 
                     b.ToTable("composite_product_item", "eshop", t =>
@@ -222,7 +125,7 @@ namespace EShopAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.CompositeProductMasters.CompositeProductMaster", b =>
+            modelBuilder.Entity("EShopAPI.Cores.CompositeProducts.CompositeProduct", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -232,11 +135,6 @@ namespace EShopAPI.Migrations
                         .HasComment("系統id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("CompositeProductType")
-                        .HasColumnType("integer")
-                        .HasColumnName("composite_product_type")
-                        .HasComment("組合產品類型");
 
                     b.Property<long>("CreateDate")
                         .HasColumnType("bigint")
@@ -249,34 +147,30 @@ namespace EShopAPI.Migrations
                         .HasColumnName("create_user")
                         .HasComment("建立者");
 
-                    b.Property<bool>("IsEnable")
+                    b.Property<long>("EShopUnitId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("eshop_unit_id")
+                        .HasComment("商店單位id");
+
+                    b.Property<bool>("IsUseCoupon")
                         .HasColumnType("boolean")
-                        .HasColumnName("is_enable")
-                        .HasComment("是否啟用");
+                        .HasColumnName("is_use_coupon")
+                        .HasComment("是否可以使用優惠券");
 
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
                         .HasColumnName("language")
                         .HasComment("多國語系");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("name")
-                        .HasComment("組合產品名稱");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("varchar(25)")
-                        .HasColumnName("number")
-                        .HasComment("組合產品代碼");
-
                     b.Property<string>("Remarks")
                         .HasColumnType("text")
                         .HasColumnName("remarks")
                         .HasComment("備註");
+
+                    b.Property<long>("ShopInventoryId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("shop_inventory_id")
+                        .HasComment("庫存id");
 
                     b.Property<long?>("UpdateDate")
                         .HasColumnType("bigint")
@@ -288,19 +182,16 @@ namespace EShopAPI.Migrations
                         .HasColumnName("update_user")
                         .HasComment("更新者");
 
-                    b.Property<JsonDocument>("VariantAttribute")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("variant_attribute")
-                        .HasComment("變種屬性, 這些變種屬性有哪些值? ex: color:[red, blue], size[S,M]");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Number")
+                    b.HasIndex("EShopUnitId");
+
+                    b.HasIndex("ShopInventoryId")
                         .IsUnique();
 
-                    b.ToTable("composite_product_master", "eshop", t =>
+                    b.ToTable("composite_product", "eshop", t =>
                         {
-                            t.HasComment("組合產品主檔");
+                            t.HasComment("要販售的組合產品");
                         });
                 });
 
@@ -622,10 +513,10 @@ namespace EShopAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CompositeProductMasterId")
+                    b.Property<long>("CompositeProductId")
                         .HasColumnType("bigint")
-                        .HasColumnName("composite_product_master_id")
-                        .HasComment("組合產品主表id");
+                        .HasColumnName("composite_product_id")
+                        .HasComment("組合產品id");
 
                     b.Property<long>("CreateDate")
                         .HasColumnType("bigint")
@@ -667,12 +558,12 @@ namespace EShopAPI.Migrations
 
                     b.HasIndex("DeliveryCategoryId");
 
-                    b.HasIndex("CompositeProductMasterId", "DeliveryCategoryId")
+                    b.HasIndex("CompositeProductId", "DeliveryCategoryId")
                         .IsUnique();
 
                     b.ToTable("map_composite_product_delivery", "eshop", t =>
                         {
-                            t.HasComment("組合產品主表與物流種類關聯的實體");
+                            t.HasComment("組合產品與物流種類關聯的實體");
                         });
                 });
 
@@ -773,10 +664,10 @@ namespace EShopAPI.Migrations
                         .HasColumnName("product_category_id")
                         .HasComment("產品種類id");
 
-                    b.Property<long>("ProductMasterId")
+                    b.Property<long>("ProductId")
                         .HasColumnType("bigint")
-                        .HasColumnName("product_master_id")
-                        .HasComment("組合產品主表id");
+                        .HasColumnName("product_id")
+                        .HasComment("產品id");
 
                     b.Property<string>("Remarks")
                         .HasColumnType("text")
@@ -797,12 +688,12 @@ namespace EShopAPI.Migrations
 
                     b.HasIndex("ProductCategoryId");
 
-                    b.HasIndex("ProductMasterId", "ProductCategoryId")
+                    b.HasIndex("ProductId", "ProductCategoryId")
                         .IsUnique();
 
                     b.ToTable("map_product_category", "eshop", t =>
                         {
-                            t.HasComment("產品主表與產品類別關聯的實體");
+                            t.HasComment("產品與產品類別關聯的實體");
                         });
                 });
 
@@ -838,10 +729,10 @@ namespace EShopAPI.Migrations
                         .HasColumnName("language")
                         .HasComment("多國語系");
 
-                    b.Property<long>("ProductMasterId")
+                    b.Property<long>("ProductId")
                         .HasColumnType("bigint")
-                        .HasColumnName("product_master_id")
-                        .HasComment("組合產品主表id");
+                        .HasColumnName("product_id")
+                        .HasComment("產品id");
 
                     b.Property<string>("Remarks")
                         .HasColumnType("text")
@@ -862,12 +753,12 @@ namespace EShopAPI.Migrations
 
                     b.HasIndex("DeliveryCategoryId");
 
-                    b.HasIndex("ProductMasterId", "DeliveryCategoryId")
+                    b.HasIndex("ProductId", "DeliveryCategoryId")
                         .IsUnique();
 
                     b.ToTable("map_product_delivery_category", "eshop", t =>
                         {
-                            t.HasComment("產品主表與物流種類關係的實體");
+                            t.HasComment("產品與物流種類關係的實體");
                         });
                 });
 
@@ -1172,7 +1063,7 @@ namespace EShopAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.OrderForCompositeDetails.OrderForCompositeDetail", b =>
+            modelBuilder.Entity("EShopAPI.Cores.OrderCompositeProducts.OrderCompositeProduct", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1199,16 +1090,6 @@ namespace EShopAPI.Migrations
                         .HasColumnName("create_user")
                         .HasComment("建立者");
 
-                    b.Property<double?>("Discount")
-                        .HasColumnType("double precision")
-                        .HasColumnName("discount")
-                        .HasComment("折扣數");
-
-                    b.Property<bool>("IsSale")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_sale")
-                        .HasComment("是否特價");
-
                     b.Property<JsonDocument>("Language")
                         .HasColumnType("jsonb")
                         .HasColumnName("language")
@@ -1218,11 +1099,6 @@ namespace EShopAPI.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("master_id")
                         .HasComment("訂單主檔id");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("integer")
-                        .HasColumnName("price")
-                        .HasComment("單筆價格(原價)");
 
                     b.Property<string>("Remarks")
                         .HasColumnType("text")
@@ -1251,98 +1127,13 @@ namespace EShopAPI.Migrations
                     b.HasIndex("MasterId", "ShopInventoryId")
                         .IsUnique();
 
-                    b.ToTable("order_for_composite_detail", "eshop", t =>
+                    b.ToTable("order_composite_product", "eshop", t =>
                         {
-                            t.HasComment("訂單 (針對組合產品detail)");
+                            t.HasComment("訂單 (針對組合產品)");
                         });
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.OrderForCompositeItems.OrderForCompositeItem", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(0)
-                        .HasComment("系統id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("Count")
-                        .HasColumnType("integer")
-                        .HasColumnName("count")
-                        .HasComment("數量");
-
-                    b.Property<long>("CreateDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("create_date")
-                        .HasComment("建立日期");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("create_user")
-                        .HasComment("建立者");
-
-                    b.Property<long>("DetailId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("detail_id")
-                        .HasComment("訂單(針對組合產品detail)的id");
-
-                    b.Property<double?>("Discount")
-                        .HasColumnType("double precision")
-                        .HasColumnName("discount")
-                        .HasComment("折扣數");
-
-                    b.Property<bool>("IsSale")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_sale")
-                        .HasComment("是否特價");
-
-                    b.Property<JsonDocument>("Language")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("language")
-                        .HasComment("多國語系");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("integer")
-                        .HasColumnName("price")
-                        .HasComment("單筆價格(原價)");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text")
-                        .HasColumnName("remarks")
-                        .HasComment("備註");
-
-                    b.Property<long>("ShopInventoryId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("shop_inventory_id")
-                        .HasComment("商店產品庫存id");
-
-                    b.Property<long?>("UpdateDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("update_date")
-                        .HasComment("更新日期");
-
-                    b.Property<string>("UpdateUser")
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("update_user")
-                        .HasComment("更新者");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShopInventoryId");
-
-                    b.HasIndex("DetailId", "ShopInventoryId")
-                        .IsUnique();
-
-                    b.ToTable("order_for_composite_item", "eshop", t =>
-                        {
-                            t.HasComment("訂單 (針對組合產品item)");
-                        });
-                });
-
-            modelBuilder.Entity("EShopAPI.Cores.OrderForProducts.OrderForProduct", b =>
+            modelBuilder.Entity("EShopAPI.Cores.OrderForCompositeItems.OrderCompositeProductItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1384,10 +1175,10 @@ namespace EShopAPI.Migrations
                         .HasColumnName("language")
                         .HasComment("多國語系");
 
-                    b.Property<long>("MasterId")
+                    b.Property<long>("OrderCompositeProductId")
                         .HasColumnType("bigint")
-                        .HasColumnName("master_id")
-                        .HasComment("訂單主檔id");
+                        .HasColumnName("order_composite_product_id")
+                        .HasComment("訂單(針對組合產品)的id");
 
                     b.Property<int>("Price")
                         .HasColumnType("integer")
@@ -1418,12 +1209,12 @@ namespace EShopAPI.Migrations
 
                     b.HasIndex("ShopInventoryId");
 
-                    b.HasIndex("MasterId", "ShopInventoryId")
+                    b.HasIndex("OrderCompositeProductId", "ShopInventoryId")
                         .IsUnique();
 
-                    b.ToTable("order_for_product", "eshop", t =>
+                    b.ToTable("order_composite_product_item", "eshop", t =>
                         {
-                            t.HasComment("訂單 (針對非組合產品)");
+                            t.HasComment("訂單 (針對組合產品項目)");
                         });
                 });
 
@@ -1520,6 +1311,91 @@ namespace EShopAPI.Migrations
                     b.ToTable("order_master", "eshop", t =>
                         {
                             t.HasComment("訂單主檔");
+                        });
+                });
+
+            modelBuilder.Entity("EShopAPI.Cores.OrderProducts.OrderProduct", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id")
+                        .HasColumnOrder(0)
+                        .HasComment("系統id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer")
+                        .HasColumnName("count")
+                        .HasComment("數量");
+
+                    b.Property<long>("CreateDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("create_date")
+                        .HasComment("建立日期");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("create_user")
+                        .HasComment("建立者");
+
+                    b.Property<double?>("Discount")
+                        .HasColumnType("double precision")
+                        .HasColumnName("discount")
+                        .HasComment("折扣數");
+
+                    b.Property<bool>("IsSale")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_sale")
+                        .HasComment("是否特價");
+
+                    b.Property<JsonDocument>("Language")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("language")
+                        .HasComment("多國語系");
+
+                    b.Property<long>("MasterId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("master_id")
+                        .HasComment("訂單主檔id");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("integer")
+                        .HasColumnName("price")
+                        .HasComment("單筆價格(原價)");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("text")
+                        .HasColumnName("remarks")
+                        .HasComment("備註");
+
+                    b.Property<long>("ShopInventoryId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("shop_inventory_id")
+                        .HasComment("商店產品庫存id");
+
+                    b.Property<long?>("UpdateDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("update_date")
+                        .HasComment("更新日期");
+
+                    b.Property<string>("UpdateUser")
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("update_user")
+                        .HasComment("更新者");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopInventoryId");
+
+                    b.HasIndex("MasterId", "ShopInventoryId")
+                        .IsUnique();
+
+                    b.ToTable("order_product", "eshop", t =>
+                        {
+                            t.HasComment("訂單 (針對非組合產品)");
                         });
                 });
 
@@ -1662,7 +1538,7 @@ namespace EShopAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.ProductDetails.ProductDetail", b =>
+            modelBuilder.Entity("EShopAPI.Cores.Products.Product", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1714,11 +1590,6 @@ namespace EShopAPI.Migrations
                         .HasColumnName("language")
                         .HasComment("多國語系");
 
-                    b.Property<long>("MasterId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("master_id")
-                        .HasComment("產品主檔id");
-
                     b.Property<int>("Price")
                         .HasColumnType("integer")
                         .HasColumnName("price")
@@ -1768,203 +1639,16 @@ namespace EShopAPI.Migrations
 
                     b.HasIndex("EShopUnitId");
 
-                    b.HasIndex("MasterId");
-
                     b.HasIndex("ShopInventoryId")
                         .IsUnique();
 
-                    b.ToTable("product_detail", "eshop", t =>
+                    b.ToTable("product", "eshop", t =>
                         {
-                            t.HasComment("產品子檔, 產品的細節、變種");
+                            t.HasComment("要販售的產品");
                         });
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.ProductMasters.ProductMaster", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(0)
-                        .HasComment("系統id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CreateDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("create_date")
-                        .HasComment("建立日期");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("create_user")
-                        .HasComment("建立者");
-
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_enable")
-                        .HasComment("是否啟用");
-
-                    b.Property<JsonDocument>("Language")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("language")
-                        .HasComment("多國語系");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("name")
-                        .HasComment("產品主名稱");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("varchar(25)")
-                        .HasColumnName("number")
-                        .HasComment("產品主編號");
-
-                    b.Property<int>("ProductType")
-                        .HasColumnType("integer")
-                        .HasColumnName("product_type")
-                        .HasComment("產品類型");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text")
-                        .HasColumnName("remarks")
-                        .HasComment("備註");
-
-                    b.Property<long?>("UpdateDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("update_date")
-                        .HasComment("更新日期");
-
-                    b.Property<string>("UpdateUser")
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("update_user")
-                        .HasComment("更新者");
-
-                    b.Property<JsonDocument>("VariantAttribute")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("variant_attribute")
-                        .HasComment("變種屬性, 這些變種屬性有哪些值? ex: color:[red, blue], size[S,M]");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Number")
-                        .IsUnique();
-
-                    b.ToTable("product_master", "eshop", t =>
-                        {
-                            t.HasComment("產品主檔");
-                        });
-                });
-
-            modelBuilder.Entity("EShopAPI.Cores.RecordOrderForCompositeDetails.RecordOrderForCompositeDetail", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id")
-                        .HasColumnOrder(0)
-                        .HasComment("系統id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Brand")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("brand")
-                        .HasComment("品牌");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("integer")
-                        .HasColumnName("count")
-                        .HasComment("數量");
-
-                    b.Property<long>("CreateDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("create_date")
-                        .HasComment("建立日期");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("create_user")
-                        .HasComment("建立者");
-
-                    b.Property<double?>("Discount")
-                        .HasColumnType("double precision")
-                        .HasColumnName("discount")
-                        .HasComment("折扣數");
-
-                    b.Property<bool>("IsSale")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_sale")
-                        .HasComment("是否特價");
-
-                    b.Property<JsonDocument>("Language")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("language")
-                        .HasComment("多國語系");
-
-                    b.Property<long>("MasterId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("master_id")
-                        .HasComment("訂單紀錄主檔id");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("integer")
-                        .HasColumnName("price")
-                        .HasComment("單筆價格(原價)");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("product_name")
-                        .HasComment("產品名稱");
-
-                    b.Property<string>("ProductNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("product_number")
-                        .HasComment("產品代碼");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text")
-                        .HasColumnName("remarks")
-                        .HasComment("備註");
-
-                    b.Property<string>("Supplier")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("supplier")
-                        .HasComment("供應商");
-
-                    b.Property<long?>("UpdateDate")
-                        .HasColumnType("bigint")
-                        .HasColumnName("update_date")
-                        .HasComment("更新日期");
-
-                    b.Property<string>("UpdateUser")
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("update_user")
-                        .HasComment("更新者");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MasterId");
-
-                    b.ToTable("record_order_for_composite_detail", "eshop", t =>
-                        {
-                            t.HasComment("訂單紀錄(針對組合產品detail)");
-                        });
-                });
-
-            modelBuilder.Entity("EShopAPI.Cores.RecordOrderForCompositeItems.RecordOrderForCompositeItem", b =>
+            modelBuilder.Entity("EShopAPI.Cores.RecordOrderCompositeProductItems.RecordOrderCompositeProductItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -2061,13 +1745,13 @@ namespace EShopAPI.Migrations
 
                     b.HasIndex("DetailId");
 
-                    b.ToTable("record_order_for_composite_item", "eshop", t =>
+                    b.ToTable("record_order_composite_product_item", "eshop", t =>
                         {
                             t.HasComment("訂單紀錄(針對組合產品item)");
                         });
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.RecordOrderForProducts.RecordOrderForProduct", b =>
+            modelBuilder.Entity("EShopAPI.Cores.RecordOrderCompositeProducts.RecordOrderCompositeProduct", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -2164,9 +1848,9 @@ namespace EShopAPI.Migrations
 
                     b.HasIndex("MasterId");
 
-                    b.ToTable("record_order_for_product", "eshop", t =>
+                    b.ToTable("record_order_composite_product", "eshop", t =>
                         {
-                            t.HasComment("訂單紀錄(針對非組合產品)");
+                            t.HasComment("訂單紀錄(針對組合產品)");
                         });
                 });
 
@@ -2269,6 +1953,109 @@ namespace EShopAPI.Migrations
                     b.ToTable("record_order_master", "eshop", t =>
                         {
                             t.HasComment("訂單主檔紀錄");
+                        });
+                });
+
+            modelBuilder.Entity("EShopAPI.Cores.RecordOrderProducts.RecordOrderProduct", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id")
+                        .HasColumnOrder(0)
+                        .HasComment("系統id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Brand")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("brand")
+                        .HasComment("品牌");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer")
+                        .HasColumnName("count")
+                        .HasComment("數量");
+
+                    b.Property<long>("CreateDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("create_date")
+                        .HasComment("建立日期");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("create_user")
+                        .HasComment("建立者");
+
+                    b.Property<double?>("Discount")
+                        .HasColumnType("double precision")
+                        .HasColumnName("discount")
+                        .HasComment("折扣數");
+
+                    b.Property<bool>("IsSale")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_sale")
+                        .HasComment("是否特價");
+
+                    b.Property<JsonDocument>("Language")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("language")
+                        .HasComment("多國語系");
+
+                    b.Property<long>("MasterId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("master_id")
+                        .HasComment("訂單紀錄主檔id");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("integer")
+                        .HasColumnName("price")
+                        .HasComment("單筆價格(原價)");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("product_name")
+                        .HasComment("產品名稱");
+
+                    b.Property<string>("ProductNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("product_number")
+                        .HasComment("產品代碼");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("text")
+                        .HasColumnName("remarks")
+                        .HasComment("備註");
+
+                    b.Property<string>("Supplier")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("supplier")
+                        .HasComment("供應商");
+
+                    b.Property<long?>("UpdateDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("update_date")
+                        .HasComment("更新日期");
+
+                    b.Property<string>("UpdateUser")
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("update_user")
+                        .HasComment("更新者");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MasterId");
+
+                    b.ToTable("record_order_product", "eshop", t =>
+                        {
+                            t.HasComment("訂單紀錄(針對非組合產品)");
                         });
                 });
 
@@ -2547,6 +2334,16 @@ namespace EShopAPI.Migrations
                         .HasColumnName("inventory_quantity")
                         .HasComment("商品庫存數量");
 
+                    b.Property<bool>("IsComposite")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_composite")
+                        .HasComment("是否為組合產品");
+
+                    b.Property<bool>("IsCompositeOnly")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_composite_only")
+                        .HasComment("是否只能讓組合產品使用");
+
                     b.Property<bool>("IsEnable")
                         .HasColumnType("boolean")
                         .HasColumnName("is_enable")
@@ -2571,6 +2368,11 @@ namespace EShopAPI.Migrations
                         .HasColumnName("number")
                         .HasComment("商品代碼");
 
+                    b.Property<int>("ProductType")
+                        .HasColumnType("integer")
+                        .HasColumnName("product_type")
+                        .HasComment("產品類型");
+
                     b.Property<string>("Remarks")
                         .HasColumnType("text")
                         .HasColumnName("remarks")
@@ -2591,6 +2393,11 @@ namespace EShopAPI.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("update_user")
                         .HasComment("更新者");
+
+                    b.Property<JsonDocument>("VariantAttribute")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("variant_attribute")
+                        .HasComment("變種屬性, 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值 ex: color:[red, blue], size[S,M]");
 
                     b.HasKey("Id");
 
@@ -3195,38 +3002,11 @@ namespace EShopAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.CompositeProductDetails.CompositeProductDetail", b =>
-                {
-                    b.HasOne("EShopAPI.Cores.EShopUnits.EShopUnit", "EShopUnit")
-                        .WithMany("CompositeProductDetails")
-                        .HasForeignKey("EShopUnitId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EShopAPI.Cores.CompositeProductMasters.CompositeProductMaster", "CompositeProductMaster")
-                        .WithMany("CompositeProductDetails")
-                        .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EShopAPI.Cores.ShopInventories.ShopInventory", "ShopInventory")
-                        .WithOne("CompositeProductDetail")
-                        .HasForeignKey("EShopAPI.Cores.CompositeProductDetails.CompositeProductDetail", "ShopInventoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("CompositeProductMaster");
-
-                    b.Navigation("EShopUnit");
-
-                    b.Navigation("ShopInventory");
-                });
-
             modelBuilder.Entity("EShopAPI.Cores.CompositeProductItems.CompositeProductItem", b =>
                 {
-                    b.HasOne("EShopAPI.Cores.CompositeProductDetails.CompositeProductDetail", "CompositeProductDetail")
+                    b.HasOne("EShopAPI.Cores.CompositeProducts.CompositeProduct", "CompositeProduct")
                         .WithMany("CompositeProductItems")
-                        .HasForeignKey("DetailId")
+                        .HasForeignKey("CompositeProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -3242,7 +3022,26 @@ namespace EShopAPI.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("CompositeProductDetail");
+                    b.Navigation("CompositeProduct");
+
+                    b.Navigation("EShopUnit");
+
+                    b.Navigation("ShopInventory");
+                });
+
+            modelBuilder.Entity("EShopAPI.Cores.CompositeProducts.CompositeProduct", b =>
+                {
+                    b.HasOne("EShopAPI.Cores.EShopUnits.EShopUnit", "EShopUnit")
+                        .WithMany("CompositeProduct")
+                        .HasForeignKey("EShopUnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EShopAPI.Cores.ShopInventories.ShopInventory", "ShopInventory")
+                        .WithOne("CompositeProduct")
+                        .HasForeignKey("EShopAPI.Cores.CompositeProducts.CompositeProduct", "ShopInventoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("EShopUnit");
 
@@ -3270,9 +3069,9 @@ namespace EShopAPI.Migrations
 
             modelBuilder.Entity("EShopAPI.Cores.MapCompositeProductDeliveries.MapCompositeProductDelivery", b =>
                 {
-                    b.HasOne("EShopAPI.Cores.CompositeProductMasters.CompositeProductMaster", "CompositeProductMaster")
+                    b.HasOne("EShopAPI.Cores.CompositeProducts.CompositeProduct", "CompositeProduct")
                         .WithMany("MapCompositeProductDeliveries")
-                        .HasForeignKey("CompositeProductMasterId")
+                        .HasForeignKey("CompositeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3282,7 +3081,7 @@ namespace EShopAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CompositeProductMaster");
+                    b.Navigation("CompositeProduct");
 
                     b.Navigation("DeliveryCategory");
                 });
@@ -3314,15 +3113,15 @@ namespace EShopAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EShopAPI.Cores.ProductMasters.ProductMaster", "ProductMaster")
+                    b.HasOne("EShopAPI.Cores.Products.Product", "Product")
                         .WithMany("MapProductCategories")
-                        .HasForeignKey("ProductMasterId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProductCategory");
+                    b.Navigation("Product");
 
-                    b.Navigation("ProductMaster");
+                    b.Navigation("ProductCategory");
                 });
 
             modelBuilder.Entity("EShopAPI.Cores.MapProductDeliveryCategorys.MapProductDeliveryCategory", b =>
@@ -3333,15 +3132,15 @@ namespace EShopAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EShopAPI.Cores.ProductMasters.ProductMaster", "ProductMaster")
+                    b.HasOne("EShopAPI.Cores.Products.Product", "Product")
                         .WithMany("MapProductDeliveryCategories")
-                        .HasForeignKey("ProductMasterId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("DeliveryCategory");
 
-                    b.Navigation("ProductMaster");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("EShopAPI.Cores.MapRolePermissions.MapRolePermission", b =>
@@ -3382,16 +3181,16 @@ namespace EShopAPI.Migrations
                     b.Navigation("ShopUser");
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.OrderForCompositeDetails.OrderForCompositeDetail", b =>
+            modelBuilder.Entity("EShopAPI.Cores.OrderCompositeProducts.OrderCompositeProduct", b =>
                 {
                     b.HasOne("EShopAPI.Cores.OrderMasters.OrderMaster", "OrderMaster")
-                        .WithMany("OrderForCompositeDetails")
+                        .WithMany("OrderCompositeProducts")
                         .HasForeignKey("MasterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EShopAPI.Cores.ShopInventories.ShopInventory", "ShopInventory")
-                        .WithMany("OrderForCompositeDetails")
+                        .WithMany("OrderCompositeProducts")
                         .HasForeignKey("ShopInventoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -3401,40 +3200,21 @@ namespace EShopAPI.Migrations
                     b.Navigation("ShopInventory");
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.OrderForCompositeItems.OrderForCompositeItem", b =>
+            modelBuilder.Entity("EShopAPI.Cores.OrderForCompositeItems.OrderCompositeProductItem", b =>
                 {
-                    b.HasOne("EShopAPI.Cores.OrderForCompositeDetails.OrderForCompositeDetail", "OrderForCompositeDetail")
-                        .WithMany("OrderForCompositeItems")
-                        .HasForeignKey("DetailId")
+                    b.HasOne("EShopAPI.Cores.OrderCompositeProducts.OrderCompositeProduct", "OrderCompositeProduct")
+                        .WithMany("OrderCompositeProductItems")
+                        .HasForeignKey("OrderCompositeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EShopAPI.Cores.ShopInventories.ShopInventory", "ShopInventory")
-                        .WithMany("OrderForCompositeItems")
+                        .WithMany("OrderCompositeProductItems")
                         .HasForeignKey("ShopInventoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("OrderForCompositeDetail");
-
-                    b.Navigation("ShopInventory");
-                });
-
-            modelBuilder.Entity("EShopAPI.Cores.OrderForProducts.OrderForProduct", b =>
-                {
-                    b.HasOne("EShopAPI.Cores.OrderMasters.OrderMaster", "OrderMaster")
-                        .WithMany("OrderForProducts")
-                        .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EShopAPI.Cores.ShopInventories.ShopInventory", "ShopInventory")
-                        .WithMany("OrderForProducts")
-                        .HasForeignKey("ShopInventoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("OrderMaster");
+                    b.Navigation("OrderCompositeProduct");
 
                     b.Navigation("ShopInventory");
                 });
@@ -3466,59 +3246,59 @@ namespace EShopAPI.Migrations
                     b.Navigation("ShopUser");
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.ProductDetails.ProductDetail", b =>
+            modelBuilder.Entity("EShopAPI.Cores.OrderProducts.OrderProduct", b =>
+                {
+                    b.HasOne("EShopAPI.Cores.OrderMasters.OrderMaster", "OrderMaster")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("MasterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EShopAPI.Cores.ShopInventories.ShopInventory", "ShopInventory")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("ShopInventoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("OrderMaster");
+
+                    b.Navigation("ShopInventory");
+                });
+
+            modelBuilder.Entity("EShopAPI.Cores.Products.Product", b =>
                 {
                     b.HasOne("EShopAPI.Cores.EShopUnits.EShopUnit", "EShopUnit")
-                        .WithMany("ProductDetails")
+                        .WithMany("Product")
                         .HasForeignKey("EShopUnitId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("EShopAPI.Cores.ProductMasters.ProductMaster", "ProductMaster")
-                        .WithMany("ProductDetails")
-                        .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("EShopAPI.Cores.ShopInventories.ShopInventory", "ShopInventory")
-                        .WithOne("ProductDetail")
-                        .HasForeignKey("EShopAPI.Cores.ProductDetails.ProductDetail", "ShopInventoryId")
+                        .WithOne("Product")
+                        .HasForeignKey("EShopAPI.Cores.Products.Product", "ShopInventoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("EShopUnit");
 
-                    b.Navigation("ProductMaster");
-
                     b.Navigation("ShopInventory");
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.RecordOrderForCompositeDetails.RecordOrderForCompositeDetail", b =>
+            modelBuilder.Entity("EShopAPI.Cores.RecordOrderCompositeProductItems.RecordOrderCompositeProductItem", b =>
                 {
-                    b.HasOne("EShopAPI.Cores.RecordOrderMasters.RecordOrderMaster", "RecordOrderMaster")
-                        .WithMany("RecordOrderForCompositeDetails")
-                        .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RecordOrderMaster");
-                });
-
-            modelBuilder.Entity("EShopAPI.Cores.RecordOrderForCompositeItems.RecordOrderForCompositeItem", b =>
-                {
-                    b.HasOne("EShopAPI.Cores.RecordOrderForCompositeDetails.RecordOrderForCompositeDetail", "RecordOrderForCompositeDetail")
-                        .WithMany("RecordOrderForCompositeItems")
+                    b.HasOne("EShopAPI.Cores.RecordOrderCompositeProducts.RecordOrderCompositeProduct", "RecordOrderCompositeProduct")
+                        .WithMany("RecordOrderCompositeProductItems")
                         .HasForeignKey("DetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("RecordOrderForCompositeDetail");
+                    b.Navigation("RecordOrderCompositeProduct");
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.RecordOrderForProducts.RecordOrderForProduct", b =>
+            modelBuilder.Entity("EShopAPI.Cores.RecordOrderCompositeProducts.RecordOrderCompositeProduct", b =>
                 {
                     b.HasOne("EShopAPI.Cores.RecordOrderMasters.RecordOrderMaster", "RecordOrderMaster")
-                        .WithMany("RecordOrderForProducts")
+                        .WithMany("RecordOrderCompositeProducts")
                         .HasForeignKey("MasterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3537,6 +3317,17 @@ namespace EShopAPI.Migrations
                     b.Navigation("ShopUser");
                 });
 
+            modelBuilder.Entity("EShopAPI.Cores.RecordOrderProducts.RecordOrderProduct", b =>
+                {
+                    b.HasOne("EShopAPI.Cores.RecordOrderMasters.RecordOrderMaster", "RecordOrderMaster")
+                        .WithMany("RecordOrderProducts")
+                        .HasForeignKey("MasterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RecordOrderMaster");
+                });
+
             modelBuilder.Entity("EShopAPI.Cores.ShopCarts.ShopCart", b =>
                 {
                     b.HasOne("EShopAPI.Cores.ShopUsers.ShopUser", "ShopUser")
@@ -3548,14 +3339,9 @@ namespace EShopAPI.Migrations
                     b.Navigation("ShopUser");
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.CompositeProductDetails.CompositeProductDetail", b =>
+            modelBuilder.Entity("EShopAPI.Cores.CompositeProducts.CompositeProduct", b =>
                 {
                     b.Navigation("CompositeProductItems");
-                });
-
-            modelBuilder.Entity("EShopAPI.Cores.CompositeProductMasters.CompositeProductMaster", b =>
-                {
-                    b.Navigation("CompositeProductDetails");
 
                     b.Navigation("MapCompositeProductDeliveries");
                 });
@@ -3573,23 +3359,23 @@ namespace EShopAPI.Migrations
 
             modelBuilder.Entity("EShopAPI.Cores.EShopUnits.EShopUnit", b =>
                 {
-                    b.Navigation("CompositeProductDetails");
+                    b.Navigation("CompositeProduct");
 
                     b.Navigation("CompositeProductItems");
 
-                    b.Navigation("ProductDetails");
+                    b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.OrderForCompositeDetails.OrderForCompositeDetail", b =>
+            modelBuilder.Entity("EShopAPI.Cores.OrderCompositeProducts.OrderCompositeProduct", b =>
                 {
-                    b.Navigation("OrderForCompositeItems");
+                    b.Navigation("OrderCompositeProductItems");
                 });
 
             modelBuilder.Entity("EShopAPI.Cores.OrderMasters.OrderMaster", b =>
                 {
-                    b.Navigation("OrderForCompositeDetails");
+                    b.Navigation("OrderCompositeProducts");
 
-                    b.Navigation("OrderForProducts");
+                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("EShopAPI.Cores.PaymentCategories.PaymentCategory", b =>
@@ -3602,25 +3388,23 @@ namespace EShopAPI.Migrations
                     b.Navigation("MapProductCategories");
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.ProductMasters.ProductMaster", b =>
+            modelBuilder.Entity("EShopAPI.Cores.Products.Product", b =>
                 {
                     b.Navigation("MapProductCategories");
 
                     b.Navigation("MapProductDeliveryCategories");
-
-                    b.Navigation("ProductDetails");
                 });
 
-            modelBuilder.Entity("EShopAPI.Cores.RecordOrderForCompositeDetails.RecordOrderForCompositeDetail", b =>
+            modelBuilder.Entity("EShopAPI.Cores.RecordOrderCompositeProducts.RecordOrderCompositeProduct", b =>
                 {
-                    b.Navigation("RecordOrderForCompositeItems");
+                    b.Navigation("RecordOrderCompositeProductItems");
                 });
 
             modelBuilder.Entity("EShopAPI.Cores.RecordOrderMasters.RecordOrderMaster", b =>
                 {
-                    b.Navigation("RecordOrderForCompositeDetails");
+                    b.Navigation("RecordOrderCompositeProducts");
 
-                    b.Navigation("RecordOrderForProducts");
+                    b.Navigation("RecordOrderProducts");
                 });
 
             modelBuilder.Entity("EShopAPI.Cores.ShopActions.ShopAction", b =>
@@ -3630,17 +3414,17 @@ namespace EShopAPI.Migrations
 
             modelBuilder.Entity("EShopAPI.Cores.ShopInventories.ShopInventory", b =>
                 {
-                    b.Navigation("CompositeProductDetail");
+                    b.Navigation("CompositeProduct");
 
                     b.Navigation("CompositeProductItems");
 
-                    b.Navigation("OrderForCompositeDetails");
+                    b.Navigation("OrderCompositeProductItems");
 
-                    b.Navigation("OrderForCompositeItems");
+                    b.Navigation("OrderCompositeProducts");
 
-                    b.Navigation("OrderForProducts");
+                    b.Navigation("OrderProducts");
 
-                    b.Navigation("ProductDetail");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("EShopAPI.Cores.ShopPermissions.ShopPermission", b =>

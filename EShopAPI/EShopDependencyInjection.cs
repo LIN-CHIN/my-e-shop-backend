@@ -4,8 +4,6 @@ using EShopAPI.Cores.Auth.JWTs;
 using EShopAPI.Cores.Auth.Services;
 using EShopAPI.Cores.MapUserRoles.DAOs;
 using EShopAPI.Cores.MapUserRoles.Services;
-using EShopAPI.Cores.ProductMasters.DAOs;
-using EShopAPI.Cores.ProductMasters.Services;
 using EShopAPI.Cores.ShopPermissions.Services;
 using EShopAPI.Cores.ShopRoles;
 using EShopAPI.Cores.ShopRoles.DAOs;
@@ -70,10 +68,6 @@ namespace EShopAPI
 
             //ShopPermissions
             services.AddScoped<IShopPermissionService, ShopPermissionService>();
-
-            //ProductMasters
-            services.AddScoped<IProductMasterService, ProductMasterService>();
-            services.AddScoped<IProductMasterDao, ProductMasterDao>();
 
             return services;
         }

@@ -1,7 +1,6 @@
 ﻿using EShopAPI.Common.Enums;
-using EShopAPI.Cores.CompositeProductDetails;
 using EShopAPI.Cores.CompositeProductItems;
-using EShopAPI.Cores.CompositeProductMasters;
+using EShopAPI.Cores.CompositeProducts;
 using EShopAPI.Cores.DeliveryCategories;
 using EShopAPI.Cores.DeliveryPreferences;
 using EShopAPI.Cores.EShopUnits;
@@ -11,17 +10,14 @@ using EShopAPI.Cores.MapProductCategories;
 using EShopAPI.Cores.MapProductDeliveryCategorys;
 using EShopAPI.Cores.MapRolePermissions;
 using EShopAPI.Cores.MapUserRoles;
-using EShopAPI.Cores.OrderForCompositeDetails;
+using EShopAPI.Cores.OrderCompositeProducts;
 using EShopAPI.Cores.OrderForCompositeItems;
-using EShopAPI.Cores.OrderForProducts;
+using EShopAPI.Cores.OrderProducts;
 using EShopAPI.Cores.OrderMasters;
 using EShopAPI.Cores.PaymentCategories;
 using EShopAPI.Cores.ProductCategories;
-using EShopAPI.Cores.ProductDetails;
-using EShopAPI.Cores.ProductMasters;
-using EShopAPI.Cores.RecordOrderForCompositeDetails;
-using EShopAPI.Cores.RecordOrderForCompositeItems;
-using EShopAPI.Cores.RecordOrderForProducts;
+using EShopAPI.Cores.Products;
+using EShopAPI.Cores.RecordOrderProducts;
 using EShopAPI.Cores.RecordOrderMasters;
 using EShopAPI.Cores.ShopActions;
 using EShopAPI.Cores.ShopCarts;
@@ -34,6 +30,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Numerics;
 using System.Xml.Linq;
+using EShopAPI.Cores.RecordOrderCompositeProductItems;
+using EShopAPI.Cores.RecordOrderCompositeProducts;
 
 namespace EShopAPI.Context
 {
@@ -84,24 +82,14 @@ namespace EShopAPI.Context
         public DbSet<MapPermissionAction> MapPermissionActions => Set<MapPermissionAction>();
 
         /// <summary>
-        /// 產品主檔的實體
+        /// 產品的實體
         /// </summary>
-        public DbSet<ProductMaster> ProductMasters => Set<ProductMaster>();
+        public DbSet<Product> Product => Set<Product>();
 
         /// <summary>
-        /// 產品子檔的實體
+        /// 組合產品的實體
         /// </summary>
-        public DbSet<ProductDetail> ProductDetails => Set<ProductDetail>();
-
-        /// <summary>
-        /// 組合產品主檔的實體
-        /// </summary>
-        public DbSet<CompositeProductMaster> CompositeProductMasters => Set<CompositeProductMaster>();
-
-        /// <summary>
-        /// 組合產品子檔的實體
-        /// </summary>
-        public DbSet<CompositeProductDetail> CompositeProductDetails => Set<CompositeProductDetail>();
+        public DbSet<CompositeProduct> CompositeProduct => Set<CompositeProduct>();
 
         /// <summary>
         /// 商店單位的實體
@@ -164,19 +152,19 @@ namespace EShopAPI.Context
         public DbSet<OrderMaster> OrderMasters => Set<OrderMaster>();
 
         /// <summary>
-        /// 訂單 (針對組合產品detail)的實體
+        /// 訂單 (針對組合產品)的實體
         /// </summary>
-        public DbSet<OrderForCompositeDetail> OrderForCompositeDetails => Set<OrderForCompositeDetail>();
+        public DbSet<OrderCompositeProduct> OrderCompositeProducts => Set<OrderCompositeProduct>();
 
         /// <summary>
         /// 訂單 (針對組合產品item)的實體
         /// </summary>
-        public DbSet<OrderForCompositeItem> OrderForCompositeItems => Set<OrderForCompositeItem>();
+        public DbSet<OrderCompositeProductItem> OrderCompositeProductItems => Set<OrderCompositeProductItem>();
 
         /// <summary>
         /// 訂單 (針對非組合產品)的實體
         /// </summary>
-        public DbSet<OrderForProduct> OrderForProducts => Set<OrderForProduct>();
+        public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
 
         /// <summary>
         /// 訂單主檔紀錄的實體
@@ -186,17 +174,17 @@ namespace EShopAPI.Context
         /// <summary>
         /// 訂單紀錄(針對組合產品detail)的實體
         /// </summary>
-        public DbSet<RecordOrderForCompositeDetail> RecordOrderForCompositeDetails => Set<RecordOrderForCompositeDetail>();
+        public DbSet<RecordOrderCompositeProduct> RecordOrderCompositeProducts => Set<RecordOrderCompositeProduct>();
 
         /// <summary>
         /// 訂單紀錄(針對組合產品item)的實體
         /// </summary>
-        public DbSet<RecordOrderForCompositeItem> RecordOrderForCompositeItems => Set<RecordOrderForCompositeItem>();
+        public DbSet<RecordOrderCompositeProductItem> RecordOrderCompositeProductItems => Set<RecordOrderCompositeProductItem>();
 
         /// <summary>
         /// 訂單紀錄(針對非組合產品)的實體
         /// </summary>
-        public DbSet<RecordOrderForProduct> RecordOrderForProducts => Set<RecordOrderForProduct>();
+        public DbSet<RecordOrderProduct> RecordOrderProducts => Set<RecordOrderProduct>();
 
         /// <summary>
         /// 訂單紀錄(針對非組合產品)的實體
@@ -235,16 +223,8 @@ namespace EShopAPI.Context
                 .HasIndex(x => new { x.PermissionId, x.ActionId })
                 .IsUnique();
 
-            modelBuilder.Entity<ProductMaster>()
-                .HasIndex(x => new { x.Number })
-                .IsUnique();
-
-            modelBuilder.Entity<ProductDetail>()
+            modelBuilder.Entity<Product>()
                 .HasIndex(x => new { x.ShopInventoryId })
-                .IsUnique();
-
-            modelBuilder.Entity<CompositeProductMaster>()
-                .HasIndex(x => new { x.Number })
                 .IsUnique();
 
             modelBuilder.Entity<EShopUnit>()
@@ -256,11 +236,11 @@ namespace EShopAPI.Context
                .IsUnique();
 
             modelBuilder.Entity<MapCompositeProductDelivery>()
-               .HasIndex(x => new { x.CompositeProductMasterId, x.DeliveryCategoryId })
+               .HasIndex(x => new { x.CompositeProductId, x.DeliveryCategoryId })
                .IsUnique();
 
             modelBuilder.Entity<MapProductDeliveryCategory>()
-              .HasIndex(x => new { x.ProductMasterId, x.DeliveryCategoryId })
+              .HasIndex(x => new { x.ProductId, x.DeliveryCategoryId })
               .IsUnique();
 
             modelBuilder.Entity<ProductCategory>()
@@ -268,7 +248,7 @@ namespace EShopAPI.Context
               .IsUnique();
 
             modelBuilder.Entity<MapProductCategory>()
-             .HasIndex(x => new { x.ProductMasterId, x.ProductCategoryId })
+             .HasIndex(x => new { x.ProductId, x.ProductCategoryId })
              .IsUnique();
 
             modelBuilder.Entity<ShopInventory>()
@@ -276,7 +256,7 @@ namespace EShopAPI.Context
                 .IsUnique();
 
             modelBuilder.Entity<CompositeProductItem>()
-                .HasIndex(x => new { x.DetailId, x.ShopInventoryId })
+                .HasIndex(x => new { x.CompositeProductId, x.ShopInventoryId })
                 .IsUnique();
 
             modelBuilder.Entity<ShopCart>()
@@ -295,15 +275,15 @@ namespace EShopAPI.Context
              .HasIndex(x => new { x.Number })
              .IsUnique();
 
-            modelBuilder.Entity<OrderForCompositeDetail>()
+            modelBuilder.Entity<OrderCompositeProduct>()
              .HasIndex(x => new { x.MasterId, x.ShopInventoryId })
              .IsUnique();
 
-            modelBuilder.Entity<OrderForCompositeItem>()
-             .HasIndex(x => new { x.DetailId, x.ShopInventoryId })
+            modelBuilder.Entity<OrderCompositeProductItem>()
+             .HasIndex(x => new { x.OrderCompositeProductId, x.ShopInventoryId })
              .IsUnique();
 
-            modelBuilder.Entity<OrderForProduct>()
+            modelBuilder.Entity<OrderProduct>()
              .HasIndex(x => new { x.MasterId, x.ShopInventoryId })
              .IsUnique();
 
@@ -353,80 +333,66 @@ namespace EShopAPI.Context
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-            //ProductMaster & ProductDetail
-            modelBuilder.Entity<ProductDetail>()
-               .HasOne(detail => detail.ProductMaster)
-               .WithMany(master => master.ProductDetails)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
-
-            //ProductDetail & EShopUnit
-            modelBuilder.Entity<ProductDetail>()
+            //Product & EShopUnit
+            modelBuilder.Entity<Product>()
                .HasOne(product => product.EShopUnit)
-               .WithMany(unit => unit.ProductDetails)
+               .WithMany(unit => unit.Product)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-            //ProductDetail & ShopInventory
-            modelBuilder.Entity<ProductDetail>()
-               .HasOne(detail => detail.ShopInventory)
-               .WithOne(inventory => inventory.ProductDetail)
+            //Product & ShopInventory
+            modelBuilder.Entity<Product>()
+               .HasOne(product => product.ShopInventory)
+               .WithOne(inventory => inventory.Product)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-            //CompositeProductDetail & EShopUnit
-            modelBuilder.Entity<CompositeProductDetail>()
+            //CompositeProduct & EShopUnit
+            modelBuilder.Entity<CompositeProduct>()
                .HasOne(composite => composite.EShopUnit)
-               .WithMany(unit => unit.CompositeProductDetails)
+               .WithMany(unit => unit.CompositeProduct)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-            //CompositeProductDetail & CompositeProductMaster
-            modelBuilder.Entity<CompositeProductDetail>()
-               .HasOne(detail => detail.CompositeProductMaster)
-               .WithMany(master => master.CompositeProductDetails)
+            //CompositeProduct & ShopInventory
+            modelBuilder.Entity<CompositeProduct>()
+               .HasOne(composite => composite.ShopInventory)
+               .WithOne(inventory => inventory.CompositeProduct)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-            //CompositeProductDetail & CompositeProductMaster
-            modelBuilder.Entity<CompositeProductDetail>()
-               .HasOne(detail => detail.ShopInventory)
-               .WithOne(inventory => inventory.CompositeProductDetail)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.Restrict);
-
-            //MapCompositeProductDelivery & CompositeProductMaster
+            //MapCompositeProductDelivery & CompositeProduct
             modelBuilder.Entity<MapCompositeProductDelivery>()
-               .HasOne(map => map.CompositeProductMaster)
-               .WithMany(master => master.MapCompositeProductDeliveries)
+               .HasOne(map => map.CompositeProduct)
+               .WithMany(composite => composite.MapCompositeProductDeliveries)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
             //MapCompositeProductDelivery & DeliveryCategory
             modelBuilder.Entity<MapCompositeProductDelivery>()
                .HasOne(map => map.DeliveryCategory)
-               .WithMany(master => master.MapCompositeProductDeliveries)
+               .WithMany(delivery => delivery.MapCompositeProductDeliveries)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-            //MapProductDeliveryCategory & ProductMaster
+            //MapProductDeliveryCategory & Product
             modelBuilder.Entity<MapProductDeliveryCategory>()
-               .HasOne(map => map.ProductMaster)
-               .WithMany(master => master.MapProductDeliveryCategories)
+               .HasOne(map => map.Product)
+               .WithMany(product => product.MapProductDeliveryCategories)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
             //MapProductDeliveryCategory & DeliveryCategory
             modelBuilder.Entity<MapProductDeliveryCategory>()
                .HasOne(map => map.DeliveryCategory)
-               .WithMany(master => master.MapProductDeliveryCategories)
+               .WithMany(delivery => delivery.MapProductDeliveryCategories)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-            //MapProductCategory & ProductMaster
+            //MapProductCategory & Product
             modelBuilder.Entity<MapProductCategory>()
-               .HasOne(map => map.ProductMaster)
-               .WithMany(master => master.MapProductCategories)
+               .HasOne(map => map.Product)
+               .WithMany(product => product.MapProductCategories)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
@@ -439,7 +405,7 @@ namespace EShopAPI.Context
 
             //CompositeProductItem & CompositeProductItems
             modelBuilder.Entity<CompositeProductItem>()
-               .HasOne(item => item.CompositeProductDetail)
+               .HasOne(item => item.CompositeProduct)
                .WithMany(detail => detail.CompositeProductItems)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
@@ -500,45 +466,45 @@ namespace EShopAPI.Context
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-            //OrderForCompositeDetail & ShopInventory
-            modelBuilder.Entity<OrderForCompositeDetail>()
-               .HasOne(detail => detail.ShopInventory)
-               .WithMany(inventory => inventory.OrderForCompositeDetails)
+            //OrderCompositeProduct & ShopInventory
+            modelBuilder.Entity<OrderCompositeProduct>()
+               .HasOne(composite => composite.ShopInventory)
+               .WithMany(inventory => inventory.OrderCompositeProducts)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-            //OrderForCompositeDetail & OrderMaster
-            modelBuilder.Entity<OrderForCompositeDetail>()
-               .HasOne(detail => detail.OrderMaster)
-               .WithMany(master => master.OrderForCompositeDetails)
+            //OrderCompositeProduct & OrderMaster
+            modelBuilder.Entity<OrderCompositeProduct>()
+               .HasOne(composite => composite.OrderMaster)
+               .WithMany(master => master.OrderCompositeProducts)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-            //OrderForCompositeItem & OrderForCompositeDetail
-            modelBuilder.Entity<OrderForCompositeItem>()
-               .HasOne(item => item.OrderForCompositeDetail)
-               .WithMany(detail => detail.OrderForCompositeItems)
+            //OrderCompositeProductItem & OrderForCompositeDetail
+            modelBuilder.Entity<OrderCompositeProductItem>()
+               .HasOne(item => item.OrderCompositeProduct)
+               .WithMany(composite => composite.OrderCompositeProductItems)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-            //OrderForCompositeItem & ShopInventory
-            modelBuilder.Entity<OrderForCompositeItem>()
+            //OrderCompositeProductItem & ShopInventory
+            modelBuilder.Entity<OrderCompositeProductItem>()
                .HasOne(item => item.ShopInventory)
-               .WithMany(inventory => inventory.OrderForCompositeItems)
+               .WithMany(inventory => inventory.OrderCompositeProductItems)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
-            //OrderForProduct & OrderMaster
-            modelBuilder.Entity<OrderForProduct>()
+            //OrderProduct & OrderMaster
+            modelBuilder.Entity<OrderProduct>()
                .HasOne(order => order.OrderMaster)
-               .WithMany(master => master.OrderForProducts)
+               .WithMany(master => master.OrderProducts)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-            //OrderForProduct & ShopInventory
-            modelBuilder.Entity<OrderForProduct>()
+            //OrderProduct & ShopInventory
+            modelBuilder.Entity<OrderProduct>()
                .HasOne(order => order.ShopInventory)
-               .WithMany(inventory => inventory.OrderForProducts)
+               .WithMany(inventory => inventory.OrderProducts)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict);
 
@@ -550,23 +516,23 @@ namespace EShopAPI.Context
                .OnDelete(DeleteBehavior.Restrict);
 
             //RecordOrderForCompositeDetails & RecordOrderMaster
-            modelBuilder.Entity<RecordOrderForCompositeDetail>()
-               .HasOne(detail => detail.RecordOrderMaster)
-               .WithMany(master => master.RecordOrderForCompositeDetails)
+            modelBuilder.Entity<RecordOrderCompositeProduct>()
+               .HasOne(record => record.RecordOrderMaster)
+               .WithMany(master => master.RecordOrderCompositeProducts)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
             //RecordOrderForCompositeItem & RecordOrderForCompositeDetail
-            modelBuilder.Entity<RecordOrderForCompositeItem>()
-               .HasOne(item => item.RecordOrderForCompositeDetail)
-               .WithMany(detail => detail.RecordOrderForCompositeItems)
+            modelBuilder.Entity<RecordOrderCompositeProductItem>()
+               .HasOne(item => item.RecordOrderCompositeProduct)
+               .WithMany(detail => detail.RecordOrderCompositeProductItems)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
             //RecordOrderForProduct & RecordOrderMaster
-            modelBuilder.Entity<RecordOrderForProduct>()
+            modelBuilder.Entity<RecordOrderProduct>()
                .HasOne(record => record.RecordOrderMaster)
-               .WithMany(master => master.RecordOrderForProducts)
+               .WithMany(master => master.RecordOrderProducts)
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
             #endregion

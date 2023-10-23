@@ -1,30 +1,21 @@
-﻿using EShopAPI.Cores.CompositeProductDetails;
-using EShopAPI.Cores.EShopUnits;
-using EShopAPI.Cores.ProductMasters;
+﻿using EShopAPI.Cores.EShopUnits;
+using EShopAPI.Cores.MapProductCategories;
+using EShopAPI.Cores.MapProductDeliveryCategorys;
 using EShopAPI.Cores.ShopInventories;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 
-namespace EShopAPI.Cores.ProductDetails
+namespace EShopAPI.Cores.Products
 {
     /// <summary>
-    /// 產品子檔, 產品的細節、變種
+    /// 要販售的產品
     /// </summary>
-    [Table("product_detail", Schema = "eshop")]
-    [Comment("產品子檔, 產品的細節、變種")]
-    public class ProductDetail : EShopObject
+    [Table("product", Schema = "eshop")]
+    [Comment("要販售的產品")]
+    public class Product : EShopObject
     {
-        /// <summary>
-        /// 產品主檔id
-        /// </summary>
-        [Required]
-        [Column("master_id")]
-        [Comment("產品主檔id")]
-        [ForeignKey("ProductMaster")]
-        public long MasterId { get; set; }
-
         /// <summary>
         /// 庫存id
         /// </summary>
@@ -118,11 +109,6 @@ namespace EShopAPI.Cores.ProductDetails
         public JsonDocument? VariantAttribute { get; set; }
 
         /// <summary>
-        /// 產品主檔
-        /// </summary>
-        public ProductMaster? ProductMaster { get; set; }
-
-        /// <summary>
         /// 單位
         /// </summary>
         public EShopUnit? EShopUnit { get; set; }
@@ -131,5 +117,15 @@ namespace EShopAPI.Cores.ProductDetails
         /// 商品庫存
         /// </summary>
         public ShopInventory? ShopInventory { get; set; }
+
+        /// <summary>
+        /// 產品與物流類型的關係清單
+        /// </summary>
+        public ICollection<MapProductDeliveryCategory>? MapProductDeliveryCategories { get; set; }
+        
+        /// <summary>
+        /// 產品與產品類型的關係清單
+        /// </summary>
+        public ICollection<MapProductCategory>? MapProductCategories { get; set; }
     }
 }

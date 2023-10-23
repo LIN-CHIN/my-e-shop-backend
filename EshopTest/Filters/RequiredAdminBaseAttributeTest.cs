@@ -1,7 +1,5 @@
 ﻿using EShopAPI.Common;
 using EShopAPI.Cores.Auth.JWTs;
-using EShopAPI.Cores.ProductMasters.DAOs;
-using EShopAPI.Cores.ProductMasters.Services;
 using EShopAPI.Filters.RequiredAdminFilters;
 using Jose;
 using Microsoft.AspNetCore.Http;

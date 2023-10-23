@@ -1,26 +1,26 @@
-﻿using EShopAPI.Cores.OrderForCompositeDetails;
+﻿using EShopAPI.Cores.OrderMasters;
 using EShopAPI.Cores.ShopInventories;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EShopAPI.Cores.OrderForCompositeItems
+namespace EShopAPI.Cores.OrderProducts
 {
     /// <summary>
-    /// 訂單 (針對組合產品item)
+    /// 訂單 (針對非組合產品)
     /// </summary>
-    [Table("order_for_composite_item", Schema = "eshop")]
-    [Comment("訂單 (針對組合產品item)")]
-    public class OrderForCompositeItem : EShopObject
+    [Table("order_product", Schema = "eshop")]
+    [Comment("訂單 (針對非組合產品)")]
+    public class OrderProduct : EShopObject
     {
         /// <summary>
         /// 訂單主檔id
         /// </summary>
         [Required]
-        [Column("detail_id")]
-        [Comment("訂單(針對組合產品detail)的id")]
-        [ForeignKey("OrderForCompositeDetail")]
-        public long DetailId { get; set; }
+        [Column("master_id")]
+        [Comment("訂單主檔id")]
+        [ForeignKey("OrderMaster")]
+        public long MasterId { get; set; }
 
         /// <summary>
         /// 商店產品庫存id
@@ -63,9 +63,9 @@ namespace EShopAPI.Cores.OrderForCompositeItems
         public double? Discount { get; set; }
 
         /// <summary>
-        /// 訂單 (針對組合產品detail)的實體
+        /// 訂單主檔實體
         /// </summary>
-        public OrderForCompositeDetail? OrderForCompositeDetail { get; set; }
+        public OrderMaster? OrderMaster { get; set; }
 
         /// <summary>
         /// 商店產品庫存實體

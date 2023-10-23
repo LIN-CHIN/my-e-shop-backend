@@ -1,5 +1,5 @@
-﻿using EShopAPI.Cores.RecordOrderForCompositeDetails;
-using EShopAPI.Cores.RecordOrderForProducts;
+﻿using EShopAPI.Cores.RecordOrderCompositeProducts;
+using EShopAPI.Cores.RecordOrderProducts;
 using EShopAPI.Cores.ShopUsers;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -90,13 +90,13 @@ namespace EShopAPI.Cores.RecordOrderMasters
         public ShopUser? ShopUser { get; set; }
 
         /// <summary>
-        /// 訂單紀錄(針對組合產品detail)的實體清單
+        /// 訂單紀錄(針對組合產品)的實體清單
         /// </summary>
-        public ICollection<RecordOrderForCompositeDetail>? RecordOrderForCompositeDetails { get; set; }
+        public ICollection<RecordOrderCompositeProduct>? RecordOrderCompositeProducts { get; set; }
 
         /// <summary>
         /// 訂單紀錄(針對非組合產品)的實體清單
         /// </summary>
-        public ICollection<RecordOrderForProduct>? RecordOrderForProducts { get; set; }
+        public ICollection<RecordOrderProduct>? RecordOrderProducts { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using EShopAPI.Cores.CompositeProductDetails;
+﻿using EShopAPI.Cores.CompositeProducts;
 using EShopAPI.Cores.EShopUnits;
 using EShopAPI.Cores.ShopInventories;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +18,10 @@ namespace EShopAPI.Cores.CompositeProductItems
         /// 組合產品detail的id
         /// </summary>
         [Required]
-        [Column("detail_id")]
+        [Column("composite_product_id")]
         [Comment("組合產品detail的id")]
-        [ForeignKey("CompositeProductDetail")]
-        public long DetailId { get; set; }
+        [ForeignKey("CompositeProduct")]
+        public long CompositeProductId { get; set; }
 
         /// <summary>
         /// 庫存id
@@ -90,7 +90,7 @@ namespace EShopAPI.Cores.CompositeProductItems
         /// <summary>
         /// 組合產品Detail的實體
         /// </summary>
-        public CompositeProductDetail? CompositeProductDetail { get; set;}
+        public CompositeProduct? CompositeProduct { get; set;}
 
         /// <summary>
         /// 商店單位的實體

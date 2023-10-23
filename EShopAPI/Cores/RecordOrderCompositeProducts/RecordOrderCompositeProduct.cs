@@ -1,17 +1,17 @@
-﻿using EShopAPI.Cores.RecordOrderForCompositeItems;
+﻿using EShopAPI.Cores.RecordOrderCompositeProductItems;
 using EShopAPI.Cores.RecordOrderMasters;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EShopAPI.Cores.RecordOrderForCompositeDetails
+namespace EShopAPI.Cores.RecordOrderCompositeProducts
 {
     /// <summary>
-    /// 訂單紀錄(針對組合產品detail)
+    /// 訂單紀錄(針對組合產品)
     /// </summary>
-    [Table("record_order_for_composite_detail", Schema = "eshop")]
-    [Comment("訂單紀錄(針對組合產品detail)")]
-    public class RecordOrderForCompositeDetail : EShopObject
+    [Table("record_order_composite_product", Schema = "eshop")]
+    [Comment("訂單紀錄(針對組合產品)")]
+    public class RecordOrderCompositeProduct : EShopObject
     {
         /// <summary>
         /// 訂單紀錄主檔id
@@ -95,6 +95,6 @@ namespace EShopAPI.Cores.RecordOrderForCompositeDetails
         /// <summary>
         /// 訂單紀錄(針對組合產品item)的實體清單
         /// </summary>
-        public ICollection<RecordOrderForCompositeItem>? RecordOrderForCompositeItems { get; set; }
+        public ICollection<RecordOrderCompositeProductItem>? RecordOrderCompositeProductItems { get; set; }
     }
 }

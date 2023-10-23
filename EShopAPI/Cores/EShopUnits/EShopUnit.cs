@@ -1,6 +1,6 @@
-﻿using EShopAPI.Cores.CompositeProductDetails;
-using EShopAPI.Cores.CompositeProductItems;
-using EShopAPI.Cores.ProductDetails;
+﻿using EShopAPI.Cores.CompositeProductItems;
+using EShopAPI.Cores.CompositeProducts;
+using EShopAPI.Cores.Products;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -51,12 +51,12 @@ namespace EShopAPI.Cores.EShopUnits
         /// <summary>
         /// 產品細項清單
         /// </summary>
-        public ICollection<ProductDetail>? ProductDetails { get; set; }
+        public ICollection<Product>? Product { get; set; }
 
         /// <summary>
         /// 組合產品細項清單
         /// </summary>
-        public ICollection<CompositeProductDetail>? CompositeProductDetails { get; set; }
+        public ICollection<CompositeProduct>? CompositeProduct { get; set; }
 
         /// <summary>
         /// 組合產品Detail產品項目的清單
