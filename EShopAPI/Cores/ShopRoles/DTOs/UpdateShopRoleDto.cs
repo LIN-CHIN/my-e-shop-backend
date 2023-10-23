@@ -1,4 +1,5 @@
-﻿using EShopCores.Extensions;
+﻿using EShopAPI.Validations;
+using EShopCores.Extensions;
 using EShopCores.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
@@ -22,6 +23,7 @@ namespace EShopAPI.Cores.ShopRoles.DTOs
         /// </summary>
         [JsonRequired]
         [StringLength(50)]
+        [NameValidation]
         public string Name { get; set; } = null!;
 
         /// <summary>

@@ -102,14 +102,14 @@ namespace EShopAPI.Cores.ShopInventories
         public bool IsEnable { get; set; }
 
         /// <summary>
-        /// 變種屬性
+        /// 變種屬性清單
         /// </summary>
         /// <remarks>
-        /// 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值
-        /// ex: color:[red, blue], size[S,M]
+        /// 這個產品有哪個變種屬性? 值是是什麼
+        /// ex: color: red, size: s
         /// </remarks>
         [Column("variant_attribute", TypeName = "jsonb")]
-        [Comment("變種屬性, 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值 ex: color:[red, blue], size[S,M]")]
+        [Comment("變種屬性, 這個產品有哪個變種屬性? 值是是什麼 ex: color: red, size: s")]
         public JsonDocument? VariantAttribute { get; set; }
 
         /// <summary>

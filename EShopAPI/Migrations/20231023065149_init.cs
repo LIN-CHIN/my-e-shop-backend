@@ -174,7 +174,7 @@ namespace EShopAPI.Migrations
                     is_composite = table.Column<bool>(type: "boolean", nullable: false, comment: "是否為組合產品"),
                     is_composite_only = table.Column<bool>(type: "boolean", nullable: false, comment: "是否只能讓組合產品使用"),
                     is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
-                    variant_attribute = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "變種屬性, 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值 ex: color:[red, blue], size[S,M]"),
+                    variant_attribute = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "變種屬性, 這個產品有哪個變種屬性? 值是是什麼 ex: color: red, size: s"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
