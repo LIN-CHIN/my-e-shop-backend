@@ -1,6 +1,8 @@
 ﻿using EShopAPI.Validations;
 using EShopCores.Extensions;
+using EShopCores.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace EShopAPI.Cores.ShopUsers.DTOs
@@ -71,7 +73,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
         /// <summary>
         /// 多國語系
         /// </summary>
-        public Dictionary<string, string>? Language { get; set; }
+        public IEnumerable<LanguageJson>? Languages { get; set; }
 
         /// <summary>
         /// 轉成實體
@@ -93,7 +95,7 @@ namespace EShopAPI.Cores.ShopUsers.DTOs
                 CreateUser = createUser,
                 CreateDate = DateTime.UtcNow.GetUnixTimeMillisecond(),
                 Remarks = Remarks,
-                Language = System.Text.Json.JsonSerializer.SerializeToDocument(Language)
+                Language = JsonSerializer.SerializeToDocument(Languages)
             };
         }
     }

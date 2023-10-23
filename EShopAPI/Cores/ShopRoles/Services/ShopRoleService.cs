@@ -1,7 +1,6 @@
-﻿using EShopAPI.Context;
+﻿using EShopAPI.Common;
 using EShopAPI.Cores.ShopRoles.DAOs;
 using EShopAPI.Cores.ShopRoles.DTOs;
-using EShopAPI.Cores.ShopUsers;
 using EShopCores.Errors;
 using EShopCores.Responses;
 
@@ -13,14 +12,17 @@ namespace EShopAPI.Cores.ShopRoles.Services
     public class ShopRoleService : IShopRoleService
     {
         private readonly IShopRoleDao _shopRoleDao;
-        
+        private readonly LoginUserData _loginUserData;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="shopRoleDao"></param>
-        public ShopRoleService(IShopRoleDao shopRoleDao) 
+        /// <param name="loginUserData"></param>
+        public ShopRoleService(IShopRoleDao shopRoleDao, LoginUserData loginUserData) 
         {
             _shopRoleDao = shopRoleDao;
+            _loginUserData = loginUserData;
         }
 
         ///<inheritdoc/>
@@ -65,14 +67,14 @@ namespace EShopAPI.Cores.ShopRoles.Services
         public async Task<ShopRole> InsertAsync(InsertShopRoleDto insertDto)
         {
             await ThrowExistByNumberAsync(insertDto.Number);
-            return await _shopRoleDao.InsertAsync(insertDto.ToEntity());
+            return await _shopRoleDao.InsertAsync(insertDto.ToEntity(_loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>
         public async Task UpdateAsync(UpdateShopRoleDto updateDto)
         {
             ShopRole shopRole = await ThrowNotFindByIdAsync(updateDto.Id);
-            await _shopRoleDao.UpdateAsync(updateDto.SetEntity(shopRole));
+            await _shopRoleDao.UpdateAsync(updateDto.SetEntity(shopRole, _loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>

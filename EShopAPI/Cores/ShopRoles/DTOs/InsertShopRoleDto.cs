@@ -1,6 +1,7 @@
-﻿using EShopAPI.Cores.ShopUsers;
-using EShopCores.Extensions;
+﻿using EShopCores.Extensions;
+using EShopCores.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace EShopAPI.Cores.ShopRoles.DTOs
@@ -34,18 +35,6 @@ namespace EShopAPI.Cores.ShopRoles.DTOs
         public bool IsEnable { get; set; } = true;
 
         /// <summary>
-        /// 建立者
-        /// </summary>
-        [JsonRequired]
-        public string CreateUser { get; set; } = null!;
-
-        /// <summary>
-        /// 建立時間
-        /// </summary>
-        [JsonIgnore]
-        public long CreateDate { get; set; } = DateTime.UtcNow.GetUnixTimeMillisecond();
-
-        /// <summary>
         /// 備註
         /// </summary>
         public string? Remarks { get; set; }
@@ -53,23 +42,24 @@ namespace EShopAPI.Cores.ShopRoles.DTOs
         /// <summary>
         /// 多國語系
         /// </summary>
-        public Dictionary<string, string>? Language { get; set; }
+        public IEnumerable<LanguageJson>? Languages { get; set; }
 
         /// <summary>
         /// 轉成實體
         /// </summary>
+        /// <param name="userNumber">新增者帳號</param>
         /// <returns></returns>
-        public ShopRole ToEntity()
+        public ShopRole ToEntity(string userNumber)
         {
             return new ShopRole
             {
                 Number = Number,
                 Name = Name,
                 IsEnable = IsEnable,
-                CreateUser = CreateUser,
-                CreateDate = CreateDate,
+                CreateUser = userNumber,
+                CreateDate = DateTime.UtcNow.GetUnixTimeMillisecond(),
                 Remarks = Remarks,
-                Language = System.Text.Json.JsonSerializer.SerializeToDocument(Language)
+                Language = JsonSerializer.SerializeToDocument(Languages)
             };
         }
     }
