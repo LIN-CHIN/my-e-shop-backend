@@ -50,7 +50,7 @@ try
 
                 return new ObjectResult(result)
                 { 
-                    StatusCode = (int)HttpStatusCode.InternalServerError
+                    StatusCode = (int)HttpStatusCode.BadRequest
                 };
             };
         });
