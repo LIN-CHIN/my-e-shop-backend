@@ -12,6 +12,7 @@ namespace EShopCores.Json
         /// ex: color
         /// </summary>
         [JsonRequired]
+        [JsonPropertyName("key")]
         public string Key { get; set; } = null!;
 
         /// <summary>
@@ -19,6 +20,7 @@ namespace EShopCores.Json
         /// ex: red
         /// </summary>
         [JsonRequired]
+        [JsonPropertyName("value")]
         public string Value { get; set; } = null!;
     }
 }
