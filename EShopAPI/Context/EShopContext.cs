@@ -32,6 +32,7 @@ using System.Numerics;
 using System.Xml.Linq;
 using EShopAPI.Cores.RecordOrderCompositeProductItems;
 using EShopAPI.Cores.RecordOrderCompositeProducts;
+using EShopAPI.Cores.CustomVariantAttributes;
 
 namespace EShopAPI.Context
 {
@@ -191,6 +192,11 @@ namespace EShopAPI.Context
         /// </summary>
         public DbSet<ShopCoupon> ShopCoupons => Set<ShopCoupon>();
 
+        /// <summary>
+        /// 自訂變種屬性的實體
+        /// </summary>
+        public DbSet<CustomVariantAttribute> CustomVariantAttributes => Set<CustomVariantAttribute>();
+        
         ///<inheritdoc/>
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
@@ -291,6 +297,9 @@ namespace EShopAPI.Context
              .HasIndex(x => new { x.Number })
              .IsUnique();
 
+            modelBuilder.Entity<CustomVariantAttribute>()
+             .HasIndex(x => new { x.Number })
+             .IsUnique();
             #endregion
 
             #region Setting Constraints

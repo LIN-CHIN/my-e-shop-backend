@@ -1,16 +1,24 @@
 ﻿using EShopCores.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace EShopCores.Json
 {
     /// <summary>
     /// 設定多國語係Json的格式
     /// </summary>
+    /// <remarks>
+    /// 範例:
+    /// [
+    ///  {
+    ///     "key": "語言的key",
+    ///     "value": "該欄位對應的語言名稱"
+    ///  },
+    ///  {
+    ///     "key": "TW",
+    ///     "value": "產品名稱" 
+    ///  }
+    ///]
+    /// </remarks>
     public class LanguageJson
     {
         /// <summary>

@@ -195,6 +195,94 @@ namespace EShopAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("EShopAPI.Cores.CustomVariantAttributes.CustomVariantAttribute", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id")
+                        .HasColumnOrder(0)
+                        .HasComment("系統id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("AttributeType")
+                        .HasColumnType("integer")
+                        .HasColumnName("attribute_type")
+                        .HasComment("屬性類型");
+
+                    b.Property<long>("CreateDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("create_date")
+                        .HasComment("建立日期");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("create_user")
+                        .HasComment("建立者");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_enable")
+                        .HasComment("是否啟用");
+
+                    b.Property<bool>("IsSystemDefault")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_system_default")
+                        .HasComment("是否為系統預設");
+
+                    b.Property<JsonDocument>("Language")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("language")
+                        .HasComment("多國語系");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("name")
+                        .HasComment("屬性名稱");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("number")
+                        .HasComment("屬性代碼");
+
+                    b.Property<JsonDocument>("Options")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("options")
+                        .HasComment("屬性的選項清單");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("text")
+                        .HasColumnName("remarks")
+                        .HasComment("備註");
+
+                    b.Property<long?>("UpdateDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("update_date")
+                        .HasComment("更新日期");
+
+                    b.Property<string>("UpdateUser")
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("update_user")
+                        .HasComment("更新者");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Number")
+                        .IsUnique();
+
+                    b.ToTable("custom_variant_attribute", "eshop", t =>
+                        {
+                            t.HasComment("自訂變種屬性");
+                        });
+                });
+
             modelBuilder.Entity("EShopAPI.Cores.DeliveryCategories.DeliveryCategory", b =>
                 {
                     b.Property<long>("Id")
@@ -1574,11 +1662,6 @@ namespace EShopAPI.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_always_sale")
                         .HasComment("是否總是特價");
-
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_enable")
-                        .HasComment("是否啟用");
 
                     b.Property<bool>("IsUseCoupon")
                         .HasColumnType("boolean")

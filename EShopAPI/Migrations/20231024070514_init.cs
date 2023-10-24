@@ -18,6 +18,32 @@ namespace EShopAPI.Migrations
                 name: "eshop");
 
             migrationBuilder.CreateTable(
+                name: "custom_variant_attribute",
+                schema: "eshop",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false, comment: "系統id")
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    number = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "屬性代碼"),
+                    name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "屬性名稱"),
+                    attribute_type = table.Column<int>(type: "integer", nullable: false, comment: "屬性類型"),
+                    is_system_default = table.Column<bool>(type: "boolean", nullable: false, comment: "是否為系統預設"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
+                    options = table.Column<JsonDocument>(type: "jsonb", nullable: false, comment: "屬性的選項清單"),
+                    create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
+                    create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
+                    update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
+                    update_date = table.Column<long>(type: "bigint", nullable: true, comment: "更新日期"),
+                    remarks = table.Column<string>(type: "text", nullable: true, comment: "備註"),
+                    language = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "多國語系")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_custom_variant_attribute", x => x.id);
+                },
+                comment: "自訂變種屬性");
+
+            migrationBuilder.CreateTable(
                 name: "delivery_category",
                 schema: "eshop",
                 columns: table => new
@@ -314,7 +340,6 @@ namespace EShopAPI.Migrations
                     discount = table.Column<double>(type: "double precision", nullable: true, comment: "折扣數"),
                     sale_start_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價起始日期"),
                     sale_end_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價結束日期"),
-                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
                     is_use_coupon = table.Column<bool>(type: "boolean", nullable: false, comment: "是否可以使用優惠券"),
                     variant_attribute = table.Column<JsonDocument>(type: "jsonb", nullable: true, comment: "變種屬性, 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值 ex: color:[red, blue], size[S,M]"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
@@ -1136,6 +1161,13 @@ namespace EShopAPI.Migrations
                 column: "shop_inventory_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_custom_variant_attribute_number",
+                schema: "eshop",
+                table: "custom_variant_attribute",
+                column: "number",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_delivery_category_number",
                 schema: "eshop",
                 table: "delivery_category",
@@ -1422,6 +1454,10 @@ namespace EShopAPI.Migrations
         {
             migrationBuilder.DropTable(
                 name: "composite_product_item",
+                schema: "eshop");
+
+            migrationBuilder.DropTable(
+                name: "custom_variant_attribute",
                 schema: "eshop");
 
             migrationBuilder.DropTable(

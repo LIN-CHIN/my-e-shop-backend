@@ -82,14 +82,6 @@ namespace EShopAPI.Cores.Products
         public long? SaleEndDate { get; set; }
 
         /// <summary>
-        /// 是否啟用
-        /// </summary>
-        [Required]
-        [Column("is_enable")]
-        [Comment("是否啟用")]
-        public bool IsEnable { get; set; }
-
-        /// <summary>
         /// 是否可以使用優惠券
         /// </summary>
         [Required]
