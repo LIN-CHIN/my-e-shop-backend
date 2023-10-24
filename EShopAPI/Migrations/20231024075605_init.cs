@@ -1020,6 +1020,16 @@ namespace EShopAPI.Migrations
 
             migrationBuilder.InsertData(
                 schema: "eshop",
+                table: "custom_variant_attribute",
+                columns: new[] { "id", "attribute_type", "create_date", "create_user", "is_enable", "is_system_default", "language", "name", "number", "options", "remarks", "update_date", "update_user" },
+                values: new object[,]
+                {
+                    { 1L, 3, 1695285957713L, "shopAdmin", true, true, null, "顏色", "color", System.Text.Json.JsonDocument.Parse("[{\"id\":\"9e6e6c9a-263f-47eb-9c6a-3663f3cd51f3\",\"name\":\"\\u9ED1\\u8272\",\"hex\":\"#000000\"},{\"id\":\"6a450c5a-11d9-4c11-b38e-9a9b41eaab78\",\"name\":\"\\u767D\\u8272\",\"hex\":\"#FFFFFF\"},{\"id\":\"3a29d224-d555-4e3e-9a5a-07bc2622d58d\",\"name\":\"\\u7D05\\u8272\",\"hex\":\"#FF0000\"},{\"id\":\"a12aeacf-5cbb-479b-834f-7d2ce46a00a8\",\"name\":\"\\u7DA0\\u8272\",\"hex\":\"#00FF00\"},{\"id\":\"70711778-5f47-4aa0-9d74-da1726dd1004\",\"name\":\"\\u85CD\\u8272\",\"hex\":\"#0000FF\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null },
+                    { 2L, 1, 1695285957713L, "shopAdmin", true, true, null, "尺寸", "size", System.Text.Json.JsonDocument.Parse("[{\"id\":\"21332d65-f089-43c2-8c7c-993ac68baca1\",\"name\":\"XS\"},{\"id\":\"379cb56a-ab8a-4295-a48b-fa4897b1ddf4\",\"name\":\"S\"},{\"id\":\"b0f850fd-2188-4ea0-8732-c54ede14b18f\",\"name\":\"M\"},{\"id\":\"cc87d6d2-ec04-411d-9758-cbdd291d48cd\",\"name\":\"L\"},{\"id\":\"dc839e88-a1ce-4cd7-94a5-9c2880c26109\",\"name\":\"XL\"},{\"id\":\"90785613-2d34-4493-bdca-e66d24cacaef\",\"name\":\"XXL\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "eshop",
                 table: "eshop_unit",
                 columns: new[] { "id", "create_date", "create_user", "is_enable", "is_system_default", "language", "name", "number", "remarks", "update_date", "update_user" },
                 values: new object[,]

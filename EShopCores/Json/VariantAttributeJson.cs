@@ -22,8 +22,10 @@ namespace EShopCores.Json
     {
         /// <summary>
         /// 變種屬性的Key
-        /// ex: color
         /// </summary>
+        /// <remarks>
+        /// custom_variant_attribute 的number
+        /// </remarks>
         [JsonRequired]
         [JsonPropertyName("key")]
         public string Key { get; set; } = null!;
@@ -32,6 +34,8 @@ namespace EShopCores.Json
         /// 變種屬性的值
         /// </summary>
         /// <remarks>
+        /// custom_variant_attribute 的options欄位中的id，
+        /// GUID之類的唯一碼()
         /// </remarks>
         [JsonRequired]
         [JsonPropertyName("value")]

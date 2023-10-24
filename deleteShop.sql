@@ -30,3 +30,4 @@ DROP TABLE shop_inventory;
 DROP TABLE eshop_unit;
 DROP TABLE payment_category;
 DROP TABLE shop_coupon;
+DROP TABLE custom_variant_attribute;
