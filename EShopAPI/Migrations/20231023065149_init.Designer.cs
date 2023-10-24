@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EShopAPI.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20231023020346_init")]
+    [Migration("20231023065149_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -2400,7 +2400,7 @@ namespace EShopAPI.Migrations
                     b.Property<JsonDocument>("VariantAttribute")
                         .HasColumnType("jsonb")
                         .HasColumnName("variant_attribute")
-                        .HasComment("變種屬性, 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值 ex: color:[red, blue], size[S,M]");
+                        .HasComment("變種屬性, 這個產品有哪個變種屬性? 值是是什麼 ex: color: red, size: s");
 
                     b.HasKey("Id");
 

@@ -1,5 +1,6 @@
 ﻿using EShopAPI.Cores.ShopRoles.DTOs;
 using EShopAPI.Cores.ShopRoles.Services;
+using EShopAPI.Filters.RequiredAdminFilters;
 using EShopCores.Models;
 using EShopCores.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -30,10 +31,17 @@ namespace EShopAPI.Cores.ShopRoles
         /// <param name="pageDto"></param>
         /// <param name="queryDto"></param>
         /// <response code="200">查詢成功</response>
+        /// <response code="400">輸入的參數有誤</response>
+        /// <response code="401">身分驗證失敗</response>
+        /// <response code="403">權限不足</response>
         /// <response code="500">查詢失敗</response>
         /// <returns></returns>
         [HttpGet]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(PaginationResponse<ShopRoleDto?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public IActionResult Get(
             [FromQuery] QueryPaginationDto pageDto,
@@ -51,10 +59,17 @@ namespace EShopAPI.Cores.ShopRoles
         /// </summary>
         /// <param name="id">角色id</param>
         /// <response code="200">查詢成功</response>
+        /// <response code="400">輸入的參數有誤</response>
+        /// <response code="401">身分驗證失敗</response>
+        /// <response code="403">權限不足</response>
         /// <response code="500">查詢失敗</response>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<ShopRoleDto?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetById(long id)
         {
@@ -68,10 +83,17 @@ namespace EShopAPI.Cores.ShopRoles
         /// </summary>
         /// <param name="insertDto"></param>
         /// <response code="200">新增成功</response>
+        /// <response code="400">輸入的參數有誤</response>
+        /// <response code="401">身分驗證失敗</response>
+        /// <response code="403">權限不足</response>
         /// <response code="500">新增失敗</response>
         /// <returns></returns>
         [HttpPost]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<ShopRoleDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Insert(InsertShopRoleDto insertDto) 
         {
@@ -85,10 +107,17 @@ namespace EShopAPI.Cores.ShopRoles
         /// </summary>
         /// <param name="updateDto"></param>
         /// <response code="200">修改成功</response>
+        /// <response code="400">輸入的參數有誤</response>
+        /// <response code="401">身分驗證失敗</response>
+        /// <response code="403">權限不足</response>
         /// <response code="500">修改失敗</response>
         /// <returns></returns>
         [HttpPut]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update(UpdateShopRoleDto updateDto)
         {
@@ -101,10 +130,17 @@ namespace EShopAPI.Cores.ShopRoles
         /// </summary>
         /// <param name="id">要啟用的角色id</param>
         /// <response code="200">修改成功</response>
+        /// <response code="400">輸入的參數有誤</response>
+        /// <response code="401">身分驗證失敗</response>
+        /// <response code="403">權限不足</response>
         /// <response code="500">修改失敗</response>
         /// <returns></returns>
         [HttpPatch("Enable/{id}")]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Enable(long id)
         {
@@ -117,10 +153,17 @@ namespace EShopAPI.Cores.ShopRoles
         /// </summary>
         /// <param name="id">要停用的角色id</param>
         /// <response code="200">修改成功</response>
+        /// <response code="400">輸入的參數有誤</response>
+        /// <response code="401">身分驗證失敗</response>
+        /// <response code="403">權限不足</response>
         /// <response code="500">修改失敗</response>
         /// <returns></returns>
         [HttpPatch("Disable/{id}")]
+        [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Disable(long id)
         {

@@ -17,12 +17,14 @@ namespace EShopCores.Json
         /// 語言key
         /// </summary>
         [JsonRequired]
+        [JsonPropertyName("key")]
         public LanguageType LanguageKey { get; set; }
 
         /// <summary>
         /// 語言的值
         /// </summary>
         [JsonRequired]
+        [JsonPropertyName("value")]
         public string LanguageValue { get; set; } = null!;
     }
 }

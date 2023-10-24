@@ -1,116 +1,122 @@
-﻿using EShopAPI.Cores.ShopUsers.DTOs;
-using EShopAPI.Cores.ShopUsers.Services;
-using EShopAPI.Filters;
+﻿using EShopAPI.Cores.ShopInventories.DTOs;
+using EShopAPI.Cores.ShopInventories.Services;
 using EShopAPI.Filters.RequiredAdminFilters;
 using EShopCores.Models;
 using EShopCores.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EShopAPI.Cores.ShopUsers
+namespace EShopAPI.Cores.ShopInventories
 {
     /// <summary>
-    /// 使用者API
+    /// 商店庫存API
     /// </summary>
     [Route("eshop/api/[controller]")]
     [ApiController]
-    public class ShopUserController : ControllerBase
+    public class ShopInventoryController : ControllerBase
     {
-        private readonly IShopUserService _shopUserService;
+        private readonly IShopInventoryService _shopInventoryService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="shopUserService"></param>
-        public ShopUserController(IShopUserService shopUserService) 
+        /// <param name="shopInventoryService"></param>
+        public ShopInventoryController(IShopInventoryService shopInventoryService)
         {
-            _shopUserService = shopUserService;
+            _shopInventoryService = shopInventoryService;
         }
 
         /// <summary>
-        /// 查詢所有使用者
+        /// 取得商店庫存清單
         /// </summary>
-        /// <param name="pageDto">分頁資訊</param>
-        /// <param name="queryDto">要新增的使用者資訊</param>
-        /// <returns></returns>
+        /// <param name="pageDto">分頁dto</param>
+        /// <param name="queryDto">搜尋條件</param>
         /// <response code="200">查詢成功</response>
         /// <response code="400">輸入的參數有誤</response>
         /// <response code="401">身分驗證失敗</response>
         /// <response code="403">權限不足</response>
         /// <response code="500">查詢失敗</response>
-        [HttpGet]
+        /// <returns></returns>
+        [HttpGet()]
         [RequiredAdmin]
-        [ProducesResponseType(typeof(PaginationResponse<ShopUserDto?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginationResponse<ShopInventoryDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public IActionResult Get(
-            [FromQuery] QueryPaginationDto pageDto, 
-            [FromQuery] QueryShopUserDto queryDto)
+        public IActionResult Get([FromQuery] QueryPaginationDto pageDto, 
+            [FromQuery] QueryShopInventoryDto queryDto) 
         {
-            return Ok(PaginationResponse<ShopUserDto?>.GetSuccess(
+            return Ok(PaginationResponse<ShopInventoryDto?>.GetSuccess(
                 pageDto.Page,
                 pageDto.PageCount,
-                _shopUserService.Get(queryDto).Select(user => ShopUserDto.Parse(user)
-            )));
+                _shopInventoryService
+                    .Get(queryDto)
+                    .Select(si => ShopInventoryDto.Parse(si)))
+            );
         }
 
         /// <summary>
-        /// 根據id查詢使用者
+        /// 根據id取得商店庫存
         /// </summary>
-        /// <param name="id">使用者的id</param>
-        /// <returns></returns>
+        /// <param name="id">要查詢的商店庫存實體id</param>
         /// <response code="200">查詢成功</response>
         /// <response code="400">輸入的參數有誤</response>
         /// <response code="401">身分驗證失敗</response>
         /// <response code="403">權限不足</response>
         /// <response code="500">查詢失敗</response>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [RequiredAdmin]
-        [ProducesResponseType(typeof(GenericResponse<ShopUserDto?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<ShopInventoryDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetByIdAsync(long id)
+        public async Task<IActionResult> GetByIdAsync([FromRoute] long id) 
         {
-            ShopUser? shopUser = await _shopUserService.GetByIdAsync(id);
-            return Ok(GenericResponse<ShopUserDto?>.GetSuccess(ShopUserDto.Parse(shopUser)));
+            return Ok(GenericResponse<ShopInventoryDto?>
+                .GetSuccess(ShopInventoryDto
+                    .Parse( await _shopInventoryService
+                        .GetByIdAsync(id)))
+            );
         }
 
         /// <summary>
-        /// 新增使用者
+        /// 新增商店庫存
         /// </summary>
-        /// <param name="insertDto">要新增的使用者資訊</param>
-        /// <returns></returns>
+        /// <param name="insertDto">要新增的商店庫存資料</param>
         /// <response code="200">新增成功</response>
         /// <response code="400">輸入的參數有誤</response>
         /// <response code="401">身分驗證失敗</response>
         /// <response code="403">權限不足</response>
         /// <response code="500">新增失敗</response>
+        /// <returns></returns>
         [HttpPost]
         [RequiredAdmin]
-        [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<ShopInventoryDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Insert([FromBody] InsertShopUserDto insertDto) 
+        public async Task<IActionResult> InsertAsync([FromBody] InsertShopInventoryDto insertDto) 
         {
-            return Ok(GenericResponse<ShopUser>.GetSuccess(
-                await _shopUserService.InsertAsync(insertDto)));
+            return Ok(GenericResponse<ShopInventoryDto?>
+                .GetSuccess(ShopInventoryDto
+                    .Parse( await _shopInventoryService
+                        .InsertAsync(insertDto)))
+            );
         }
 
         /// <summary>
-        /// 編輯使用者
+        /// 編輯商店庫存
         /// </summary>
-        /// <param name="updateDto">要編輯的使用者資訊</param>
-        /// <returns></returns>
+        /// <param name="updateDto">要編輯的商店庫存資料</param>
         /// <response code="200">編輯成功</response>
         /// <response code="400">輸入的參數有誤</response>
         /// <response code="401">身分驗證失敗</response>
         /// <response code="403">權限不足</response>
-        /// <response code="500">新增失敗</response>
+        /// <response code="500">編輯失敗</response>
+        /// <returns></returns>
         [HttpPut]
         [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
@@ -118,22 +124,23 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update([FromBody] UpdateShopUserDto updateDto)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateShopInventoryDto updateDto)
         {
-            await _shopUserService.UpdateAsync(updateDto);
+            await _shopInventoryService
+                        .UpdateAsync(updateDto);
             return Ok(GenericResponse<string>.GetSuccess());
         }
 
         /// <summary>
-        /// 啟用使用者
+        /// 啟用商店庫存
         /// </summary>
-        /// <param name="id">要設定啟用的 使用者id</param>
-        /// <returns></returns>
+        /// <param name="id">要啟用的商店庫存id</param>
         /// <response code="200">啟用成功</response>
         /// <response code="400">輸入的參數有誤</response>
         /// <response code="401">身分驗證失敗</response>
         /// <response code="403">權限不足</response>
         /// <response code="500">啟用失敗</response>
+        /// <returns></returns>
         [HttpPatch("Enable/{id}")]
         [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
@@ -141,22 +148,23 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SetEnable(long id)
+        public async Task<IActionResult> EnableAsync(long id)
         {
-            await _shopUserService.EnableAsync(id, true);
+            await _shopInventoryService
+                        .EnableAsync(id, true);
             return Ok(GenericResponse<string>.GetSuccess());
         }
 
         /// <summary>
-        /// 停用使用者
+        /// 停用商店庫存
         /// </summary>
-        /// <param name="id">要設定啟用的 使用者id</param>
-        /// <returns></returns>
+        /// <param name="id">要停用的商店庫存id</param>
         /// <response code="200">停用成功</response>
         /// <response code="400">輸入的參數有誤</response>
         /// <response code="401">身分驗證失敗</response>
         /// <response code="403">權限不足</response>
         /// <response code="500">停用失敗</response>
+        /// <returns></returns>
         [HttpPatch("Disable/{id}")]
         [RequiredAdmin]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
@@ -164,9 +172,10 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SetDesable(long id)
+        public async Task<IActionResult> DisableAsync(long id)
         {
-            await _shopUserService.EnableAsync(id, false);
+            await _shopInventoryService
+                        .EnableAsync(id, false);
             return Ok(GenericResponse<string>.GetSuccess());
         }
     }
