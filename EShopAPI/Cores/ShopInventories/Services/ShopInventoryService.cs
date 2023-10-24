@@ -1,6 +1,9 @@
 ﻿using EShopAPI.Common;
 using EShopAPI.Cores.ShopInventories.DAOs;
 using EShopAPI.Cores.ShopInventories.DTOs;
+using EShopCores.Errors;
+using EShopCores.Extensions;
+using EShopCores.Responses;
 
 namespace EShopAPI.Cores.ShopInventories.Services
 {
@@ -26,55 +29,67 @@ namespace EShopAPI.Cores.ShopInventories.Services
         ///<inheritdoc/>
         public IQueryable<ShopInventory> Get(QueryShopInventoryDto queryDto)
         {
-            throw new NotImplementedException();
+            return _shopInventoryDao.Get(queryDto);
         }
 
         ///<inheritdoc/>
         public async Task<ShopInventory?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _shopInventoryDao.GetByIdAsync(id);
         }
 
         ///<inheritdoc/>
         public async Task<ShopInventory?> GetByNumberAsync(string number)
         {
-            throw new NotImplementedException();
+            return await _shopInventoryDao.GetByNumberAsync(number);
         }
 
         ///<inheritdoc/>
         public async Task<ShopInventory> InsertAsync(InsertShopInventoryDto insertDto)
         {
-            throw new NotImplementedException();
+            await ThrowExistByNumberAsync(insertDto.Number);
+            return await _shopInventoryDao.InsertAsync(insertDto
+                    .ToEntity(_loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>
         public async Task UpdateAsync(UpdateShopInventoryDto updateDto)
         {
-            throw new NotImplementedException();
-        }
-
-        ///<inheritdoc/>
-        public async Task DeleteAsync(long id)
-        {
-            throw new NotImplementedException();
+            ShopInventory shopInventory = await ThrowNotFindByIdAsync(updateDto.Id);
+            await _shopInventoryDao.UpdateAsync(updateDto
+                .SetEntity(shopInventory, _loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>
         public async Task EnableAsync(long id, bool isEnable)
         {
-            throw new NotImplementedException();
+            ShopInventory shopInventory = await ThrowNotFindByIdAsync(id);
+            shopInventory.IsEnable = isEnable;
+            shopInventory.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond();
+            shopInventory.UpdateUser = _loginUserData.UserNumber;
+            await _shopInventoryDao.UpdateAsync(shopInventory);
         }
 
         ///<inheritdoc/>
-        public async Task<ShopInventory> ThrowExistByNumberAsync(string number)
+        public async Task ThrowExistByNumberAsync(string number)
         {
-            throw new NotImplementedException();
+            ShopInventory? shopInventory = await _shopInventoryDao.GetByNumberAsync(number);
+            if (shopInventory != null) 
+            {
+                throw new EShopException(ResponseCodeType.DuplicateData, "產品代碼已存在");
+            }
         }
 
         ///<inheritdoc/>
         public async Task<ShopInventory> ThrowNotFindByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            ShopInventory? shopInventory = await _shopInventoryDao.GetByIdAsync(id);
+            if (shopInventory == null)
+            {
+                throw new EShopException(ResponseCodeType.RequestParameterError, $"商店庫存id:'{id}'不存在");
+            }
+
+            return shopInventory;
         }
     }
 }

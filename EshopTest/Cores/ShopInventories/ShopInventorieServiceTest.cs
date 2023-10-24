@@ -22,6 +22,43 @@ namespace EshopTest.Cores.ShopInventories
         private Mock<IShopInventoryDao> _mockShopInventoryDao;
         private LoginUserData _loginUserData;
 
+        private static readonly object[] _insertExistNumberCases =
+        {
+            new object[]
+            {
+                new InsertShopInventoryDto
+                {
+                    Number = "A001",
+                    Name = "產品一",
+                }
+            },
+            new object[]
+            {
+                new InsertShopInventoryDto
+                {
+                    Number = "A002",
+                    Name = "產品二",
+                }
+            }
+        };
+        private static readonly object[] _updateNotFindIdCases =
+        {
+            new object[]
+            { 
+                new UpdateShopInventoryDto
+                {
+                    Id = 1
+                }
+            },
+            new object[]
+            {
+                new UpdateShopInventoryDto
+                {
+                    Id = 2
+                }
+            }
+        };
+
         private static readonly object[] _insertSuccessCases =
         {
             new object[] 
@@ -283,9 +320,6 @@ namespace EshopTest.Cores.ShopInventories
             }
         };
 
-
-
-
         [SetUp]
         public void Setup() 
         {
@@ -301,8 +335,8 @@ namespace EshopTest.Cores.ShopInventories
         /// <summary>
         /// 測試新增(重複的產品代碼)
         /// </summary>
-        [Test]
-        public void TestInsertAsyncExistNumber()
+        [TestCaseSource(nameof(_insertExistNumberCases))]
+        public void TestInsertAsyncExistNumber(InsertShopInventoryDto insertDto)
         {
             _mockShopInventoryDao
                 .Setup(x => x.GetByNumberAsync(It.IsAny<string>()))
@@ -313,7 +347,7 @@ namespace EshopTest.Cores.ShopInventories
                 .ReturnsAsync(It.IsAny<ShopInventory>());
 
             EShopException ex = Assert.ThrowsAsync<EShopException>(async () =>
-                await _shopInventoryService.InsertAsync(It.IsAny<InsertShopInventoryDto>()));
+                await _shopInventoryService.InsertAsync(insertDto));
 
             Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.DuplicateData));
         }
@@ -329,15 +363,14 @@ namespace EshopTest.Cores.ShopInventories
             bool isPass = false;
 
             _mockShopInventoryDao
-                .Setup(x => x.GetByNumberAsync(insertDto.Number))
+                .Setup(x => x.GetByNumberAsync(It.IsAny<string>()))
                 .ReturnsAsync(value: null);
 
             _mockShopInventoryDao
-                .Setup(x => x.InsertAsync(insertDto.ToEntity(_loginUserData.UserNumber)))
+                .Setup(x => x.InsertAsync(It.IsAny<ShopInventory>()))
                 .Callback<ShopInventory>(shopInventory => 
                 {
-                    if (shopInventory.Id != 0 &&
-                        shopInventory.Number == insertDto.Number &&
+                    if (shopInventory.Number == insertDto.Number &&
                         shopInventory.Name == insertDto.Name &&
                         shopInventory.InventoryQuantity == insertDto.InventoryQuantity &&
                         shopInventory.InventoryAlert == insertDto.InventoryAlert &&
@@ -347,9 +380,11 @@ namespace EshopTest.Cores.ShopInventories
                         shopInventory.IsComposite == insertDto.IsComposite &&
                         shopInventory.IsCompositeOnly == insertDto.IsCompositeOnly &&
                         shopInventory.IsEnable == insertDto.IsEnable &&
-                        shopInventory.VariantAttribute == JsonSerializer.SerializeToDocument(insertDto.VariantAttributes) &&
+                        JsonSerializer.Serialize(shopInventory.VariantAttribute) ==
+                        JsonSerializer.Serialize(insertDto.VariantAttributes) &&
                         shopInventory.Remarks == insertDto.Remarks &&
-                        shopInventory.Language == JsonSerializer.SerializeToDocument(insertDto.Languages)) 
+                        JsonSerializer.Serialize(shopInventory.Language) ==
+                        JsonSerializer.Serialize(insertDto.Languages)) 
                     {
                         isPass = true;
                     }
@@ -372,8 +407,8 @@ namespace EshopTest.Cores.ShopInventories
         /// 測試UpdateAsync(找不到id)
         /// </summary>
         /// <returns></returns>
-        [Test]
-        public void TestUpdateAsyncNotFindId() 
+        [TestCaseSource(nameof(_updateNotFindIdCases))]
+        public void TestUpdateAsyncNotFindId(UpdateShopInventoryDto updateDto) 
         {
             _mockShopInventoryDao
                 .Setup(x => x.GetByIdAsync(It.IsAny<long>()))
@@ -384,7 +419,7 @@ namespace EshopTest.Cores.ShopInventories
                 .Returns(Task.FromResult(false));
 
             EShopException ex = Assert.ThrowsAsync<EShopException>(async () =>
-                await _shopInventoryService.UpdateAsync(It.IsAny<UpdateShopInventoryDto>()));
+                await _shopInventoryService.UpdateAsync(updateDto));
 
             Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
         }
@@ -416,7 +451,8 @@ namespace EshopTest.Cores.ShopInventories
                         input.Supplier == updateDto.Supplier &&
                         input.Brand == updateDto.Brand &&
                         input.Remarks == updateDto.Remarks &&
-                        input.Language == JsonSerializer.SerializeToDocument(updateDto.Languages) &&
+                        JsonSerializer.Serialize(input.Language) == 
+                        JsonSerializer.Serialize(updateDto.Languages) &&
                         input.UpdateUser == _loginUserData.UserNumber &&
                         input.UpdateDate != null) 
                     {
@@ -435,52 +471,6 @@ namespace EshopTest.Cores.ShopInventories
             }
 
             Assert.That(isPass, Is.True);
-        }
-
-        /// <summary>
-        /// 測試DeleteAsync(找不到id)
-        /// </summary>
-        [Test]
-        public void TestDeleteAsyncNotFindId() 
-        {
-            _mockShopInventoryDao
-               .Setup(x => x.GetByIdAsync(It.IsAny<long>()))
-               .ReturnsAsync(value: null);
-
-            _mockShopInventoryDao
-               .Setup(x => x.DeleteAsync(It.IsAny<long>()))
-               .Returns(Task.FromResult(false));
-
-            EShopException ex = Assert.ThrowsAsync<EShopException>(async () =>
-                await _shopInventoryService.DeleteAsync(It.IsAny<long>()));
-
-            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
-        }
-
-        /// <summary>
-        /// 測試DeleteAsync(成功)
-        /// </summary>
-        [Test]
-        public async Task TestDeleteAsyncSuccess()
-        {
-            _mockShopInventoryDao
-               .Setup(x => x.GetByIdAsync(It.IsAny<long>()))
-               .ReturnsAsync(new ShopInventory());
-
-            _mockShopInventoryDao
-               .Setup(x => x.DeleteAsync(It.IsAny<long>()))
-               .Returns(Task.FromResult(false));
-
-            try
-            {
-                await _shopInventoryService.DeleteAsync(It.IsAny<long>());
-            }
-            catch (Exception)
-            {
-                Assert.Fail("should not get the error");
-            }
-
-            Assert.Pass();
         }
 
         /// <summary>

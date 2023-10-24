@@ -72,7 +72,7 @@ namespace EShopAPI.Cores.ShopInventories.DTOs
         /// </summary>
         /// <param name="entity">實體</param>
         /// <returns></returns>
-        public ShopInventoryDto? Parse(ShopInventory? entity) 
+        public static ShopInventoryDto? Parse(ShopInventory? entity) 
         {
             if (entity == null) 
             {

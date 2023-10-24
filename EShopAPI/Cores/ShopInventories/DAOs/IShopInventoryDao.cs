@@ -45,8 +45,8 @@ namespace EShopAPI.Cores.ShopInventories.DAOs
         /// <summary>
         /// 刪除商店庫存
         /// </summary>
-        /// <param name="id">要刪除的id</param>
+        /// <param name="shopInventory">要刪除的實體</param>
         /// <returns></returns>
-        Task DeleteAsync(long id);
+        Task DeleteAsync(ShopInventory shopInventory);
     }
 }

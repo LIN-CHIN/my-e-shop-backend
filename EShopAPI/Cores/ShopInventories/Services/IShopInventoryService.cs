@@ -45,13 +45,6 @@ namespace EShopAPI.Cores.ShopInventories.Services
         Task UpdateAsync(UpdateShopInventoryDto updateDto);
 
         /// <summary>
-        /// 刪除商店庫存
-        /// </summary>
-        /// <param name="id">要刪除的id</param>
-        /// <returns></returns>
-        Task DeleteAsync(long id);
-
-        /// <summary>
         /// 根據id取得商店庫存，但若找不到該id會直接throw exception
         /// </summary>
         /// <param name="id"></param>
@@ -65,7 +58,7 @@ namespace EShopAPI.Cores.ShopInventories.Services
         /// <param name="number">商品代碼</param>
         /// <returns></returns>
         /// <exception cref="EShopException">找不到id</exception>
-        Task<ShopInventory> ThrowExistByNumberAsync(string number);
+        Task ThrowExistByNumberAsync(string number);
 
         /// <summary>
         /// 啟用/停用商店庫存
