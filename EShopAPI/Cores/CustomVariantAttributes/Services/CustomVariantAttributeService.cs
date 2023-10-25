@@ -1,6 +1,9 @@
 ﻿using EShopAPI.Common;
 using EShopAPI.Cores.CustomVariantAttributes.DAOs;
 using EShopAPI.Cores.CustomVariantAttributes.DTOs;
+using EShopCores.Errors;
+using EShopCores.Extensions;
+using EShopCores.Responses;
 
 namespace EShopAPI.Cores.CustomVariantAttributes.Services
 {
@@ -28,49 +31,76 @@ namespace EShopAPI.Cores.CustomVariantAttributes.Services
         ///<inheritdoc/>
         public IQueryable<CustomVariantAttribute> Get(QueryCustomVariantAttributeDto queryDto)
         {
-            throw new NotImplementedException();
+            return _customVariantAttributeDao.Get(queryDto);
         }
 
         ///<inheritdoc/>
-        public Task<CustomVariantAttribute?> GetByIdAsync(long id)
+        public async Task<CustomVariantAttribute?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _customVariantAttributeDao.GetByIdAsync(id);
         }
 
         ///<inheritdoc/>
-        public Task<CustomVariantAttribute?> GetByNumberAsync(string number)
+        public async Task<CustomVariantAttribute?> GetByNumberAsync(string number)
         {
-            throw new NotImplementedException();
+            return await _customVariantAttributeDao.GetByNumberAsync(number);
         }
 
         ///<inheritdoc/>
-        public Task<CustomVariantAttribute> InsertAsync(InsertCustomVariantAttributeDto insertDto)
+        public async Task<CustomVariantAttribute> InsertAsync(InsertCustomVariantAttributeDto insertDto)
         {
-            throw new NotImplementedException();
+            await ThrowExistByNumberAsync(insertDto.Number);
+            return await _customVariantAttributeDao
+                .InsertAsync(insertDto
+                    .ToEntity(_loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>
-        public Task UpdateAsync(UpdateCustomVariantAttributeDto updateDto)
+        public async Task UpdateAsync(UpdateCustomVariantAttributeDto updateDto)
         {
-            throw new NotImplementedException();
+            CustomVariantAttribute entity = await ThrowNotFindByIdAsync(updateDto.Id);
+            await _customVariantAttributeDao
+                    .UpdateAsync(updateDto
+                        .SetEntity(entity, _loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>
-        public Task EnableAsync(long id, bool isEnable)
+        public async Task EnableAsync(long id, bool isEnable)
         {
-            throw new NotImplementedException();
+            CustomVariantAttribute entity = await ThrowNotFindByIdAsync(id);
+            entity.IsEnable = isEnable;
+            entity.UpdateUser = _loginUserData.UserNumber;
+            entity.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond();
+
+            await _customVariantAttributeDao.UpdateAsync(entity);
         }
 
         ///<inheritdoc/>
-        public Task<CustomVariantAttribute> ThrowNotFindByIdAsync(long id)
+        public async Task<CustomVariantAttribute> ThrowNotFindByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            CustomVariantAttribute? entity = 
+                await _customVariantAttributeDao.GetByIdAsync(id);
+
+            if (entity == null) 
+            {
+                throw new EShopException(ResponseCodeType.RequestParameterError,
+                    $"找不到id:{id}");
+            }
+
+            return entity;
         }
 
         ///<inheritdoc/>
-        public Task ThrowExistByNumberAsync(string number)
+        public async Task ThrowExistByNumberAsync(string number)
         {
-            throw new NotImplementedException();
+            CustomVariantAttribute? entity = 
+                await _customVariantAttributeDao.GetByNumberAsync(number);
+
+            if (entity != null)
+            {
+                throw new EShopException(ResponseCodeType.DuplicateData,
+                    $"number已存在");
+            }
         }
     }
 }

@@ -8,11 +8,8 @@ using EShopCores.Errors;
 using EShopCores.Json;
 using EShopCores.Json.VariantAttributeOptions;
 using EShopCores.Responses;
-using Jose;
-using Microsoft.Extensions.Options;
 using Moq;
 using System.Text.Json;
-using System.Xml.Linq;
 
 namespace EshopTest.Cores.CustomVariantAttributes
 {
@@ -376,7 +373,7 @@ namespace EshopTest.Cores.CustomVariantAttributes
             },
             new object[]
             {
-                1,
+                2,
                 new CustomVariantAttribute
                 {
                     Id = 2,
@@ -397,7 +394,7 @@ namespace EshopTest.Cores.CustomVariantAttributes
             },
             new object[]
             {
-                1,
+                2,
                 new CustomVariantAttribute
                 {
                     Id = 2,
