@@ -2,6 +2,8 @@
 using EShopAPI.Context;
 using EShopAPI.Cores.Auth.JWTs;
 using EShopAPI.Cores.Auth.Services;
+using EShopAPI.Cores.CustomVariantAttributes.DAOs;
+using EShopAPI.Cores.CustomVariantAttributes.Services;
 using EShopAPI.Cores.MapUserRoles.DAOs;
 using EShopAPI.Cores.MapUserRoles.Services;
 using EShopAPI.Cores.ShopInventories.DAOs;
@@ -74,6 +76,10 @@ namespace EShopAPI
             //ShopInventories
             services.AddScoped<IShopInventoryService, ShopInventoryService>();
             services.AddScoped<IShopInventoryDao, ShopInventoryDao>();
+
+            //CustomVariantAttributes
+            services.AddScoped<ICustomVariantAttributeService, CustomVariantAttributeService>();
+            services.AddScoped<ICustomVariantAttributeDao, CustomVariantAttributeDao>();
 
             return services;
         }

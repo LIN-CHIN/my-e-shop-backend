@@ -18,20 +18,7 @@ namespace EShopCores.Json.VariantAttributeOptions
     ///  }
     /// ]
     /// </remarks>
-    public class VariantAttributeOptionNumberJson
+    public class VariantAttributeOptionNumberJson : VariantAttributeOptionBaseJson
     {
-        /// <summary>
-        /// 唯一值
-        /// </summary>
-        [JsonRequired]
-        [JsonPropertyName("id")]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-
-        /// <summary>
-        /// 變種屬性選項名稱
-        /// </summary>
-        [JsonRequired]
-        [JsonPropertyName("name")]
-        public long Name { get; set; }
     }
 }

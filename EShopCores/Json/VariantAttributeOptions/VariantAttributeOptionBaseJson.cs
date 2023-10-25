@@ -8,29 +8,34 @@ using System.Threading.Tasks;
 namespace EShopCores.Json.VariantAttributeOptions
 {
     /// <summary>
-    /// 變種屬性選項(顏色)的json格式
+    /// 變種選項通用的json格式
     /// </summary>
     /// <remarks>
     /// [
     ///   {
     ///       "id": "GUID()",
-    ///       "name": "紅色",
-    ///       "hex": "#FFFFFF"
+    ///       "name": "紅色"
     ///   },
     ///   {
     ///       "id": "GUID()",
-    ///       "name": "藍色",
-    ///       "hex": "#FFFFFF"
+    ///       "name": "藍色"
     ///   }
     /// ]
     /// </remarks>
-    public class VariantAttributeOptionColorJson : VariantAttributeOptionBaseJson
+    public class VariantAttributeOptionBaseJson
     {
         /// <summary>
-        /// 色碼
+        /// 唯一值
         /// </summary>
         [JsonRequired]
-        [JsonPropertyName("hex")]
-        public string Hex { get; set; } = null!;
+        [JsonPropertyName("id")]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
+        /// <summary>
+        /// 變種屬性選項名稱
+        /// </summary>
+        [JsonRequired]
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = null!;
     }
 }
