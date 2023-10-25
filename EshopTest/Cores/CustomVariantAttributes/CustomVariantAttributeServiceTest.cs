@@ -6,7 +6,6 @@ using EShopAPI.Cores.CustomVariantAttributes.Services;
 using EShopCores.Enums;
 using EShopCores.Errors;
 using EShopCores.Json;
-using EShopCores.Json.VariantAttributeOptions;
 using EShopCores.Responses;
 using Moq;
 using System.Text.Json;
@@ -50,15 +49,17 @@ namespace EshopTest.Cores.CustomVariantAttributes
                     Name = "測試屬性001",
                     AttributeType = CustomVariantAttributeType.Number,
                     IsEnable = true,
-                    Options = new List<VariantAttributeOptionTextJson>
+                    Options = new List<VariantAttributeOptionJson>
                     {
-                        new VariantAttributeOptionTextJson
+                        new VariantAttributeOptionJson
                         {
-                            Name = "S"
+                            Name = "S",
+                            Value = "S"
                         },
-                        new VariantAttributeOptionTextJson
+                        new VariantAttributeOptionJson
                         {
-                            Name = "L"
+                            Name = "L",
+                            Value = "L"
                         }
                     },
                     Remarks = "測試屬性001的備註",
@@ -85,15 +86,17 @@ namespace EshopTest.Cores.CustomVariantAttributes
                     IsSystemDefault = false,
                     IsEnable = true,
                     Options = JsonSerializer.SerializeToDocument(
-                        new List<VariantAttributeOptionTextJson>
+                        new List<VariantAttributeOptionJson>
                         {
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "S"
+                                Name = "S",
+                                Value = "S"
                             },
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "L"
+                                Name = "L",
+                                Value = "L"
                             }
                         }
                     ),
@@ -123,17 +126,17 @@ namespace EshopTest.Cores.CustomVariantAttributes
                     Name = "測試屬性002",
                     AttributeType = CustomVariantAttributeType.Color,
                     IsEnable = false,
-                    Options = new List<VariantAttributeOptionColorJson>
+                    Options = new List<VariantAttributeOptionJson>
                     {
-                        new VariantAttributeOptionColorJson
+                        new VariantAttributeOptionJson
                         {
                             Name = "黑色",
-                            Hex = "#000000"
+                            Value = "#000000"
                         },
-                        new VariantAttributeOptionColorJson
+                        new VariantAttributeOptionJson
                         {
                             Name = "白色",
-                            Hex = "#FFFFFF"
+                            Value = "#FFFFFF"
                         }
                     },
                     Remarks = "測試屬性002的備註",
@@ -160,17 +163,17 @@ namespace EshopTest.Cores.CustomVariantAttributes
                     IsSystemDefault = false,
                     IsEnable = false,
                     Options = JsonSerializer.SerializeToDocument(
-                        new List<VariantAttributeOptionColorJson>
+                        new List<VariantAttributeOptionJson>
                         {
-                            new VariantAttributeOptionColorJson
+                            new VariantAttributeOptionJson
                             {
                                 Name = "黑色",
-                                Hex = "#000000"
+                                Value = "#000000"
                             },
-                            new VariantAttributeOptionColorJson
+                            new VariantAttributeOptionJson
                             {
                                 Name = "白色",
-                                Hex = "#FFFFFF"
+                                Value = "#FFFFFF"
                             }
                         }
                     ),
@@ -219,15 +222,17 @@ namespace EshopTest.Cores.CustomVariantAttributes
                 {
                     Id = 1,
                     Name = "編輯測試屬性001",
-                    Options = new List<VariantAttributeOptionTextJson>
+                    Options = new List<VariantAttributeOptionJson>
                     {
-                        new VariantAttributeOptionTextJson
+                        new VariantAttributeOptionJson
                         {
-                            Name = "S"
+                            Name = "S",
+                            Value = "S"
                         },
-                        new VariantAttributeOptionTextJson
+                        new VariantAttributeOptionJson
                         {
-                            Name = "L"
+                            Name = "L",
+                            Value = "L"
                         }
                     },
                     Remarks = "編輯測試屬性001的備註",
@@ -254,15 +259,17 @@ namespace EshopTest.Cores.CustomVariantAttributes
                     IsSystemDefault = false,
                     IsEnable = true,
                     Options = JsonSerializer.SerializeToDocument(
-                        new List<VariantAttributeOptionTextJson>
+                        new List<VariantAttributeOptionJson>
                         {
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "S"
+                                Name = "S",
+                                Value = "S"
                             },
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "L"
+                                Name = "L",
+                                Value = "L"
                             }
                         }
                     ),
@@ -289,17 +296,17 @@ namespace EshopTest.Cores.CustomVariantAttributes
                 new UpdateCustomVariantAttributeDto
                 {
                     Name = "編輯測試屬性002",
-                    Options = new List<VariantAttributeOptionColorJson>
+                    Options = new List<VariantAttributeOptionJson>
                     {
-                        new VariantAttributeOptionColorJson
+                        new VariantAttributeOptionJson
                         {
                             Name = "編輯黑色",
-                            Hex = "#000000"
+                            Value = "#000000"
                         },
-                        new VariantAttributeOptionColorJson
+                        new VariantAttributeOptionJson
                         {
                             Name = "編輯白色",
-                            Hex = "#FFFFFF"
+                            Value = "#FFFFFF"
                         }
                     },
                     Remarks = "編輯測試屬性002的備註",
@@ -326,17 +333,17 @@ namespace EshopTest.Cores.CustomVariantAttributes
                     IsSystemDefault = false,
                     IsEnable = false,
                     Options = JsonSerializer.SerializeToDocument(
-                        new List<VariantAttributeOptionColorJson>
+                        new List<VariantAttributeOptionJson>
                         {
-                            new VariantAttributeOptionColorJson
+                            new VariantAttributeOptionJson
                             {
                                 Name = "黑色",
-                                Hex = "#000000"
+                                Value = "#000000"
                             },
-                            new VariantAttributeOptionColorJson
+                            new VariantAttributeOptionJson
                             {
                                 Name = "白色",
-                                Hex = "#FFFFFF"
+                                Value = "#FFFFFF"
                             }
                         }
                     ),

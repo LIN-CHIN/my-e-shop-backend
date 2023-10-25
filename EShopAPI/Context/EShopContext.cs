@@ -37,7 +37,6 @@ using Microsoft.Extensions.Options;
 using EShopCores.Enums;
 using System.Text.Json;
 using EShopCores.Json;
-using EShopCores.Json.VariantAttributeOptions;
 
 namespace EShopAPI.Context
 {
@@ -1460,32 +1459,32 @@ namespace EShopAPI.Context
                     IsSystemDefault = true,
                     IsEnable = true,
                     Options = JsonSerializer.SerializeToDocument(
-                        new List<VariantAttributeOptionColorJson>
+                        new List<VariantAttributeOptionJson>
                         {
-                            new VariantAttributeOptionColorJson
+                            new VariantAttributeOptionJson
                             {
                                 Name = "黑色",
-                                Hex = "#000000",
+                                Value = "#000000",
                             },
-                            new VariantAttributeOptionColorJson
+                            new VariantAttributeOptionJson
                             {
                                 Name = "白色",
-                                Hex = "#FFFFFF",
+                                Value = "#FFFFFF",
                             },
-                            new VariantAttributeOptionColorJson
+                            new VariantAttributeOptionJson
                             {
                                 Name = "紅色",
-                                Hex = "#FF0000",
+                                Value = "#FF0000",
                             },
-                            new VariantAttributeOptionColorJson
+                            new VariantAttributeOptionJson
                             {
                                 Name = "綠色",
-                                Hex = "#00FF00",
+                                Value = "#00FF00",
                             },
-                            new VariantAttributeOptionColorJson
+                            new VariantAttributeOptionJson
                             {
                                 Name = "藍色",
-                                Hex = "#0000FF",
+                                Value = "#0000FF",
                             }
                         }
                     )
@@ -1505,31 +1504,37 @@ namespace EShopAPI.Context
                     IsSystemDefault = true,
                     IsEnable = true,
                     Options = JsonSerializer.SerializeToDocument(
-                        new List<VariantAttributeOptionTextJson>
+                        new List<VariantAttributeOptionJson>
                         {
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "XS"
+                                Name = "XS",
+                                Value = "XS"
                             },
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "S"
+                                Name = "S",
+                                Value = "S"
                             },
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "M"
+                                Name = "M",
+                                Value = "M"
                             },
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "L"
+                                Name = "L",
+                                Value = "L"
                             },
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "XL"
+                                Name = "XL",
+                                Value = "XL"
                             },
-                            new VariantAttributeOptionTextJson
+                            new VariantAttributeOptionJson
                             {
-                                Name = "XXL"
+                                Name = "XXL",
+                                Value = "XXL"
                             }
                         }
                     )
