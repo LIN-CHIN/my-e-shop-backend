@@ -33,6 +33,11 @@ using System.Xml.Linq;
 using EShopAPI.Cores.RecordOrderCompositeProductItems;
 using EShopAPI.Cores.RecordOrderCompositeProducts;
 using EShopAPI.Cores.CustomVariantAttributes;
+using Microsoft.Extensions.Options;
+using EShopCores.Enums;
+using System.Text.Json;
+using EShopCores.Json;
+using EShopCores.Json.VariantAttributeOptions;
 
 namespace EShopAPI.Context
 {
@@ -571,6 +576,9 @@ namespace EShopAPI.Context
 
             modelBuilder.Entity<MapRolePermission>()
                .HasData(GetDefaultMapRolePermissions());
+
+            modelBuilder.Entity<CustomVariantAttribute>()
+                .HasData(GetDefaultCustomVariantAttributes());
             
             #endregion
         }
@@ -1425,6 +1433,106 @@ namespace EShopAPI.Context
                     IsReadPermission = true,
                     IsUpdatePermission = false,
                     IsDeletePermission = false
+                }
+            };
+        }
+
+        /// <summary>
+        /// 取得預設自訂變種屬性清單
+        /// </summary>
+        /// <returns></returns>
+        private static IList<CustomVariantAttribute> GetDefaultCustomVariantAttributes() 
+        {
+            return new List<CustomVariantAttribute>()
+            {
+                new CustomVariantAttribute
+                {
+                    Id = 1,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "color",
+                    Name = "顏色",
+                    AttributeType = CustomVariantAttributeType.Color,
+                    IsSystemDefault = true,
+                    IsEnable = true,
+                    Options = JsonSerializer.SerializeToDocument(
+                        new List<VariantAttributeOptionColorJson>
+                        {
+                            new VariantAttributeOptionColorJson
+                            {
+                                Name = "黑色",
+                                Hex = "#000000",
+                            },
+                            new VariantAttributeOptionColorJson
+                            {
+                                Name = "白色",
+                                Hex = "#FFFFFF",
+                            },
+                            new VariantAttributeOptionColorJson
+                            {
+                                Name = "紅色",
+                                Hex = "#FF0000",
+                            },
+                            new VariantAttributeOptionColorJson
+                            {
+                                Name = "綠色",
+                                Hex = "#00FF00",
+                            },
+                            new VariantAttributeOptionColorJson
+                            {
+                                Name = "藍色",
+                                Hex = "#0000FF",
+                            }
+                        }
+                    )
+                },
+                new CustomVariantAttribute
+                {
+                    Id = 2,
+                    CreateUser = "shopAdmin",
+                    CreateDate = 1695285957713,
+                    UpdateUser = null,
+                    UpdateDate = null,
+                    Remarks = null,
+                    Language = null,
+                    Number = "size",
+                    Name = "尺寸",
+                    AttributeType = CustomVariantAttributeType.Text,
+                    IsSystemDefault = true,
+                    IsEnable = true,
+                    Options = JsonSerializer.SerializeToDocument(
+                        new List<VariantAttributeOptionTextJson>
+                        {
+                            new VariantAttributeOptionTextJson
+                            {
+                                Name = "XS"
+                            },
+                            new VariantAttributeOptionTextJson
+                            {
+                                Name = "S"
+                            },
+                            new VariantAttributeOptionTextJson
+                            {
+                                Name = "M"
+                            },
+                            new VariantAttributeOptionTextJson
+                            {
+                                Name = "L"
+                            },
+                            new VariantAttributeOptionTextJson
+                            {
+                                Name = "XL"
+                            },
+                            new VariantAttributeOptionTextJson
+                            {
+                                Name = "XXL"
+                            }
+                        }
+                    )
                 }
             };
         }
