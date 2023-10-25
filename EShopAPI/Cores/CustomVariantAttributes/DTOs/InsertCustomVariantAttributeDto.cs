@@ -2,7 +2,6 @@
 using EShopCores.Enums;
 using EShopCores.Extensions;
 using EShopCores.Json;
-using EShopCores.Json.VariantAttributeOptions;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
@@ -63,7 +62,7 @@ namespace EShopAPI.Cores.CustomVariantAttributes.DTOs
         /// ]
         /// </remarks>
         [JsonRequired]
-        public IEnumerable<VariantAttributeOptionBaseJson> Options { get; set; } = null!;
+        public IEnumerable<VariantAttributeOptionJson> Options { get; set; } = null!;
 
         /// <summary>
         /// 備註

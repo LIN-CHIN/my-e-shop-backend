@@ -1,5 +1,4 @@
 ﻿using EShopAPI.Validations;
-using EShopCores.Json.VariantAttributeOptions;
 using EShopCores.Json;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -41,7 +40,7 @@ namespace EShopAPI.Cores.CustomVariantAttributes.DTOs
         /// ]
         /// </remarks>
         [JsonRequired]
-        public IEnumerable<VariantAttributeOptionBaseJson> Options { get; set; } = null!;
+        public IEnumerable<VariantAttributeOptionJson> Options { get; set; } = null!;
 
         /// <summary>
         /// 備註
