@@ -142,6 +142,7 @@ namespace EshopTest.Cores.Products
                 }
             }
         };
+
         private static readonly object[] _updateNotFindIdCases =
         {
             new object[]
@@ -160,7 +161,7 @@ namespace EshopTest.Cores.Products
             }
         };
         private static readonly object[] _updateSuccessCases =
-       {
+        {
             new object[]
             {
                 new UpdateProductDto
@@ -385,6 +386,48 @@ namespace EshopTest.Cores.Products
             }
 
             Assert.That(isPass, Is.True);
+        }
+
+        /// <summary>
+        /// 測試DeleteAsync(產品id不存在)
+        /// </summary>
+        [Test]
+        public void TestDeleteAsyncNotFindId()
+        {
+            _mockProductDao.Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            _mockProductDao.Setup(x => x.DeleteAsync(It.IsAny<Product>()))
+                .Returns(Task.FromResult(false));
+
+            var ex = Assert.ThrowsAsync<EShopException>(async () =>
+               await _productService.DeleteAsync(It.IsAny<long>()));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試DeleteAsync(成功)
+        /// </summary>
+        [Test]
+        public async Task TestDeleteAsyncSuccess()
+        {
+            _mockProductDao.Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(new Product());
+
+            _mockProductDao.Setup(x => x.DeleteAsync(It.IsAny<Product>()))
+                .Returns(Task.FromResult(false));
+
+            try
+            {
+                await _productService.DeleteAsync(It.IsAny<long>());
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.Pass();
         }
 
         /// <summary>
