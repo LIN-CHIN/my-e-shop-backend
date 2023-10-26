@@ -93,11 +93,10 @@ namespace EShopAPI.Cores.Products
         /// 變種屬性
         /// </summary>
         /// <remarks>
-        /// 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值
-        /// ex: color:[red, blue], size[S,M]
+        /// 這個產品的變種屬性分別對應的值?
         /// </remarks>
         [Column("variant_attribute", TypeName = "jsonb")]
-        [Comment("變種屬性, 這個產品變種屬性有哪一些值? 包含產品(細項)自己本身的屬性值 ex: color:[red, blue], size[S,M]")]
+        [Comment("變種屬性, 這個產品的變種屬性分別對應的值?")]
         public JsonDocument? VariantAttribute { get; set; }
 
         /// <summary>
