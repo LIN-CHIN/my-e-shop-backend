@@ -3,13 +3,11 @@ using EShopAPI.Cores.ShopUsers;
 using EShopAPI.Cores.ShopUsers.DAOs;
 using EShopAPI.Cores.ShopUsers.DTOs;
 using EShopAPI.Cores.ShopUsers.Services;
-using EShopAPI.Validations;
 using EShopCores.Enums;
 using EShopCores.Errors;
 using EShopCores.Json;
 using EShopCores.Responses;
 using Moq;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace EshopTest.Cores.ShopUsers

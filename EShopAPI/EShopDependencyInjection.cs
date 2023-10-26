@@ -6,6 +6,8 @@ using EShopAPI.Cores.CustomVariantAttributes.DAOs;
 using EShopAPI.Cores.CustomVariantAttributes.Services;
 using EShopAPI.Cores.MapUserRoles.DAOs;
 using EShopAPI.Cores.MapUserRoles.Services;
+using EShopAPI.Cores.Products.DAOs;
+using EShopAPI.Cores.Products.Services;
 using EShopAPI.Cores.ShopInventories.DAOs;
 using EShopAPI.Cores.ShopInventories.Services;
 using EShopAPI.Cores.ShopPermissions.Services;
@@ -80,6 +82,10 @@ namespace EShopAPI
             //CustomVariantAttributes
             services.AddScoped<ICustomVariantAttributeService, CustomVariantAttributeService>();
             services.AddScoped<ICustomVariantAttributeDao, CustomVariantAttributeDao>();
+
+            //Products
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductDao, ProductDao>();
 
             return services;
         }
