@@ -64,6 +64,6 @@ namespace EShopAPI.Cores.Products.Services
         /// <param name="shopInventoryId">商店庫存id</param>
         /// <returns></returns>
         /// <exception cref="EShopException">商店庫存id已存在</exception>
-        Task<Product> ThrowExistShopInventoryIdAsync(long shopInventoryId);
+        Task ThrowExistShopInventoryIdAsync(long shopInventoryId);
     }
 }

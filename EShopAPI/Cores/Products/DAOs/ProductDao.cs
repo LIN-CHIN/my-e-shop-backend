@@ -1,5 +1,7 @@
 ﻿using EShopAPI.Context;
 using EShopAPI.Cores.Products.DTOs;
+using EShopAPI.Cores.ShopInventories;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI.Cores.Products.DAOs
 {
@@ -22,37 +24,72 @@ namespace EShopAPI.Cores.Products.DAOs
         ///<inheritdoc/>
         public IQueryable<Product> Get(QueryProductDto queryDto)
         {
-            throw new NotImplementedException();
+            IQueryable<Product> products = _eShopContext.Product;
+
+            if (queryDto.ShopInventoryId != null) 
+            {
+                products = products.Where(p => p.ShopInventoryId == queryDto.ShopInventoryId);
+            }
+
+            if (queryDto.PriceScopeStart != null)
+            {
+                products = products.Where(p => p.Price >= queryDto.PriceScopeStart);
+            }
+
+            if (queryDto.PriceScopeEnd != null)
+            {
+                products = products.Where(p => p.Price <= queryDto.PriceScopeEnd);
+            }
+
+            if (queryDto.SaleStartDate != null)
+            {
+                products = products.Where(p => p.SaleStartDate >= queryDto.SaleStartDate);
+            }
+
+            if (queryDto.SaleEndDate != null)
+            {
+                products = products.Where(p => p.SaleEndDate <= queryDto.SaleEndDate);
+            }
+
+            return products;
         }
 
         ///<inheritdoc/>
-        public Task<Product?> GetByIdAsync(long id)
+        public async Task<Product?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _eShopContext.Product
+                .Where(p => p.Id == id)
+                .SingleOrDefaultAsync();
         }
 
         ///<inheritdoc/>
-        public Task<Product?> GetByShopInventoryIdAsync(long shopInventoryId)
+        public async Task<Product?> GetByShopInventoryIdAsync(long shopInventoryId)
         {
-            throw new NotImplementedException();
+            return await _eShopContext.Product
+                .Where(p => p.ShopInventoryId == shopInventoryId)
+                .SingleOrDefaultAsync();
         }
 
         ///<inheritdoc/>
-        public Task<Product> InsertAsync(Product product)
+        public async Task<Product> InsertAsync(Product product)
         {
-            throw new NotImplementedException();
+            _eShopContext.Product.Add(product);
+            await _eShopContext.SaveChangesAsync();
+            return product; 
         }
 
         ///<inheritdoc/>
-        public Task UpdateAsync(Product product)
+        public async Task UpdateAsync(Product product)
         {
-            throw new NotImplementedException();
+            _eShopContext.Product.Update(product);
+            await _eShopContext.SaveChangesAsync();
         }
 
         ///<inheritdoc/>
-        public Task DeleteAsync(Product product)
+        public async Task DeleteAsync(Product product)
         {
-            throw new NotImplementedException();
+            _eShopContext.Product.Remove(product);
+            await _eShopContext.SaveChangesAsync();
         }
     }
 }
