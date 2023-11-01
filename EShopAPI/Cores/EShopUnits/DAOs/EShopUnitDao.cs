@@ -1,4 +1,5 @@
-﻿using EShopAPI.Cores.EShopUnits.DTOs;
+﻿using EShopAPI.Context;
+using EShopAPI.Cores.EShopUnits.DTOs;
 
 namespace EShopAPI.Cores.EShopUnits.DAOs
 {
@@ -7,6 +8,17 @@ namespace EShopAPI.Cores.EShopUnits.DAOs
     /// </summary>
     public class EShopUnitDao : IEShopUnitDao
     {
+        private readonly EShopContext _eShopContext;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="eShopContext"></param>
+        public EShopUnitDao(EShopContext eShopContext) 
+        {
+            _eShopContext = eShopContext;
+        }
+
         ///<inheritdoc/>
         public IQueryable<EShopUnit> Get(QueryEShopUnitDto queryDto)
         {

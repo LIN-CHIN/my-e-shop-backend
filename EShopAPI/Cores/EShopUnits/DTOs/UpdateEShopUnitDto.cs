@@ -13,6 +13,12 @@ namespace EShopAPI.Cores.EShopUnits.DTOs
     public class UpdateEShopUnitDto
     {
         /// <summary>
+        /// 要被編輯的id
+        /// </summary>
+        [JsonRequired]
+        public long Id { get; set; }
+
+        /// <summary>
         /// 單位名稱
         /// </summary>
         [JsonRequired]

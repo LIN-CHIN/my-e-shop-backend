@@ -1,4 +1,6 @@
-﻿using EShopAPI.Cores.EShopUnits.DTOs;
+﻿using EShopAPI.Common;
+using EShopAPI.Cores.EShopUnits.DAOs;
+using EShopAPI.Cores.EShopUnits.DTOs;
 
 namespace EShopAPI.Cores.EShopUnits.Services
 {
@@ -7,6 +9,21 @@ namespace EShopAPI.Cores.EShopUnits.Services
     /// </summary>
     public class EShopUnitService : IEShopUnitService
     {
+        private readonly IEShopUnitDao _eShopUnitDao;
+        private readonly LoginUserData _loginUserData;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="eShopUnitDao"></param>
+        /// <param name="loginUserData"></param>
+        public EShopUnitService(IEShopUnitDao eShopUnitDao,
+            LoginUserData loginUserData) 
+        {
+            _eShopUnitDao = eShopUnitDao;
+            _loginUserData = loginUserData;
+        }
+
         ///<inheritdoc/>
         public IQueryable<EShopUnit> Get(QueryEShopUnitDto queryDto)
         {
@@ -44,7 +61,7 @@ namespace EShopAPI.Cores.EShopUnits.Services
         }
 
         ///<inheritdoc/>
-        public Task ThrowExistByNumberAsync(long number)
+        public Task ThrowExistByNumberAsync(string number)
         {
             throw new NotImplementedException();
         }

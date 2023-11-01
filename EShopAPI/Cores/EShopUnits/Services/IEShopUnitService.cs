@@ -62,9 +62,9 @@ namespace EShopAPI.Cores.EShopUnits.Services
         /// <summary>
         /// 根據商店單位的number取得實體，若有找到商店單位的資訊會直接throw exception
         /// </summary>
-        /// <param name="number">商店單位</param>
+        /// <param name="number">商店單位代碼</param>
         /// <returns></returns>
         /// <exception cref="EShopException">商店單位Number已存在</exception>
-        Task ThrowExistByNumberAsync(long number);
+        Task ThrowExistByNumberAsync(string number);
     }
 }
