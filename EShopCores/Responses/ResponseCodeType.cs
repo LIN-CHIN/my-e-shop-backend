@@ -127,5 +127,14 @@ namespace EShopCores.Responses
         [ResponseMessage("TokenForbidden", Description = "沒有權限")]
         TokenForbidden = 3004,
         #endregion
+
+        #region Product (產品) 相關錯誤 10001-11000
+        /// <summary>
+        /// 不能新增組合產品
+        /// </summary>
+        [Description("不能新增組合產品")]
+        [ResponseMessage("NotInsertCompositeProduct", Description = "不能新增組合產品")]
+        NotInsertCompositeProduct = 10001,
+        #endregion
     }
 }

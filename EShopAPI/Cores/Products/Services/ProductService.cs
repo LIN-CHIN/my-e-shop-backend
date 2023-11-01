@@ -1,6 +1,8 @@
 ﻿using EShopAPI.Common;
 using EShopAPI.Cores.Products.DAOs;
 using EShopAPI.Cores.Products.DTOs;
+using EShopAPI.Cores.ShopInventories;
+using EShopAPI.Cores.ShopInventories.Services;
 using EShopCores.Errors;
 using EShopCores.Responses;
 
@@ -12,16 +14,21 @@ namespace EShopAPI.Cores.Products.Services
     public class ProductService : IProductService
     {
         private readonly IProductDao _productDao;
+        private readonly IShopInventoryService _shopInventoryService;
         private readonly LoginUserData _loginUserData;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="productDao"></param>
+        /// <param name="shopInventoryService"></param>
         /// <param name="loginUserData"></param>
-        public ProductService(IProductDao productDao, LoginUserData loginUserData) 
+        public ProductService(IProductDao productDao,
+            IShopInventoryService shopInventoryService,
+            LoginUserData loginUserData)
         {
             _productDao = productDao;
+            _shopInventoryService = shopInventoryService;
             _loginUserData = loginUserData;
         }
 
@@ -47,6 +54,16 @@ namespace EShopAPI.Cores.Products.Services
         public async Task<Product> InsertAsync(InsertProductDto insertDto)
         {
             await ThrowExistShopInventoryIdAsync(insertDto.ShopInventoryId);
+            
+            ShopInventory shopInventory = 
+                await _shopInventoryService.ThrowNotFindByIdAsync(insertDto.ShopInventoryId);
+
+            if (shopInventory.IsComposite || shopInventory.IsCompositeOnly) 
+            {
+                throw new EShopException(ResponseCodeType.NotInsertCompositeProduct,
+                    "該產品為組合產品，不能新增");
+            }
+
             return await _productDao
                 .InsertAsync(insertDto
                     .ToEntity(_loginUserData.UserNumber));
@@ -74,7 +91,7 @@ namespace EShopAPI.Cores.Products.Services
             if (product == null) 
             {
                 throw new EShopException(ResponseCodeType.RequestParameterError,
-                    $"找不到該id: {id}");
+                    $"找不到該產品id: {id}");
             }
 
             return product;
