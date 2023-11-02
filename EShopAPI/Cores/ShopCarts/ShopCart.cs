@@ -19,6 +19,7 @@ namespace EShopAPI.Cores.ShopCarts
         [Required]
         [Column("user_id")]
         [Comment("使用者id")]
+        [ForeignKey("ShopUser")]
         public long UserId { get; set; }
 
         /// <summary>
