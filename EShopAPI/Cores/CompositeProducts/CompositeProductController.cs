@@ -92,15 +92,18 @@ namespace EShopAPI.Cores.CompositeProducts
         /// <response code="500">新增失敗</response>
         [HttpPost]
         [RequiredAdmin]
-        [ProducesResponseType(typeof(GenericResponse<CompositeProduct>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<CompositeProductDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> InsertAsync([FromBody] InsertCompositeProductDto insertDto)
         {
-            return Ok(GenericResponse<CompositeProduct>.GetSuccess(
-                await _compositeProductService.InsertAsync(insertDto)));
+            return Ok(GenericResponse<CompositeProductDto>
+                    .GetSuccess(CompositeProductDto
+                        .Parse(await _compositeProductService.InsertAsync(insertDto))
+                    )
+            );
         }
 
         /// <summary>
