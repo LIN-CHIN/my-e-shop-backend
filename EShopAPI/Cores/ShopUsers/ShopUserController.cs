@@ -30,7 +30,7 @@ namespace EShopAPI.Cores.ShopUsers
         /// 查詢所有使用者
         /// </summary>
         /// <param name="pageDto">分頁資訊</param>
-        /// <param name="queryDto">要新增的使用者資訊</param>
+        /// <param name="queryDto">要查詢的使用者資訊</param>
         /// <returns></returns>
         /// <response code="200">查詢成功</response>
         /// <response code="400">輸入的參數有誤</response>
