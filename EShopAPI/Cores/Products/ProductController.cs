@@ -89,15 +89,18 @@ namespace EShopAPI.Cores.Products
         /// <response code="500">新增失敗</response>
         [HttpPost]
         [RequiredAdmin]
-        [ProducesResponseType(typeof(GenericResponse<Product>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<ProductDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> InsertAsync([FromBody] InsertProductDto insertDto)
         {
-            return Ok(GenericResponse<Product>.GetSuccess(
-                await _productService.InsertAsync(insertDto)));
+            return Ok(GenericResponse<ProductDto>
+                .GetSuccess(ProductDto
+                    .Parse(await _productService.InsertAsync(insertDto))
+                )
+            );
         }
 
         /// <summary>

@@ -96,6 +96,13 @@ namespace EShopCores.Responses
         [ResponseMessage("DbForeignKeyViolation", Description = "違反ForeignKey")]
         DbForeignKeyViolation = 2002,
 
+        /// <summary>
+        /// 該資料已停用
+        /// </summary>
+        [Description("該資料已停用")]
+        [ResponseMessage("DataIsDisabled", Description = "該資料已停用")]
+        DataIsDisabled = 2003,
+
         #endregion
 
         #region 身分驗證問題 3001-4000
@@ -135,6 +142,15 @@ namespace EShopCores.Responses
         [Description("不能新增組合產品")]
         [ResponseMessage("NotInsertCompositeProduct", Description = "不能新增組合產品")]
         NotInsertCompositeProduct = 10001,
+        #endregion
+
+        #region CompositeProduct (組合產品) 相關錯誤 11001-12000
+        /// <summary>
+        /// 不能新增非組合產品的資料
+        /// </summary>
+        [Description("不能新增非組合產品的資料")]
+        [ResponseMessage("NotInsertProduct", Description = "不能新增非組合產品的資料")]
+        NotInsertProduct = 11001,
         #endregion
     }
 }

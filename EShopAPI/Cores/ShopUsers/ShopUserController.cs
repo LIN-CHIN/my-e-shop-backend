@@ -90,15 +90,18 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="500">新增失敗</response>
         [HttpPost]
         [RequiredAdmin]
-        [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<ShopUserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> InsertAsync([FromBody] InsertShopUserDto insertDto) 
         {
-            return Ok(GenericResponse<ShopUser>.GetSuccess(
-                await _shopUserService.InsertAsync(insertDto)));
+            return Ok(GenericResponse<ShopUserDto>
+                    .GetSuccess(ShopUserDto
+                        .Parse(await _shopUserService.InsertAsync(insertDto))
+                    )
+            );
         }
 
         /// <summary>

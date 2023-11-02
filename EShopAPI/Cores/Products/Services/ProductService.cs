@@ -59,10 +59,18 @@ namespace EShopAPI.Cores.Products.Services
             ShopInventory shopInventory = 
                 await _shopInventoryService.ThrowNotFindByIdAsync(insertDto.ShopInventoryId);
 
+            //若為組合產品不能新增
             if (shopInventory.IsComposite || shopInventory.IsCompositeOnly) 
             {
                 throw new EShopException(ResponseCodeType.NotInsertCompositeProduct,
                     "該產品為組合產品，不能新增");
+            }
+
+            //若為停用狀態不可新增
+            if (!shopInventory.IsEnable) 
+            {
+                throw new EShopException(ResponseCodeType.DataIsDisabled,
+                    "該商品庫存已經被停用，無法新增");
             }
 
             return await _productDao

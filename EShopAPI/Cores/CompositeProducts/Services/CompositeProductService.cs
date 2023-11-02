@@ -2,6 +2,7 @@
 using EShopAPI.Cores.CompositeProducts.DAOs;
 using EShopAPI.Cores.CompositeProducts.DTOs;
 using EShopAPI.Cores.ShopInventories;
+using EShopAPI.Cores.ShopInventories.Services;
 using EShopCores.Errors;
 using EShopCores.Extensions;
 using EShopCores.Responses;
@@ -14,18 +15,22 @@ namespace EShopAPI.Cores.CompositeProducts.Services
     public class CompositeProductService : ICompositeProductService
     {
         private readonly ICompositeProductDao _compositeProductDao;
+        private readonly IShopInventoryService _shopInventoryService;
         private readonly LoginUserData _loginUserData;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="compositeProductDao"></param>
+        /// <param name="shopInventoryService"></param>
         /// <param name="loginUserData"></param>
         public CompositeProductService(
             ICompositeProductDao compositeProductDao,
+            IShopInventoryService shopInventoryService,
             LoginUserData loginUserData) 
         {
             _compositeProductDao = compositeProductDao;
+            _shopInventoryService = shopInventoryService;
             _loginUserData = loginUserData;
         }
 
@@ -51,6 +56,24 @@ namespace EShopAPI.Cores.CompositeProducts.Services
         public async Task<CompositeProduct> InsertAsync(InsertCompositeProductDto insertDto)
         {
             await ThrowExistShopInventoryIdAsync(insertDto.ShopInventoryId);
+
+            ShopInventory shopInventory =
+                 await _shopInventoryService.ThrowNotFindByIdAsync(insertDto.ShopInventoryId);
+
+            //若為非組合產品不能新增
+            if (!shopInventory.IsComposite)
+            {
+                throw new EShopException(ResponseCodeType.NotInsertProduct,
+                    "該產品為一般產品，不能新增");
+            }
+
+            //若為停用狀態不可新增
+            if (!shopInventory.IsEnable)
+            {
+                throw new EShopException(ResponseCodeType.DataIsDisabled,
+                    "該商品庫存已經被停用，無法新增");
+            }
+
             return await _compositeProductDao
                 .InsertAsync(insertDto
                     .ToEntity(_loginUserData.UserNumber));

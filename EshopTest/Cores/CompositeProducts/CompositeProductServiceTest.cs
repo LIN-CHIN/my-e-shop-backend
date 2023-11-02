@@ -4,6 +4,9 @@ using EShopAPI.Cores.CompositeProducts.DAOs;
 using EShopAPI.Cores.CompositeProducts.DTOs;
 using EShopAPI.Cores.CompositeProducts.Services;
 using EShopAPI.Cores.Products;
+using EShopAPI.Cores.Products.DTOs;
+using EShopAPI.Cores.ShopInventories;
+using EShopAPI.Cores.ShopInventories.Services;
 using EShopCores.Enums;
 using EShopCores.Errors;
 using EShopCores.Json;
@@ -21,6 +24,7 @@ namespace EshopTest.Cores.CompositeProducts
     public class CompositeProductServiceTest
     {
         private Mock<ICompositeProductDao> _mockCompositeProductDao;
+        private Mock<IShopInventoryService> _mockShopInventoryService;
         private ICompositeProductService _compositeProductService;
         private LoginUserData _loginUserData;
 
@@ -38,6 +42,87 @@ namespace EshopTest.Cores.CompositeProducts
                 new InsertCompositeProductDto
                 {
                     ShopInventoryId = 2,
+                }
+            }
+        };
+        private static readonly object[] _insertProductError =
+       {
+            new object[]
+            {
+                new InsertCompositeProductDto
+                {
+                    ShopInventoryId = 1
+                },
+                new ShopInventory
+                {
+                    Id = 1,
+                    IsComposite = false
+                }
+            },
+            new object[]
+            {
+                new InsertCompositeProductDto
+                {
+                    ShopInventoryId = 2
+                },
+                new ShopInventory
+                {
+                    Id = 2,
+                    IsComposite = false
+                }
+            },
+            new object[]
+            {
+                new InsertCompositeProductDto
+                {
+                    ShopInventoryId = 3
+                },
+                new ShopInventory
+                {
+                    Id = 3,
+                    IsComposite = false
+                }
+            }
+        };
+        private static readonly object[] _insertDisableInventoryError =
+        {
+            new object[]
+            {
+                new InsertCompositeProductDto
+                {
+                    ShopInventoryId = 1
+                },
+                new ShopInventory
+                {
+                    Id = 1,
+                    IsComposite = true,
+                    IsEnable = false,
+                }
+            },
+            new object[]
+            {
+                new InsertCompositeProductDto
+                {
+                    ShopInventoryId = 2
+                },
+                new ShopInventory
+                {
+                    Id = 2,
+                    IsComposite = true,
+                    IsEnable = false,
+                }
+            },
+            new object[]
+            {
+                new InsertCompositeProductDto
+                {
+                    ShopInventoryId = 3
+                },
+                new ShopInventory
+                {
+                    Id = 3,
+                    IsComposite = true,
+                    IsEnable = false,
                 }
             }
         };
@@ -61,6 +146,12 @@ namespace EshopTest.Cores.CompositeProducts
                     IsUseCoupon = true,
                     Remarks = "備註一",
                     Language = null
+                },
+                new ShopInventory
+                {
+                    Id = 1,
+                    IsComposite = true,
+                    IsEnable = true
                 }
             },
             new object[]
@@ -103,6 +194,12 @@ namespace EshopTest.Cores.CompositeProducts
                             }
                         }
                     )
+                },
+                new ShopInventory
+                {
+                    Id = 2,
+                    IsComposite = true,
+                    IsEnable = true
                 }
             }
         };
@@ -240,8 +337,11 @@ namespace EshopTest.Cores.CompositeProducts
             };
 
             _mockCompositeProductDao = new Mock<ICompositeProductDao>(MockBehavior.Strict);
+            _mockShopInventoryService = new Mock<IShopInventoryService>(MockBehavior.Strict);
+
             _compositeProductService = new CompositeProductService(
                 _mockCompositeProductDao.Object,
+                _mockShopInventoryService.Object,
                 _loginUserData
             );
         }
@@ -269,19 +369,72 @@ namespace EshopTest.Cores.CompositeProducts
         }
 
         /// <summary>
+        /// 測試InsertAsync(一般產品不可以新增)
+        /// </summary>
+        /// <param name="insertDto">要新增的組合產品資料</param>
+        /// <param name="shopInventory">商店庫存實體</param>
+        [TestCaseSource(nameof(_insertProductError))]
+        public void TestInsertAsyncProductError(InsertCompositeProductDto insertDto,
+            ShopInventory shopInventory)
+        {
+            _mockCompositeProductDao.Setup(x => x.GetByShopInventoryIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            _mockShopInventoryService.Setup(x => x.ThrowNotFindByIdAsync(insertDto.ShopInventoryId))
+                .ReturnsAsync(shopInventory);
+
+            _mockCompositeProductDao.Setup(x => x.InsertAsync(It.IsAny<CompositeProduct>()))
+                .ReturnsAsync(new CompositeProduct());
+
+            var ex = Assert.ThrowsAsync<EShopException>(async () =>
+               await _compositeProductService.InsertAsync(insertDto));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.NotInsertProduct));
+        }
+
+        /// <summary>
+        /// 測試InsertAsync(停用的庫存不可以新增)
+        /// </summary>
+        /// <param name="insertDto">要新增的組合產品資料</param>
+        /// <param name="shopInventory">商店庫存實體</param>
+        [TestCaseSource(nameof(_insertDisableInventoryError))]
+        public void TestInsertAsyncDisableInventoryError(InsertCompositeProductDto insertDto,
+            ShopInventory shopInventory)
+        {
+            _mockCompositeProductDao.Setup(x => x.GetByShopInventoryIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            _mockShopInventoryService.Setup(x => x.ThrowNotFindByIdAsync(insertDto.ShopInventoryId))
+                .ReturnsAsync(shopInventory);
+
+            _mockCompositeProductDao.Setup(x => x.InsertAsync(It.IsAny<CompositeProduct>()))
+                .ReturnsAsync(new CompositeProduct());
+
+            var ex = Assert.ThrowsAsync<EShopException>(async () =>
+               await _compositeProductService.InsertAsync(insertDto));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.DataIsDisabled));
+        }
+
+        /// <summary>
         /// 測試InsertAsync(成功)
         /// </summary>
         /// <param name="insertDto">要新增的組合產品資訊</param>
         /// <param name="rtnCompositeProduct">新增後回傳的組合產品實體</param>
+        /// <param name="shopInventory">根據id找到的商店庫存實體</param>
         [TestCaseSource(nameof(_insertSuccessCases))]
         public async Task TestInsertAsyncSuccess(InsertCompositeProductDto insertDto,
-            CompositeProduct rtnCompositeProduct)
+            CompositeProduct rtnCompositeProduct,
+            ShopInventory shopInventory)
         {
             bool isPass = false;
 
             _mockCompositeProductDao
                 .Setup(x => x.GetByShopInventoryIdAsync(It.IsAny<long>()))
                 .ReturnsAsync(value: null);
+
+            _mockShopInventoryService.Setup(x => x.ThrowNotFindByIdAsync(insertDto.ShopInventoryId))
+                 .ReturnsAsync(shopInventory);
 
             _mockCompositeProductDao
                 .Setup(x => x.InsertAsync(It.IsAny<CompositeProduct>()))
