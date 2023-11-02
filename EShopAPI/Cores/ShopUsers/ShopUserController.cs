@@ -150,7 +150,7 @@ namespace EShopAPI.Cores.ShopUsers
         /// <summary>
         /// 停用使用者
         /// </summary>git
-        /// <param name="id">要設定啟用的 使用者id</param>
+        /// <param name="id">要設定停用的使用者id</param>
         /// <returns></returns>
         /// <response code="200">停用成功</response>
         /// <response code="400">輸入的參數有誤</response>
