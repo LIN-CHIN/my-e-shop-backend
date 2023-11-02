@@ -35,6 +35,12 @@ namespace EShopAPI.Cores.Products.DTOs
         public bool IsAlwaysSale { get; set; }
 
         /// <summary>
+        /// 是否啟用
+        /// </summary>
+        [JsonRequired]
+        public bool IsEnable { get; set; }
+
+        /// <summary>
         /// 折扣數
         /// </summary>
         public double? Discount { get; set; }
@@ -90,6 +96,7 @@ namespace EShopAPI.Cores.Products.DTOs
                 SaleStartDate = SaleStartDate,
                 SaleEndDate = SaleEndDate,
                 IsUseCoupon = IsUseCoupon,
+                IsEnable = IsEnable,
                 VariantAttribute = JsonSerializer.SerializeToDocument(VariantAttributes),
                 Remarks = Remarks,
                 Language = JsonSerializer.SerializeToDocument(Languages),

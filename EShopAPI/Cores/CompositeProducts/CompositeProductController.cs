@@ -1,36 +1,38 @@
-﻿using EShopAPI.Cores.ShopUsers.DTOs;
-using EShopAPI.Cores.ShopUsers.Services;
-using EShopAPI.Filters;
+﻿using EShopAPI.Cores.CompositeProducts.Services;
+using EShopAPI.Cores.Products.DTOs;
+using EShopAPI.Cores.Products;
 using EShopAPI.Filters.RequiredAdminFilters;
 using EShopCores.Models;
 using EShopCores.Responses;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using EShopAPI.Cores.CompositeProducts.DTOs;
 
-namespace EShopAPI.Cores.ShopUsers
+namespace EShopAPI.Cores.CompositeProducts
 {
     /// <summary>
-    /// 使用者API
+    /// 組合產品API
     /// </summary>
     [Route("eshop/api/[controller]")]
     [ApiController]
-    public class ShopUserController : ControllerBase
+    public class CompositeProductController : ControllerBase
     {
-        private readonly IShopUserService _shopUserService;
+        private readonly ICompositeProductService _compositeProductService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="shopUserService"></param>
-        public ShopUserController(IShopUserService shopUserService) 
+        /// <param name="compositeProductService"></param>
+        public CompositeProductController(ICompositeProductService compositeProductService) 
         {
-            _shopUserService = shopUserService;
+            _compositeProductService = compositeProductService;
         }
 
         /// <summary>
-        /// 查詢所有使用者
+        /// 查詢所有組合產品
         /// </summary>
         /// <param name="pageDto">分頁資訊</param>
-        /// <param name="queryDto">要查詢的使用者資訊</param>
+        /// <param name="queryDto">要查詢的組合產品資訊</param>
         /// <returns></returns>
         /// <response code="200">查詢成功</response>
         /// <response code="400">輸入的參數有誤</response>
@@ -39,26 +41,26 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="500">查詢失敗</response>
         [HttpGet]
         [RequiredAdmin]
-        [ProducesResponseType(typeof(PaginationResponse<ShopUserDto?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginationResponse<CompositeProductDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public IActionResult Get(
-            [FromQuery] QueryPaginationDto pageDto, 
-            [FromQuery] QueryShopUserDto queryDto)
+            [FromQuery] QueryPaginationDto pageDto,
+            [FromQuery] QueryCompositeProductDto queryDto)
         {
-            return Ok(PaginationResponse<ShopUserDto?>.GetSuccess(
+            return Ok(PaginationResponse<CompositeProductDto?>.GetSuccess(
                 pageDto.Page,
                 pageDto.PageCount,
-                _shopUserService.Get(queryDto).Select(user => ShopUserDto.Parse(user)
+                _compositeProductService.Get(queryDto).Select(p => CompositeProductDto.Parse(p)
             )));
         }
 
         /// <summary>
-        /// 根據id查詢使用者
+        /// 根據id查詢組合產品
         /// </summary>
-        /// <param name="id">使用者的id</param>
+        /// <param name="id">組合產品的id</param>
         /// <returns></returns>
         /// <response code="200">查詢成功</response>
         /// <response code="400">輸入的參數有誤</response>
@@ -67,21 +69,21 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="500">查詢失敗</response>
         [HttpGet("{id}")]
         [RequiredAdmin]
-        [ProducesResponseType(typeof(GenericResponse<ShopUserDto?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<CompositeProductDto?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetByIdAsync(long id)
         {
-            ShopUser? shopUser = await _shopUserService.GetByIdAsync(id);
-            return Ok(GenericResponse<ShopUserDto?>.GetSuccess(ShopUserDto.Parse(shopUser)));
+            CompositeProduct? compositeProduct = await _compositeProductService.GetByIdAsync(id);
+            return Ok(GenericResponse<CompositeProductDto?>.GetSuccess(CompositeProductDto.Parse(compositeProduct)));
         }
 
         /// <summary>
-        /// 新增使用者
+        /// 新增組合產品
         /// </summary>
-        /// <param name="insertDto">要新增的使用者資訊</param>
+        /// <param name="insertDto">要新增的組合產品資訊</param>
         /// <returns></returns>
         /// <response code="200">新增成功</response>
         /// <response code="400">輸入的參數有誤</response>
@@ -90,21 +92,21 @@ namespace EShopAPI.Cores.ShopUsers
         /// <response code="500">新增失敗</response>
         [HttpPost]
         [RequiredAdmin]
-        [ProducesResponseType(typeof(GenericResponse<ShopUser>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<CompositeProduct>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> InsertAsync([FromBody] InsertShopUserDto insertDto) 
+        public async Task<IActionResult> InsertAsync([FromBody] InsertCompositeProductDto insertDto)
         {
-            return Ok(GenericResponse<ShopUser>.GetSuccess(
-                await _shopUserService.InsertAsync(insertDto)));
+            return Ok(GenericResponse<CompositeProduct>.GetSuccess(
+                await _compositeProductService.InsertAsync(insertDto)));
         }
 
         /// <summary>
-        /// 編輯使用者
+        /// 編輯組合產品
         /// </summary>
-        /// <param name="updateDto">要編輯的使用者資訊</param>
+        /// <param name="updateDto">要編輯的組合產品資訊</param>
         /// <returns></returns>
         /// <response code="200">編輯成功</response>
         /// <response code="400">輸入的參數有誤</response>
@@ -118,16 +120,39 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateAsync([FromBody] UpdateShopUserDto updateDto)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateCompositeProductDto updateDto)
         {
-            await _shopUserService.UpdateAsync(updateDto);
+            await _compositeProductService.UpdateAsync(updateDto);
             return Ok(GenericResponse<string>.GetSuccess());
         }
 
         /// <summary>
-        /// 啟用使用者
+        /// 刪除組合產品
         /// </summary>
-        /// <param name="id">要設定啟用的 使用者id</param>
+        /// <param name="id">要刪除的組合產品id</param>
+        /// <returns></returns>
+        /// <response code="200">編輯成功</response>
+        /// <response code="400">輸入的參數有誤</response>
+        /// <response code="401">身分驗證失敗</response>
+        /// <response code="403">權限不足</response>
+        /// <response code="500">新增失敗</response>
+        [HttpDelete("{id}")]
+        [RequiredAdmin]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteAsync(long id)
+        {
+            await _compositeProductService.DeleteAsync(id);
+            return Ok(GenericResponse<string>.GetSuccess());
+        }
+
+        /// <summary>
+        /// 啟用組合產品
+        /// </summary>
+        /// <param name="id">要設定組合啟用的產品id</param>
         /// <returns></returns>
         /// <response code="200">啟用成功</response>
         /// <response code="400">輸入的參數有誤</response>
@@ -143,14 +168,14 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> SetEnableAsync(long id)
         {
-            await _shopUserService.EnableAsync(id, true);
+            await _compositeProductService.EnableAsync(id, true);
             return Ok(GenericResponse<string>.GetSuccess());
         }
 
         /// <summary>
-        /// 停用使用者
+        /// 停用組合產品
         /// </summary>git
-        /// <param name="id">要設定停用的使用者id</param>
+        /// <param name="id">要設定停用的組合產品id</param>
         /// <returns></returns>
         /// <response code="200">停用成功</response>
         /// <response code="400">輸入的參數有誤</response>
@@ -166,7 +191,7 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> SetDisableAsync(long id)
         {
-            await _shopUserService.EnableAsync(id, false);
+            await _compositeProductService.EnableAsync(id, false);
             return Ok(GenericResponse<string>.GetSuccess());
         }
     }

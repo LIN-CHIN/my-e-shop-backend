@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace EShopAPI.Cores.Products.DTOs
 {
@@ -26,6 +29,11 @@ namespace EShopAPI.Cores.Products.DTOs
         /// 是否總是特價
         /// </summary>
         public bool IsAlwaysSale { get; set; }
+
+        /// <summary>
+        /// 是否啟用
+        /// </summary>
+        public bool IsEnable { get; set; }
 
         /// <summary>
         /// 折扣數
@@ -78,6 +86,7 @@ namespace EShopAPI.Cores.Products.DTOs
                 SaleEndDate = product.SaleEndDate,
                 IsUseCoupon = product.IsUseCoupon,
                 VariantAttribute = product.VariantAttribute,
+                IsEnable = product.IsEnable,
             };
 
             productDto.ParseBaseObject(product);

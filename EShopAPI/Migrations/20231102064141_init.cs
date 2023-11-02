@@ -298,6 +298,7 @@ namespace EShopAPI.Migrations
                     shop_inventory_id = table.Column<long>(type: "bigint", nullable: false, comment: "庫存id"),
                     eshop_unit_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店單位id"),
                     is_use_coupon = table.Column<bool>(type: "boolean", nullable: false, comment: "是否可以使用優惠券"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -337,6 +338,7 @@ namespace EShopAPI.Migrations
                     eshop_unit_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店單位id"),
                     status = table.Column<int>(type: "integer", nullable: true, comment: "產品狀態, 暫無想法，保留欄位"),
                     is_always_sale = table.Column<bool>(type: "boolean", nullable: false, comment: "是否總是特價"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
                     discount = table.Column<double>(type: "double precision", nullable: true, comment: "折扣數"),
                     sale_start_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價起始日期"),
                     sale_end_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價結束日期"),
@@ -614,7 +616,6 @@ namespace EShopAPI.Migrations
                     product_entity_type = table.Column<int>(type: "integer", nullable: false, comment: "產品實體類型"),
                     object_id = table.Column<long>(type: "bigint", nullable: false, comment: "物件id (根據ProductEntityType不同而對應的實體id)"),
                     count = table.Column<int>(type: "integer", nullable: false, comment: "數量"),
-                    ShopUserId = table.Column<long>(type: "bigint", nullable: false),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -626,8 +627,8 @@ namespace EShopAPI.Migrations
                 {
                     table.PrimaryKey("PK_shop_cart", x => x.id);
                     table.ForeignKey(
-                        name: "FK_shop_cart_shop_user_ShopUserId",
-                        column: x => x.ShopUserId,
+                        name: "FK_shop_cart_shop_user_user_id",
+                        column: x => x.user_id,
                         principalSchema: "eshop",
                         principalTable: "shop_user",
                         principalColumn: "id",
@@ -1024,8 +1025,8 @@ namespace EShopAPI.Migrations
                 columns: new[] { "id", "attribute_type", "create_date", "create_user", "is_enable", "is_system_default", "language", "name", "number", "options", "remarks", "update_date", "update_user" },
                 values: new object[,]
                 {
-                    { 1L, 3, 1695285957713L, "shopAdmin", true, true, null, "顏色", "color", System.Text.Json.JsonDocument.Parse("[{\"id\":\"e450a665-0f15-4f4f-8037-383536f7d934\",\"name\":\"\\u9ED1\\u8272\",\"value\":\"#000000\"},{\"id\":\"3b1c44a6-fff9-447d-8425-a34504ba5b3b\",\"name\":\"\\u767D\\u8272\",\"value\":\"#FFFFFF\"},{\"id\":\"c70d24cc-ff11-4bde-afb4-4e4e6d57c05b\",\"name\":\"\\u7D05\\u8272\",\"value\":\"#FF0000\"},{\"id\":\"acc82a18-ba98-472d-97d9-632f289a0e68\",\"name\":\"\\u7DA0\\u8272\",\"value\":\"#00FF00\"},{\"id\":\"66536a0b-4705-4a44-8a2e-584add61335a\",\"name\":\"\\u85CD\\u8272\",\"value\":\"#0000FF\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null },
-                    { 2L, 1, 1695285957713L, "shopAdmin", true, true, null, "尺寸", "size", System.Text.Json.JsonDocument.Parse("[{\"id\":\"3136ff14-6133-49d5-bbe2-10a71c8ffff0\",\"name\":\"XS\",\"value\":\"XS\"},{\"id\":\"34d25c28-efad-43c6-8957-5d1baf569bee\",\"name\":\"S\",\"value\":\"S\"},{\"id\":\"a9f1e42b-b175-412a-b10d-5b882368e388\",\"name\":\"M\",\"value\":\"M\"},{\"id\":\"3df066f6-ea20-4aa4-8ae7-52dbfe04be9b\",\"name\":\"L\",\"value\":\"L\"},{\"id\":\"42372104-d392-43e3-bd79-db71d171bc84\",\"name\":\"XL\",\"value\":\"XL\"},{\"id\":\"e59e2f1b-35c7-4251-aa51-e481cb3148eb\",\"name\":\"XXL\",\"value\":\"XXL\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null }
+                    { 1L, 3, 1695285957713L, "shopAdmin", true, true, null, "顏色", "color", System.Text.Json.JsonDocument.Parse("[{\"id\":\"66952e35-4535-45df-8ffa-722691e42e9e\",\"name\":\"\\u9ED1\\u8272\",\"value\":\"#000000\"},{\"id\":\"4f73c774-de09-4bbc-b991-1484406420d5\",\"name\":\"\\u767D\\u8272\",\"value\":\"#FFFFFF\"},{\"id\":\"3dabed7e-0da0-4cef-846f-fa04d6dc2293\",\"name\":\"\\u7D05\\u8272\",\"value\":\"#FF0000\"},{\"id\":\"647fb6e4-8408-4818-a995-80f8f8df3a89\",\"name\":\"\\u7DA0\\u8272\",\"value\":\"#00FF00\"},{\"id\":\"43b64452-06dd-4398-9d9c-92a960dbbfca\",\"name\":\"\\u85CD\\u8272\",\"value\":\"#0000FF\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null },
+                    { 2L, 1, 1695285957713L, "shopAdmin", true, true, null, "尺寸", "size", System.Text.Json.JsonDocument.Parse("[{\"id\":\"8b9f8820-6ab1-4120-b3aa-3038639844ae\",\"name\":\"XS\",\"value\":\"XS\"},{\"id\":\"af668e7d-ac39-49e2-8d50-d0538d91d609\",\"name\":\"S\",\"value\":\"S\"},{\"id\":\"581ba33f-f2f2-459b-9e07-b3c4321d455e\",\"name\":\"M\",\"value\":\"M\"},{\"id\":\"0fdf39cb-d19f-4f18-8d28-e57a3be5e795\",\"name\":\"L\",\"value\":\"L\"},{\"id\":\"a9221ab6-82ce-4218-ae91-a8aa097ba63e\",\"name\":\"XL\",\"value\":\"XL\"},{\"id\":\"983a0986-be06-45df-9453-c295a0abafed\",\"name\":\"XXL\",\"value\":\"XXL\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -1409,12 +1410,6 @@ namespace EShopAPI.Migrations
                 table: "shop_action",
                 column: "number",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_shop_cart_ShopUserId",
-                schema: "eshop",
-                table: "shop_cart",
-                column: "ShopUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_shop_cart_user_id_product_entity_type_object_id",

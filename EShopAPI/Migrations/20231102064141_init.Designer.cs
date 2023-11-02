@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EShopAPI.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20231026014917_init")]
+    [Migration("20231102064141_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -154,6 +154,11 @@ namespace EShopAPI.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("eshop_unit_id")
                         .HasComment("商店單位id");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_enable")
+                        .HasComment("是否啟用");
 
                     b.Property<bool>("IsUseCoupon")
                         .HasColumnType("boolean")
@@ -296,7 +301,7 @@ namespace EShopAPI.Migrations
                             IsSystemDefault = true,
                             Name = "顏色",
                             Number = "color",
-                            Options = System.Text.Json.JsonDocument.Parse("[{\"id\":\"e450a665-0f15-4f4f-8037-383536f7d934\",\"name\":\"\\u9ED1\\u8272\",\"value\":\"#000000\"},{\"id\":\"3b1c44a6-fff9-447d-8425-a34504ba5b3b\",\"name\":\"\\u767D\\u8272\",\"value\":\"#FFFFFF\"},{\"id\":\"c70d24cc-ff11-4bde-afb4-4e4e6d57c05b\",\"name\":\"\\u7D05\\u8272\",\"value\":\"#FF0000\"},{\"id\":\"acc82a18-ba98-472d-97d9-632f289a0e68\",\"name\":\"\\u7DA0\\u8272\",\"value\":\"#00FF00\"},{\"id\":\"66536a0b-4705-4a44-8a2e-584add61335a\",\"name\":\"\\u85CD\\u8272\",\"value\":\"#0000FF\"}]", new System.Text.Json.JsonDocumentOptions())
+                            Options = System.Text.Json.JsonDocument.Parse("[{\"id\":\"66952e35-4535-45df-8ffa-722691e42e9e\",\"name\":\"\\u9ED1\\u8272\",\"value\":\"#000000\"},{\"id\":\"4f73c774-de09-4bbc-b991-1484406420d5\",\"name\":\"\\u767D\\u8272\",\"value\":\"#FFFFFF\"},{\"id\":\"3dabed7e-0da0-4cef-846f-fa04d6dc2293\",\"name\":\"\\u7D05\\u8272\",\"value\":\"#FF0000\"},{\"id\":\"647fb6e4-8408-4818-a995-80f8f8df3a89\",\"name\":\"\\u7DA0\\u8272\",\"value\":\"#00FF00\"},{\"id\":\"43b64452-06dd-4398-9d9c-92a960dbbfca\",\"name\":\"\\u85CD\\u8272\",\"value\":\"#0000FF\"}]", new System.Text.Json.JsonDocumentOptions())
                         },
                         new
                         {
@@ -308,7 +313,7 @@ namespace EShopAPI.Migrations
                             IsSystemDefault = true,
                             Name = "尺寸",
                             Number = "size",
-                            Options = System.Text.Json.JsonDocument.Parse("[{\"id\":\"3136ff14-6133-49d5-bbe2-10a71c8ffff0\",\"name\":\"XS\",\"value\":\"XS\"},{\"id\":\"34d25c28-efad-43c6-8957-5d1baf569bee\",\"name\":\"S\",\"value\":\"S\"},{\"id\":\"a9f1e42b-b175-412a-b10d-5b882368e388\",\"name\":\"M\",\"value\":\"M\"},{\"id\":\"3df066f6-ea20-4aa4-8ae7-52dbfe04be9b\",\"name\":\"L\",\"value\":\"L\"},{\"id\":\"42372104-d392-43e3-bd79-db71d171bc84\",\"name\":\"XL\",\"value\":\"XL\"},{\"id\":\"e59e2f1b-35c7-4251-aa51-e481cb3148eb\",\"name\":\"XXL\",\"value\":\"XXL\"}]", new System.Text.Json.JsonDocumentOptions())
+                            Options = System.Text.Json.JsonDocument.Parse("[{\"id\":\"8b9f8820-6ab1-4120-b3aa-3038639844ae\",\"name\":\"XS\",\"value\":\"XS\"},{\"id\":\"af668e7d-ac39-49e2-8d50-d0538d91d609\",\"name\":\"S\",\"value\":\"S\"},{\"id\":\"581ba33f-f2f2-459b-9e07-b3c4321d455e\",\"name\":\"M\",\"value\":\"M\"},{\"id\":\"0fdf39cb-d19f-4f18-8d28-e57a3be5e795\",\"name\":\"L\",\"value\":\"L\"},{\"id\":\"a9221ab6-82ce-4218-ae91-a8aa097ba63e\",\"name\":\"XL\",\"value\":\"XL\"},{\"id\":\"983a0986-be06-45df-9453-c295a0abafed\",\"name\":\"XXL\",\"value\":\"XXL\"}]", new System.Text.Json.JsonDocumentOptions())
                         });
                 });
 
@@ -1692,6 +1697,11 @@ namespace EShopAPI.Migrations
                         .HasColumnName("is_always_sale")
                         .HasComment("是否總是特價");
 
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_enable")
+                        .HasComment("是否啟用");
+
                     b.Property<bool>("IsUseCoupon")
                         .HasColumnType("boolean")
                         .HasColumnName("is_use_coupon")
@@ -2290,9 +2300,6 @@ namespace EShopAPI.Migrations
                         .HasColumnName("remarks")
                         .HasComment("備註");
 
-                    b.Property<long>("ShopUserId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("UpdateDate")
                         .HasColumnType("bigint")
                         .HasColumnName("update_date")
@@ -2309,8 +2316,6 @@ namespace EShopAPI.Migrations
                         .HasComment("使用者id");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ShopUserId");
 
                     b.HasIndex("UserId", "ProductEntityType", "ObjectId")
                         .IsUnique();
@@ -3444,7 +3449,7 @@ namespace EShopAPI.Migrations
                 {
                     b.HasOne("EShopAPI.Cores.ShopUsers.ShopUser", "ShopUser")
                         .WithMany("ShopCarts")
-                        .HasForeignKey("ShopUserId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

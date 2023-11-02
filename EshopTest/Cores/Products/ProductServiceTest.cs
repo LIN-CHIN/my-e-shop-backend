@@ -97,6 +97,7 @@ namespace EshopTest.Cores.Products
                     Price = 300,
                     EShopUnitId = 1,
                     IsAlwaysSale = false,
+                    IsEnable = true,
                     Discount = 0.5,
                     SaleStartDate = 1698287488000,
                     SaleEndDate = 1698633088000,
@@ -119,6 +120,7 @@ namespace EshopTest.Cores.Products
                     Price = 300,
                     EShopUnitId = 1,
                     IsAlwaysSale = false,
+                    IsEnable = true,
                     Discount = 0.5,
                     SaleStartDate = 1698287488000,
                     SaleEndDate = 1698633088000,
@@ -151,6 +153,7 @@ namespace EshopTest.Cores.Products
                     Price = 500,
                     EShopUnitId = 2,
                     IsAlwaysSale = true,
+                    IsEnable = false,
                     Discount = 0.9,
                     SaleStartDate = null,
                     SaleEndDate = null,
@@ -173,6 +176,7 @@ namespace EshopTest.Cores.Products
                     Price = 500,
                     EShopUnitId = 2,
                     IsAlwaysSale = true,
+                    IsEnable = false,
                     Discount = 0.9,
                     SaleStartDate = null,
                     SaleEndDate = null,
@@ -300,6 +304,49 @@ namespace EshopTest.Cores.Products
             }
         };
 
+        private static readonly object[] _enableSuccessCases =
+        {
+            new object[]
+            {
+                1,
+                new Product
+                {
+                    Id = 1,
+                    IsEnable = false
+                }
+            },
+            new object[]
+            {
+                2,
+                new Product
+                {
+                    Id = 2,
+                    IsEnable = false
+                }
+            }
+        };
+        private static readonly object[] _disableSuccessCases =
+        {
+            new object[]
+            {
+                1,
+                new Product
+                {
+                    Id = 1,
+                    IsEnable = true
+                }
+            },
+            new object[]
+            {
+                2,
+                new Product
+                {
+                    Id = 2,
+                    IsEnable = true
+                }
+            }
+        };
+
         [SetUp]
         public void SetUp()
         {
@@ -387,6 +434,7 @@ namespace EshopTest.Cores.Products
                         product.SaleStartDate == insertDto.SaleStartDate &&
                         product.SaleEndDate == insertDto.SaleEndDate &&
                         product.IsUseCoupon == insertDto.IsUseCoupon &&
+                        product.IsEnable == insertDto.IsEnable &&
                         JsonSerializer.Serialize(product.VariantAttribute) ==
                         JsonSerializer.Serialize(insertDto.VariantAttributes) &&
                         product.Remarks == insertDto.Remarks &&
@@ -517,6 +565,95 @@ namespace EshopTest.Cores.Products
             }
 
             Assert.Pass();
+        }
+
+        /// <summary>
+        /// 測試EnableAsync(失敗)
+        /// </summary>
+        [Test]
+        public void TestEnableAsyncError()
+        {
+            _mockProductDao.Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            var ex = Assert.ThrowsAsync<EShopException>(async () =>
+               await _productService.EnableAsync(It.IsAny<long>(), true));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試EnableAsync(啟用成功)
+        /// </summary>
+        /// <param name="id">要啟用的id</param>
+        /// <param name="product">根據id查到要啟用的實體</param>
+        [TestCaseSource(nameof(_enableSuccessCases))]
+        public async Task TestEnableAsyncSuccess(long id, Product product)
+        {
+            bool isPass = false;
+
+            _mockProductDao.Setup(x => x.GetByIdAsync(id))
+                .ReturnsAsync(product);
+
+            _mockProductDao.Setup(x => x.UpdateAsync(It.IsAny<Product>()))
+                .Callback<Product>( input => 
+                {
+                    if (input.Id == product.Id &&
+                        input.IsEnable && 
+                        product.UpdateUser != null &&
+                        product.UpdateDate != null)
+                    {
+                        isPass = true;
+                    }
+                })
+                .Returns(Task.FromResult(false));
+            try
+            {
+                await _productService.EnableAsync(id, true);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.That(isPass, Is.True);
+        }
+
+        /// <summary>
+        /// 測試DisableAsync(停用成功)
+        /// </summary>
+        /// <param name="id">要停用的id</param>
+        /// <param name="product">根據id查到要停用的實體</param>
+        [TestCaseSource(nameof(_disableSuccessCases))]
+        public async Task TestDisableAsyncSuccess(long id, Product product)
+        {
+            bool isPass = false;
+
+            _mockProductDao.Setup(x => x.GetByIdAsync(id))
+                .ReturnsAsync(product);
+
+            _mockProductDao.Setup(x => x.UpdateAsync(It.IsAny<Product>()))
+                .Callback<Product>(input =>
+                {
+                    if (input.Id == product.Id &&
+                        !input.IsEnable &&
+                        product.UpdateUser != null &&
+                        product.UpdateDate != null )
+                    {
+                        isPass = true;
+                    }
+                })
+                .Returns(Task.FromResult(false));
+            try
+            {
+                await _productService.EnableAsync(id, false);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.That(isPass, Is.True);
         }
 
         /// <summary>
