@@ -4,6 +4,7 @@ using EShopAPI.Cores.Products.DTOs;
 using EShopAPI.Cores.ShopInventories;
 using EShopAPI.Cores.ShopInventories.Services;
 using EShopCores.Errors;
+using EShopCores.Extensions;
 using EShopCores.Responses;
 
 namespace EShopAPI.Cores.Products.Services
@@ -82,6 +83,16 @@ namespace EShopAPI.Cores.Products.Services
         {
             Product product = await ThrowNotFindByIdAsync(id);
             await _productDao.DeleteAsync(product);
+        }
+
+        ///<inheritdoc/>
+        public async Task EnableAsync(long id, bool isEnable)
+        {
+            Product product = await ThrowNotFindByIdAsync(id);
+            product.IsEnable = isEnable;
+            product.UpdateUser = _loginUserData.UserNumber;
+            product.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond();
+            await _productDao.UpdateAsync(product);
         }
 
         ///<inheritdoc/>

@@ -59,6 +59,14 @@ namespace EShopAPI.Cores.Products
         [Column("is_always_sale")]
         [Comment("是否總是特價")]
         public bool IsAlwaysSale { get; set; }
+
+        /// <summary>
+        /// 是否啟用
+        /// </summary>
+        [Required]
+        [Column("is_enable")]
+        [Comment("是否啟用")]
+        public bool IsEnable { get; set; }
         
         /// <summary>
         /// 折扣數

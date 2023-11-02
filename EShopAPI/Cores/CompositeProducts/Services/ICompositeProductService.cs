@@ -43,6 +43,22 @@ namespace EShopAPI.Cores.CompositeProducts.Services
         Task UpdateAsync(UpdateCompositeProductDto updateDto);
 
         /// <summary>
+        /// 刪除組合產品
+        /// </summary>
+        /// <param name="id">要刪除的id</param>
+        /// <returns></returns>
+        Task DeleteAsync(long id);
+
+        /// <summary>
+        /// 啟用/停用組合產品
+        /// </summary>
+        /// <param name="id">要啟用/停用的id</param>
+        /// <param name="isEnable"> 是否啟用/停用 true = 啟用, false = 停用 
+        /// </param>
+        /// <returns></returns>
+        Task EnableAsync(long id, bool isEnable);
+
+        /// <summary>
         /// 根據id取得組合產品，如果沒找到id 就會直接throw exception
         /// </summary>
         /// <param name="id">組合產品的id</param>

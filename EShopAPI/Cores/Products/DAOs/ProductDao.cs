@@ -1,6 +1,5 @@
 ﻿using EShopAPI.Context;
 using EShopAPI.Cores.Products.DTOs;
-using EShopAPI.Cores.ShopInventories;
 using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI.Cores.Products.DAOs
@@ -49,6 +48,11 @@ namespace EShopAPI.Cores.Products.DAOs
             if (queryDto.SaleEndDate != null)
             {
                 products = products.Where(p => p.SaleEndDate <= queryDto.SaleEndDate);
+            }
+
+            if (queryDto.IsEnable != null)
+            {
+                products = products.Where(p => p.IsEnable == queryDto.IsEnable );
             }
 
             return products;

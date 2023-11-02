@@ -44,7 +44,13 @@ namespace EShopAPI.Cores.CompositeProducts.DAOs
                 compositeProducts = compositeProducts
                     .Where(cp => cp.IsUseCoupon == queryDto.IsUseCoupon);
             }
-            
+
+            if (queryDto.IsEnable != null)
+            {
+                compositeProducts = compositeProducts
+                    .Where(cp => cp.IsEnable == queryDto.IsEnable);
+            }
+
             return compositeProducts;
         }
 

@@ -298,6 +298,7 @@ namespace EShopAPI.Migrations
                     shop_inventory_id = table.Column<long>(type: "bigint", nullable: false, comment: "庫存id"),
                     eshop_unit_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店單位id"),
                     is_use_coupon = table.Column<bool>(type: "boolean", nullable: false, comment: "是否可以使用優惠券"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
                     create_user = table.Column<string>(type: "varchar(50)", nullable: false, comment: "建立者"),
                     create_date = table.Column<long>(type: "bigint", nullable: false, comment: "建立日期"),
                     update_user = table.Column<string>(type: "varchar(50)", nullable: true, comment: "更新者"),
@@ -337,6 +338,7 @@ namespace EShopAPI.Migrations
                     eshop_unit_id = table.Column<long>(type: "bigint", nullable: false, comment: "商店單位id"),
                     status = table.Column<int>(type: "integer", nullable: true, comment: "產品狀態, 暫無想法，保留欄位"),
                     is_always_sale = table.Column<bool>(type: "boolean", nullable: false, comment: "是否總是特價"),
+                    is_enable = table.Column<bool>(type: "boolean", nullable: false, comment: "是否啟用"),
                     discount = table.Column<double>(type: "double precision", nullable: true, comment: "折扣數"),
                     sale_start_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價起始日期"),
                     sale_end_date = table.Column<long>(type: "bigint", nullable: true, comment: "特價結束日期"),
@@ -1024,8 +1026,8 @@ namespace EShopAPI.Migrations
                 columns: new[] { "id", "attribute_type", "create_date", "create_user", "is_enable", "is_system_default", "language", "name", "number", "options", "remarks", "update_date", "update_user" },
                 values: new object[,]
                 {
-                    { 1L, 3, 1695285957713L, "shopAdmin", true, true, null, "顏色", "color", System.Text.Json.JsonDocument.Parse("[{\"id\":\"e450a665-0f15-4f4f-8037-383536f7d934\",\"name\":\"\\u9ED1\\u8272\",\"value\":\"#000000\"},{\"id\":\"3b1c44a6-fff9-447d-8425-a34504ba5b3b\",\"name\":\"\\u767D\\u8272\",\"value\":\"#FFFFFF\"},{\"id\":\"c70d24cc-ff11-4bde-afb4-4e4e6d57c05b\",\"name\":\"\\u7D05\\u8272\",\"value\":\"#FF0000\"},{\"id\":\"acc82a18-ba98-472d-97d9-632f289a0e68\",\"name\":\"\\u7DA0\\u8272\",\"value\":\"#00FF00\"},{\"id\":\"66536a0b-4705-4a44-8a2e-584add61335a\",\"name\":\"\\u85CD\\u8272\",\"value\":\"#0000FF\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null },
-                    { 2L, 1, 1695285957713L, "shopAdmin", true, true, null, "尺寸", "size", System.Text.Json.JsonDocument.Parse("[{\"id\":\"3136ff14-6133-49d5-bbe2-10a71c8ffff0\",\"name\":\"XS\",\"value\":\"XS\"},{\"id\":\"34d25c28-efad-43c6-8957-5d1baf569bee\",\"name\":\"S\",\"value\":\"S\"},{\"id\":\"a9f1e42b-b175-412a-b10d-5b882368e388\",\"name\":\"M\",\"value\":\"M\"},{\"id\":\"3df066f6-ea20-4aa4-8ae7-52dbfe04be9b\",\"name\":\"L\",\"value\":\"L\"},{\"id\":\"42372104-d392-43e3-bd79-db71d171bc84\",\"name\":\"XL\",\"value\":\"XL\"},{\"id\":\"e59e2f1b-35c7-4251-aa51-e481cb3148eb\",\"name\":\"XXL\",\"value\":\"XXL\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null }
+                    { 1L, 3, 1695285957713L, "shopAdmin", true, true, null, "顏色", "color", System.Text.Json.JsonDocument.Parse("[{\"id\":\"3a6d7129-b3a3-450c-80cf-e3bf51ab1851\",\"name\":\"\\u9ED1\\u8272\",\"value\":\"#000000\"},{\"id\":\"0b2afd62-c05b-4d64-8bed-99cbd232c8ad\",\"name\":\"\\u767D\\u8272\",\"value\":\"#FFFFFF\"},{\"id\":\"146d0dcf-048c-4ca1-bcb0-2c66a84fc6b8\",\"name\":\"\\u7D05\\u8272\",\"value\":\"#FF0000\"},{\"id\":\"cc2c6e43-5c11-4ed9-97dc-0379f934370f\",\"name\":\"\\u7DA0\\u8272\",\"value\":\"#00FF00\"},{\"id\":\"6e717c63-3722-4c5e-b0ea-a444b14e663b\",\"name\":\"\\u85CD\\u8272\",\"value\":\"#0000FF\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null },
+                    { 2L, 1, 1695285957713L, "shopAdmin", true, true, null, "尺寸", "size", System.Text.Json.JsonDocument.Parse("[{\"id\":\"0b6ab0eb-b2e7-4679-80fc-b63b31725b65\",\"name\":\"XS\",\"value\":\"XS\"},{\"id\":\"a7ac7a9d-7da8-4bbb-8731-6f51be57b7b6\",\"name\":\"S\",\"value\":\"S\"},{\"id\":\"f3c17846-c299-4dce-b029-d79d02279c0e\",\"name\":\"M\",\"value\":\"M\"},{\"id\":\"cc0a7bc4-61be-41b4-abb0-7bcbbc78ed87\",\"name\":\"L\",\"value\":\"L\"},{\"id\":\"4444a8b0-1189-42cd-b653-b6cbb576f7e8\",\"name\":\"XL\",\"value\":\"XL\"},{\"id\":\"ce754faf-a16a-491b-ba1b-2ef73a62d747\",\"name\":\"XXL\",\"value\":\"XXL\"}]", new System.Text.Json.JsonDocumentOptions()), null, null, null }
                 });
 
             migrationBuilder.InsertData(

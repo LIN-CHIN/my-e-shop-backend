@@ -42,6 +42,14 @@ namespace EShopAPI.Cores.CompositeProducts
         public bool IsUseCoupon { get; set; }
 
         /// <summary>
+        /// 是否啟用
+        /// </summary>
+        [Required]
+        [Column("is_enable")]
+        [Comment("是否啟用")]
+        public bool IsEnable { get; set; }
+
+        /// <summary>
         /// 商店單位
         /// </summary>
         public EShopUnit? EShopUnit { get; set; }

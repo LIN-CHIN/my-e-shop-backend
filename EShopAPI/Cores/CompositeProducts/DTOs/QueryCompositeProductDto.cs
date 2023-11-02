@@ -19,5 +19,10 @@
         /// 是否可以使用優惠券
         /// </summary>
         public bool? IsUseCoupon { get; set; }
+
+        /// <summary>
+        /// 是否啟用
+        /// </summary>
+        public bool? IsEnable { get; set; }
     }
 }

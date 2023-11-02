@@ -29,6 +29,12 @@ namespace EShopAPI.Cores.CompositeProducts.DTOs
         public bool IsUseCoupon { get; set; }
 
         /// <summary>
+        /// 是否啟用
+        /// </summary>
+        [JsonRequired]
+        public bool IsEnable { get; set; }
+
+        /// <summary>
         /// 備註
         /// </summary>
         public string? Remarks { get; set; }
@@ -50,6 +56,7 @@ namespace EShopAPI.Cores.CompositeProducts.DTOs
                 ShopInventoryId = ShopInventoryId,
                 EShopUnitId = EShopUnitId,
                 IsUseCoupon = IsUseCoupon,
+                IsEnable = IsEnable,
                 Remarks = Remarks,
                 Language = JsonSerializer.SerializeToDocument(Languages),
                 CreateUser = userNumber,

@@ -24,6 +24,11 @@ namespace EShopAPI.Cores.CompositeProducts.DTOs
         public bool IsUseCoupon { get; set; }
 
         /// <summary>
+        /// 是否啟用
+        /// </summary>
+        public bool IsEnable { get; set; }
+
+        /// <summary>
         /// 將實體轉成DTO
         /// </summary>
         /// <param name="compositeProduct">組合產品的實體</param>
@@ -39,7 +44,8 @@ namespace EShopAPI.Cores.CompositeProducts.DTOs
             {
                 ShopInventoryId = compositeProduct.ShopInventoryId,
                 EShopUnitId = compositeProduct.EShopUnitId,
-                IsUseCoupon = compositeProduct.IsUseCoupon
+                IsUseCoupon = compositeProduct.IsUseCoupon,
+                IsEnable = compositeProduct.IsEnable
             };
 
             compositeProductDto.ParseBaseObject(compositeProduct);

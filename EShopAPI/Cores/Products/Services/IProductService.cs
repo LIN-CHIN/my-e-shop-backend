@@ -51,6 +51,14 @@ namespace EShopAPI.Cores.Products.Services
         Task DeleteAsync(long id);
 
         /// <summary>
+        /// 啟用/停用產品
+        /// </summary>
+        /// <param name="id">要啟用/停用的產品id</param>
+        /// <param name="isEnable">是否要啟用 true = 啟用, false = 停用</param>
+        /// <returns></returns>
+        Task EnableAsync(long id, bool isEnable);
+
+        /// <summary>
         /// 根據id取得產品，但若找不到id會直接throw exception
         /// </summary>
         /// <param name="id">產品id</param>

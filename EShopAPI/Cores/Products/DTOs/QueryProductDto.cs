@@ -30,5 +30,9 @@
         /// </summary>
         public long? SaleEndDate { get; set; }
 
+        /// <summary>
+        /// 是否啟用
+        /// </summary>
+        public bool? IsEnable { get; set; }
     }
 }

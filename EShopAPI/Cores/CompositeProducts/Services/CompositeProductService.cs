@@ -3,6 +3,7 @@ using EShopAPI.Cores.CompositeProducts.DAOs;
 using EShopAPI.Cores.CompositeProducts.DTOs;
 using EShopAPI.Cores.ShopInventories;
 using EShopCores.Errors;
+using EShopCores.Extensions;
 using EShopCores.Responses;
 
 namespace EShopAPI.Cores.CompositeProducts.Services
@@ -62,6 +63,24 @@ namespace EShopAPI.Cores.CompositeProducts.Services
             await _compositeProductDao
                 .UpdateAsync(updateDto
                     .SetEntity(compositeProduct, _loginUserData.UserNumber));
+        }
+
+        ///<inheritdoc/>
+        public async Task DeleteAsync(long id)
+        {
+            CompositeProduct compositeProduct = await ThrowNotFindByIdAsync(id);
+            await _compositeProductDao
+                .DeleteAsync(compositeProduct);
+        }
+
+        ///<inheritdoc/>
+        public async Task EnableAsync(long id, bool isEnable)
+        {
+            CompositeProduct compositeProduct = await ThrowNotFindByIdAsync(id);
+            compositeProduct.IsEnable = isEnable;
+            compositeProduct.UpdateUser = _loginUserData.UserNumber;
+            compositeProduct.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond();
+            await _compositeProductDao.UpdateAsync(compositeProduct);
         }
 
         ///<inheritdoc/>
