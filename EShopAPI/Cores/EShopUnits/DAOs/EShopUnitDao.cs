@@ -1,5 +1,6 @@
 ﻿using EShopAPI.Context;
 using EShopAPI.Cores.EShopUnits.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI.Cores.EShopUnits.DAOs
 {
@@ -22,31 +23,62 @@ namespace EShopAPI.Cores.EShopUnits.DAOs
         ///<inheritdoc/>
         public IQueryable<EShopUnit> Get(QueryEShopUnitDto queryDto)
         {
-            throw new NotImplementedException();
+            IQueryable<EShopUnit> eShopUnits = _eShopContext.EShopUnits;
+
+            if (!string.IsNullOrWhiteSpace(queryDto.Number)) 
+            {
+                eShopUnits = eShopUnits
+                    .Where(e => EF.Functions.Like(e.Number, $"%{queryDto.Number}%"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryDto.Name))
+            {
+                eShopUnits = eShopUnits
+                    .Where(e => EF.Functions.Like(e.Name, $"%{queryDto.Name}%"));
+            }
+
+            if (queryDto.IsEnable != null) 
+            {
+                eShopUnits = eShopUnits.Where(e => e.IsEnable == queryDto.IsEnable);
+            }
+
+            if (queryDto.IsSystemDefault != null)
+            {
+                eShopUnits = eShopUnits.Where(e => e.IsSystemDefault == queryDto.IsSystemDefault);
+            }
+
+            return eShopUnits;
         }
 
         ///<inheritdoc/>
-        public Task<EShopUnit?> GetByIdAsync(long id)
+        public async Task<EShopUnit?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _eShopContext.EShopUnits
+                .Where(e => e.Id == id)
+                .SingleOrDefaultAsync();
         }
 
         ///<inheritdoc/>
-        public Task<EShopUnit?> GetByNumberAsync(string number)
+        public async Task<EShopUnit?> GetByNumberAsync(string number)
         {
-            throw new NotImplementedException();
+            return await _eShopContext.EShopUnits
+                .Where(e => e.Number == number)
+                .SingleOrDefaultAsync();
         }
 
         ///<inheritdoc/>
-        public Task<EShopUnit> InsertAsync(EShopUnit eShopUnit)
+        public async Task<EShopUnit> InsertAsync(EShopUnit eShopUnit)
         {
-            throw new NotImplementedException();
+            _eShopContext.EShopUnits.Add(eShopUnit);
+            await _eShopContext.SaveChangesAsync();
+            return eShopUnit;
         }
 
         ///<inheritdoc/>
-        public Task UpdateAsync(EShopUnit eShopUnit)
+        public async Task UpdateAsync(EShopUnit eShopUnit)
         {
-            throw new NotImplementedException();
+            _eShopContext.EShopUnits.Update(eShopUnit);
+            await _eShopContext.SaveChangesAsync();
         }
     }
 }

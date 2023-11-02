@@ -1,6 +1,9 @@
 ﻿using EShopAPI.Common;
 using EShopAPI.Cores.EShopUnits.DAOs;
 using EShopAPI.Cores.EShopUnits.DTOs;
+using EShopCores.Errors;
+using EShopCores.Extensions;
+using EShopCores.Responses;
 
 namespace EShopAPI.Cores.EShopUnits.Services
 {
@@ -27,49 +30,71 @@ namespace EShopAPI.Cores.EShopUnits.Services
         ///<inheritdoc/>
         public IQueryable<EShopUnit> Get(QueryEShopUnitDto queryDto)
         {
-            throw new NotImplementedException();
+            return _eShopUnitDao.Get(queryDto);
         }
 
         ///<inheritdoc/>
         public Task<EShopUnit?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return _eShopUnitDao.GetByIdAsync(id);
         }
 
         ///<inheritdoc/>
         public Task<EShopUnit?> GetByNumberAsync(string number)
         {
-            throw new NotImplementedException();
+            return _eShopUnitDao.GetByNumberAsync(number);
         }
 
         ///<inheritdoc/>
-        public Task<EShopUnit> InsertAsync(InsertEShopUnitDto insertDto)
+        public async Task<EShopUnit> InsertAsync(InsertEShopUnitDto insertDto)
         {
-            throw new NotImplementedException();
+            await ThrowExistByNumberAsync(insertDto.Number);
+            return await _eShopUnitDao
+                .InsertAsync(insertDto
+                    .ToEntity(_loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>
-        public Task UpdateAsync(UpdateEShopUnitDto updateDto)
+        public async Task UpdateAsync(UpdateEShopUnitDto updateDto)
         {
-            throw new NotImplementedException();
+            EShopUnit eShopUnit = await ThrowNotFindByIdAsync(updateDto.Id);
+            await _eShopUnitDao
+                .UpdateAsync(updateDto
+                    .SetEntity(eShopUnit, _loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>
-        public Task EnableAsync(long id, bool isEnable)
+        public async Task EnableAsync(long id, bool isEnable)
         {
-            throw new NotImplementedException();
+            EShopUnit eShopUnit = await ThrowNotFindByIdAsync(id);
+            eShopUnit.IsEnable = isEnable;
+            eShopUnit.UpdateDate = DateTime.UtcNow.GetUnixTimeMillisecond();
+            eShopUnit.UpdateUser = _loginUserData.UserNumber;
+            await _eShopUnitDao.UpdateAsync(eShopUnit);
         }
 
         ///<inheritdoc/>
-        public Task ThrowExistByNumberAsync(string number)
+        public async Task ThrowExistByNumberAsync(string number)
         {
-            throw new NotImplementedException();
+            EShopUnit? eShopUnit = await _eShopUnitDao.GetByNumberAsync(number);
+            if (eShopUnit != null) 
+            {
+                throw new EShopException(ResponseCodeType.DuplicateData,
+                    $"該商店單位代碼已存在: {number}");
+            }
         }
 
         ///<inheritdoc/>
-        public Task<EShopUnit> ThrowNotFindByIdAsync(long id)
+        public async Task<EShopUnit> ThrowNotFindByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            EShopUnit? eShopUnit = await _eShopUnitDao.GetByIdAsync(id);
+            if (eShopUnit == null)
+            {
+                throw new EShopException(ResponseCodeType.RequestParameterError,
+                    $"該商店單位id不存在: {id}");
+            }
+
+            return eShopUnit;
         }
     }
 }
