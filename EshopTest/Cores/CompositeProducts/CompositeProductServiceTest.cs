@@ -3,8 +3,7 @@ using EShopAPI.Cores.CompositeProducts;
 using EShopAPI.Cores.CompositeProducts.DAOs;
 using EShopAPI.Cores.CompositeProducts.DTOs;
 using EShopAPI.Cores.CompositeProducts.Services;
-using EShopAPI.Cores.EShopUnits;
-using EShopAPI.Cores.ShopInventories;
+using EShopAPI.Cores.Products;
 using EShopCores.Enums;
 using EShopCores.Errors;
 using EShopCores.Json;
@@ -125,7 +124,6 @@ namespace EshopTest.Cores.CompositeProducts
                 }
             }
         };
-
         private static readonly object[] _updateSuccessCases =
         {
             new object[]
@@ -186,6 +184,49 @@ namespace EshopTest.Cores.CompositeProducts
                     IsUseCoupon = true,
                     Remarks = "備註一",
                     Language = null
+                }
+            }
+        };
+
+        private static readonly object[] _enableSuccessCases =
+       {
+            new object[]
+            {
+                1,
+                new CompositeProduct
+                {
+                    Id = 1,
+                    IsEnable = false
+                }
+            },
+            new object[]
+            {
+                2,
+                new CompositeProduct
+                {
+                    Id = 2,
+                    IsEnable = false
+                }
+            }
+        };
+        private static readonly object[] _disableSuccessCases =
+        {
+            new object[]
+            {
+                1,
+                new CompositeProduct
+                {
+                    Id = 1,
+                    IsEnable = true
+                }
+            },
+            new object[]
+            {
+                2,
+                new CompositeProduct
+                {
+                    Id = 2,
+                    IsEnable = true
                 }
             }
         };
@@ -326,6 +367,137 @@ namespace EshopTest.Cores.CompositeProducts
             try
             {
                 await _compositeProductService.UpdateAsync(updateDto);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.That(isPass, Is.True);
+        }
+
+        /// <summary>
+        /// 測試DeleteAsync(產品id不存在)
+        /// </summary>
+        [Test]
+        public void TestDeleteAsyncNotFindId()
+        {
+            _mockCompositeProductDao.Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            _mockCompositeProductDao.Setup(x => x.DeleteAsync(It.IsAny<CompositeProduct>()))
+                .Returns(Task.FromResult(false));
+
+            var ex = Assert.ThrowsAsync<EShopException>(async () =>
+               await _compositeProductService.DeleteAsync(It.IsAny<long>()));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試DeleteAsync(成功)
+        /// </summary>
+        [Test]
+        public async Task TestDeleteAsyncSuccess()
+        {
+            _mockCompositeProductDao.Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(new CompositeProduct());
+
+            _mockCompositeProductDao.Setup(x => x.DeleteAsync(It.IsAny<CompositeProduct>()))
+                .Returns(Task.FromResult(false));
+
+            try
+            {
+                await _compositeProductService.DeleteAsync(It.IsAny<long>());
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.Pass();
+        }
+
+        /// <summary>
+        /// 測試EnableAsync(失敗)
+        /// </summary>
+        [Test]
+        public void TestEnableAsyncError()
+        {
+            _mockCompositeProductDao.Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            var ex = Assert.ThrowsAsync<EShopException>(async () =>
+               await _compositeProductService.EnableAsync(It.IsAny<long>(), true));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試EnableAsync(啟用成功)
+        /// </summary>
+        /// <param name="id">要啟用的id</param>
+        /// <param name="compositeProduct">根據id查到要啟用的實體</param>
+        [TestCaseSource(nameof(_enableSuccessCases))]
+        public async Task TestEnableAsyncSuccess(long id, CompositeProduct compositeProduct)
+        {
+            bool isPass = false;
+
+            _mockCompositeProductDao.Setup(x => x.GetByIdAsync(id))
+                .ReturnsAsync(compositeProduct);
+
+            _mockCompositeProductDao.Setup(x => x.UpdateAsync(It.IsAny<CompositeProduct>()))
+                .Callback<CompositeProduct>(input =>
+                {
+                    if (input.Id == compositeProduct.Id &&
+                        input.IsEnable &&
+                        compositeProduct.UpdateUser != null &&
+                        compositeProduct.UpdateDate != null)
+                    {
+                        isPass = true;
+                    }
+                })
+                .Returns(Task.FromResult(false));
+            try
+            {
+                await _compositeProductService.EnableAsync(id, true);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.That(isPass, Is.True);
+        }
+
+        /// <summary>
+        /// 測試DisableAsync(停用成功)
+        /// </summary>
+        /// <param name="id">要停用的id</param>
+        /// <param name="compositeProduct">根據id查到要停用的實體</param>
+        [TestCaseSource(nameof(_disableSuccessCases))]
+        public async Task TestDisableAsyncSuccess(long id, CompositeProduct compositeProduct)
+        {
+            bool isPass = false;
+
+            _mockCompositeProductDao.Setup(x => x.GetByIdAsync(id))
+                .ReturnsAsync(compositeProduct);
+
+            _mockCompositeProductDao.Setup(x => x.UpdateAsync(It.IsAny<CompositeProduct>()))
+                .Callback<CompositeProduct>(input =>
+                {
+                    if (input.Id == compositeProduct.Id &&
+                        !input.IsEnable &&
+                        compositeProduct.UpdateUser != null &&
+                        compositeProduct.UpdateDate != null)
+                    {
+                        isPass = true;
+                    }
+                })
+                .Returns(Task.FromResult(false));
+            try
+            {
+                await _compositeProductService.EnableAsync(id, false);
             }
             catch (Exception)
             {
