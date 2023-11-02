@@ -95,7 +95,7 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Insert([FromBody] InsertShopUserDto insertDto) 
+        public async Task<IActionResult> InsertAsync([FromBody] InsertShopUserDto insertDto) 
         {
             return Ok(GenericResponse<ShopUser>.GetSuccess(
                 await _shopUserService.InsertAsync(insertDto)));
@@ -118,7 +118,7 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update([FromBody] UpdateShopUserDto updateDto)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateShopUserDto updateDto)
         {
             await _shopUserService.UpdateAsync(updateDto);
             return Ok(GenericResponse<string>.GetSuccess());
@@ -141,7 +141,7 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SetEnable(long id)
+        public async Task<IActionResult> SetEnableAsync(long id)
         {
             await _shopUserService.EnableAsync(id, true);
             return Ok(GenericResponse<string>.GetSuccess());
@@ -164,7 +164,7 @@ namespace EShopAPI.Cores.ShopUsers
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SetDesable(long id)
+        public async Task<IActionResult> SetDisableAsync(long id)
         {
             await _shopUserService.EnableAsync(id, false);
             return Ok(GenericResponse<string>.GetSuccess());
