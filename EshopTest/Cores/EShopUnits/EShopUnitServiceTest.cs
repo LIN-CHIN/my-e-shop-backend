@@ -32,7 +32,10 @@ namespace EshopTest.Cores.EShopUnits
                 new InsertEShopUnitDto
                 {
                     Number = "A001"
-                },
+                }
+            },
+            new object[]
+            {
                 new InsertEShopUnitDto
                 {
                     Number = "B001"
@@ -142,7 +145,10 @@ namespace EshopTest.Cores.EShopUnits
                 new UpdateEShopUnitDto
                 {
                     Id = 1,
-                },
+                }
+            },
+            new object[]
+            {
                 new UpdateEShopUnitDto
                 {
                     Id = 2,
