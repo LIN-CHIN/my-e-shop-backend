@@ -33,20 +33,20 @@ namespace EShopAPI.Cores.CompositeProductItems.DAOs
         /// </summary>
         /// <param name="compositeProductItem">要新增的組合產品項目實體</param>
         /// <returns></returns>
-        Task<CompositeProductItem> Insert(CompositeProductItem compositeProductItem);
+        Task<CompositeProductItem> InsertAsync(CompositeProductItem compositeProductItem);
 
         /// <summary>
         /// 編輯組合產品項目
         /// </summary>
         /// <param name="compositeProductItem">要編輯的組合產品項目實體</param>
         /// <returns></returns>
-        Task Update(CompositeProductItem compositeProductItem);
+        Task UpdateAsync(CompositeProductItem compositeProductItem);
 
         /// <summary>
         /// 刪除組合產品項目
         /// </summary>
         /// <param name="compositeProductItem">要刪除的組合產品項目實體</param>
         /// <returns></returns>
-        Task Delete(CompositeProductItem compositeProductItem);
+        Task DeleteAsync(CompositeProductItem compositeProductItem);
     }
 }

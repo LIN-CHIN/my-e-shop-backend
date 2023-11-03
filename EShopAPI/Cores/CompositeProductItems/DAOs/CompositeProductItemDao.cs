@@ -38,19 +38,19 @@ namespace EShopAPI.Cores.CompositeProductItems.DAOs
         }
 
         ///<inheritdoc/>
-        public Task<CompositeProductItem> Insert(CompositeProductItem compositeProductItem)
+        public Task<CompositeProductItem> InsertAsync(CompositeProductItem compositeProductItem)
         {
             throw new NotImplementedException();
         }
 
         ///<inheritdoc/>
-        public Task Update(CompositeProductItem compositeProductItem)
+        public Task UpdateAsync(CompositeProductItem compositeProductItem)
         {
             throw new NotImplementedException();
         }
 
         ///<inheritdoc/>
-        public Task Delete(CompositeProductItem compositeProductItem)
+        public Task DeleteAsync(CompositeProductItem compositeProductItem)
         {
             throw new NotImplementedException();
         }

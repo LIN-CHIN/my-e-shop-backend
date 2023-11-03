@@ -42,19 +42,19 @@ namespace EShopAPI.Cores.CompositeProductItems.Services
         }
 
         ///<inheritdoc/>
-        public Task<CompositeProductItem> Insert(InsertCompositeProductItemDto insertDto)
+        public Task<CompositeProductItem> InsertAsync(InsertCompositeProductItemDto insertDto)
         {
             throw new NotImplementedException();
         }
 
         ///<inheritdoc/>
-        public Task Update(UpdateCompositeProductItemDto upadteDto)
+        public Task UpdateAsync(UpdateCompositeProductItemDto upadteDto)
         {
             throw new NotImplementedException();
         }
 
         ///<inheritdoc/>
-        public Task Delete(long id)
+        public Task DeleteAsync(long id)
         {
             throw new NotImplementedException();
         }

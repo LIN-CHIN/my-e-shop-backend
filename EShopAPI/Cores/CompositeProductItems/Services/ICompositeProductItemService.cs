@@ -33,21 +33,21 @@ namespace EShopAPI.Cores.CompositeProductItems.Services
         /// </summary>
         /// <param name="insertDto">要新增的組合產品項目資訊</param>
         /// <returns></returns>
-        Task<CompositeProductItem> Insert(InsertCompositeProductItemDto insertDto);
+        Task<CompositeProductItem> InsertAsync(InsertCompositeProductItemDto insertDto);
 
         /// <summary>
         /// 編輯組合產品項目
         /// </summary>
         /// <param name="upadteDto">要編輯的組合產品項目資訊</param>
         /// <returns></returns>
-        Task Update(UpdateCompositeProductItemDto upadteDto);
+        Task UpdateAsync(UpdateCompositeProductItemDto upadteDto);
 
         /// <summary>
         /// 刪除組合產品項目
         /// </summary>
         /// <param name="id">要刪除的組合產品項目id</param>
         /// <returns></returns>
-        Task Delete(long id);
+        Task DeleteAsync(long id);
 
         /// <summary>
         /// 根據id取得組合產品項目，如果沒找到id 就會直接throw exception
