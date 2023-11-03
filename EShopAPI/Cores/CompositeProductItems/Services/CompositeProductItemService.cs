@@ -1,4 +1,5 @@
 ﻿using EShopAPI.Common;
+using EShopAPI.Cores.CompositeProductItems.DAOs;
 using EShopAPI.Cores.CompositeProductItems.DTOs;
 
 namespace EShopAPI.Cores.CompositeProductItems.Services
@@ -8,18 +9,18 @@ namespace EShopAPI.Cores.CompositeProductItems.Services
     /// </summary>
     public class CompositeProductItemService : ICompositeProductItemService
     {
-        private readonly ICompositeProductItemService _compositeProductItemService;
+        private readonly ICompositeProductItemDao _compositeProductItemDao;
         private readonly LoginUserData _loginUserData;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="compositeProductItemService"></param>
+        /// <param name="compositeProductItemDao"></param>
         /// <param name="loginUserData"></param>
-        public CompositeProductItemService(ICompositeProductItemService compositeProductItemService,
+        public CompositeProductItemService(ICompositeProductItemDao compositeProductItemDao,
             LoginUserData loginUserData) 
         {
-            _compositeProductItemService = compositeProductItemService;
+            _compositeProductItemDao = compositeProductItemDao;
             _loginUserData = loginUserData;
         }
 
