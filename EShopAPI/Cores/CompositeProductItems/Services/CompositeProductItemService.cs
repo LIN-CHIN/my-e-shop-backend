@@ -1,6 +1,8 @@
 ﻿using EShopAPI.Common;
 using EShopAPI.Cores.CompositeProductItems.DAOs;
 using EShopAPI.Cores.CompositeProductItems.DTOs;
+using EShopAPI.Cores.CompositeProducts.Services;
+using EShopAPI.Cores.ShopInventories.Services;
 
 namespace EShopAPI.Cores.CompositeProductItems.Services
 {
@@ -10,17 +12,21 @@ namespace EShopAPI.Cores.CompositeProductItems.Services
     public class CompositeProductItemService : ICompositeProductItemService
     {
         private readonly ICompositeProductItemDao _compositeProductItemDao;
+        private readonly IShopInventoryService _shopInventoryService;
         private readonly LoginUserData _loginUserData;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="compositeProductItemDao"></param>
+        /// <param name="shopInventoryService"></param>
         /// <param name="loginUserData"></param>
         public CompositeProductItemService(ICompositeProductItemDao compositeProductItemDao,
+            IShopInventoryService shopInventoryService,
             LoginUserData loginUserData) 
         {
             _compositeProductItemDao = compositeProductItemDao;
+            _shopInventoryService = shopInventoryService;
             _loginUserData = loginUserData;
         }
 
@@ -37,7 +43,7 @@ namespace EShopAPI.Cores.CompositeProductItems.Services
         }
 
         ///<inheritdoc/>
-        public Task<CompositeProductItem?> GetById(long id)
+        public Task<CompositeProductItem?> GetByIdAsync(long id)
         {
             throw new NotImplementedException();
         }

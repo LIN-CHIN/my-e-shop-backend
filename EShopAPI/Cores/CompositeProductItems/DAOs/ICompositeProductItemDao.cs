@@ -26,7 +26,7 @@ namespace EShopAPI.Cores.CompositeProductItems.DAOs
         /// </summary>
         /// <param name="id">組合產品項目的id</param>
         /// <returns></returns>
-        Task<CompositeProductItem?> GetById(long id);
+        Task<CompositeProductItem?> GetByIdAsync(long id);
 
         /// <summary>
         /// 新增組合產品項目

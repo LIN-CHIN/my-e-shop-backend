@@ -32,7 +32,7 @@ namespace EShopAPI.Cores.CompositeProductItems.DAOs
         }
 
         ///<inheritdoc/>
-        public Task<CompositeProductItem?> GetById(long id)
+        public Task<CompositeProductItem?> GetByIdAsync(long id)
         {
             throw new NotImplementedException();
         }
