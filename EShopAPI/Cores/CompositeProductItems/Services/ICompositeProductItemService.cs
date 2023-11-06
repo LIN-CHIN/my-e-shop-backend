@@ -1,4 +1,5 @@
 ﻿using EShopAPI.Cores.CompositeProductItems.DTOs;
+using EShopCores.Errors;
 
 namespace EShopAPI.Cores.CompositeProductItems.Services
 {
@@ -54,6 +55,7 @@ namespace EShopAPI.Cores.CompositeProductItems.Services
         /// </summary>
         /// <param name="id">組合產品項目的id</param>
         /// <returns></returns>
+        /// <exception cref="EShopException">找不到該id</exception>
         Task<CompositeProductItem> ThrowNotFindByIdAsync(long id);
     }
 }

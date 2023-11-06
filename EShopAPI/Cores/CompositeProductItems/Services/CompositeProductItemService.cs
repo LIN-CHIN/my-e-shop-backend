@@ -1,8 +1,9 @@
 ﻿using EShopAPI.Common;
 using EShopAPI.Cores.CompositeProductItems.DAOs;
 using EShopAPI.Cores.CompositeProductItems.DTOs;
-using EShopAPI.Cores.CompositeProducts.Services;
 using EShopAPI.Cores.ShopInventories.Services;
+using EShopCores.Errors;
+using EShopCores.Responses;
 
 namespace EShopAPI.Cores.CompositeProductItems.Services
 {
@@ -33,43 +34,73 @@ namespace EShopAPI.Cores.CompositeProductItems.Services
         ///<inheritdoc/>
         public IQueryable<CompositeProductItem> Get(QueryCompositeProductItemDto queryDto)
         {
-            throw new NotImplementedException();
+            return _compositeProductItemDao.Get(queryDto);
         }
 
         ///<inheritdoc/>
         public IQueryable<CompositeProductItem> GetByCompositeProductId(long compositeProductId)
         {
-            throw new NotImplementedException();
+            return _compositeProductItemDao.GetByCompositeProductId(compositeProductId);
         }
 
         ///<inheritdoc/>
-        public Task<CompositeProductItem?> GetByIdAsync(long id)
+        public async Task<CompositeProductItem?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _compositeProductItemDao.GetByIdAsync(id);
         }
 
         ///<inheritdoc/>
-        public Task<CompositeProductItem> InsertAsync(InsertCompositeProductItemDto insertDto)
+        public async Task<CompositeProductItem> InsertAsync(InsertCompositeProductItemDto insertDto)
         {
-            throw new NotImplementedException();
+            bool isEnable = await _shopInventoryService.IsProductEnableAsync(insertDto.ShopInventoryId);
+
+            if (!isEnable) 
+            {
+                throw new EShopException(ResponseCodeType.DataIsDisabled,
+                    $"該產品已被停用， ShopInventoryId: {insertDto.ShopInventoryId}");
+            }
+
+            //根據組合產品id 取出全部的項目
+            IQueryable<CompositeProductItem> compositeProductItems =
+                _compositeProductItemDao.GetByCompositeProductId(insertDto.CompositeProductId);
+
+            if (compositeProductItems.Any(cpi => cpi.ShopInventoryId == insertDto.ShopInventoryId))
+            {
+                throw new EShopException(ResponseCodeType.DuplicateData,
+                    $"該組合產品已經有相同的項目，商店庫存id : {insertDto.ShopInventoryId}");
+            }
+
+            return await _compositeProductItemDao.InsertAsync(insertDto.ToEntity());
         }
 
         ///<inheritdoc/>
-        public Task UpdateAsync(UpdateCompositeProductItemDto upadteDto)
+        public async Task UpdateAsync(UpdateCompositeProductItemDto updateDto)
         {
-            throw new NotImplementedException();
+            CompositeProductItem compositeProductItem = await ThrowNotFindByIdAsync(updateDto.Id);
+            await _compositeProductItemDao.UpdateAsync(updateDto
+                        .SetEntity(compositeProductItem, _loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>
-        public Task DeleteAsync(long id)
+        public async Task DeleteAsync(long id)
         {
-            throw new NotImplementedException();
+            CompositeProductItem compositeProductItem = await ThrowNotFindByIdAsync(id);
+            await _compositeProductItemDao.DeleteAsync(compositeProductItem);
         }
 
         ///<inheritdoc/>
-        public Task<CompositeProductItem> ThrowNotFindByIdAsync(long id)
+        public async Task<CompositeProductItem> ThrowNotFindByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            CompositeProductItem? compositeProductItem =
+                await _compositeProductItemDao.GetByIdAsync(id);
+
+            if (compositeProductItem == null) 
+            {
+                throw new EShopException(ResponseCodeType.RequestParameterError,
+                    $"找不到該組合產品項目的id: {id}");
+            }
+
+            return compositeProductItem;
         }
     }
 }

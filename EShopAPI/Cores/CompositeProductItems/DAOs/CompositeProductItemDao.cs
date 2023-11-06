@@ -1,5 +1,7 @@
 ﻿using EShopAPI.Context;
 using EShopAPI.Cores.CompositeProductItems.DTOs;
+using EShopAPI.Cores.CompositeProducts;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI.Cores.CompositeProductItems.DAOs
 {
@@ -22,37 +24,88 @@ namespace EShopAPI.Cores.CompositeProductItems.DAOs
         ///<inheritdoc/>
         public IQueryable<CompositeProductItem> Get(QueryCompositeProductItemDto queryDto)
         {
-            throw new NotImplementedException();
+            IQueryable<CompositeProductItem> compositeProductItems = _eShopContext.CompositeProductItems;
+
+            if (queryDto.CompositeProductId != null) 
+            {
+                compositeProductItems = compositeProductItems
+                    .Where(cpi => cpi.CompositeProductId == queryDto.CompositeProductId);
+            }
+
+            if (queryDto.ShopInventoryId != null)
+            {
+                compositeProductItems = compositeProductItems
+                    .Where(cpi => cpi.ShopInventoryId == queryDto.ShopInventoryId);
+            }
+
+            if (queryDto.PriceScopeStart != null)
+            {
+                compositeProductItems = compositeProductItems
+                    .Where(cpi => cpi.Price >= queryDto.PriceScopeStart);
+            }
+
+            if (queryDto.PriceScopeEnd != null)
+            {
+                compositeProductItems = compositeProductItems
+                    .Where(cpi => cpi.Price <= queryDto.PriceScopeEnd);
+            }
+
+            if (queryDto.IsAlwaysSale != null)
+            {
+                compositeProductItems = compositeProductItems
+                    .Where(cpi => cpi.IsAlwaysSale == queryDto.IsAlwaysSale);
+            }
+
+            if (queryDto.SaleStartDate != null)
+            {
+                compositeProductItems = compositeProductItems
+                    .Where(cpi => cpi.SaleStartDate >= queryDto.SaleStartDate);
+            }
+
+            if (queryDto.SaleEndDate != null)
+            {
+                compositeProductItems = compositeProductItems
+                    .Where(cpi => cpi.SaleEndDate <= queryDto.SaleEndDate);
+            }
+
+            return compositeProductItems;
         }
 
         ///<inheritdoc/>
         public IQueryable<CompositeProductItem> GetByCompositeProductId(long compositeProductId)
         {
-            throw new NotImplementedException();
+            return _eShopContext.CompositeProductItems
+                .Where(cpi => cpi.CompositeProductId == compositeProductId);
         }
 
         ///<inheritdoc/>
-        public Task<CompositeProductItem?> GetByIdAsync(long id)
+        public async Task<CompositeProductItem?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _eShopContext.CompositeProductItems
+                .Where(cpi => cpi.Id == id)
+                .SingleOrDefaultAsync();
         }
 
         ///<inheritdoc/>
-        public Task<CompositeProductItem> InsertAsync(CompositeProductItem compositeProductItem)
+        public async Task<CompositeProductItem> InsertAsync(CompositeProductItem compositeProductItem)
         {
-            throw new NotImplementedException();
+            _eShopContext.CompositeProductItems.Add(compositeProductItem);
+            await _eShopContext.SaveChangesAsync();
+            return compositeProductItem;
         }
 
         ///<inheritdoc/>
-        public Task UpdateAsync(CompositeProductItem compositeProductItem)
+        public async Task UpdateAsync(CompositeProductItem compositeProductItem)
         {
-            throw new NotImplementedException();
+            _eShopContext.CompositeProductItems.Update(compositeProductItem);
+            await _eShopContext.SaveChangesAsync();
         }
 
         ///<inheritdoc/>
-        public Task DeleteAsync(CompositeProductItem compositeProductItem)
+        public async Task DeleteAsync(CompositeProductItem compositeProductItem)
         {
-            throw new NotImplementedException();
+            _eShopContext.CompositeProductItems.Remove(compositeProductItem);
+            await _eShopContext.SaveChangesAsync();
         }
     }
 }
