@@ -125,7 +125,6 @@ try
         });
     }
 
-    //app.UseHttpsRedirection();
     app.UseAuthorization();
 
     //Custom Middleware
