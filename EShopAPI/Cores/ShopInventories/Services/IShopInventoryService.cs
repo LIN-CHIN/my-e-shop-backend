@@ -63,9 +63,16 @@ namespace EShopAPI.Cores.ShopInventories.Services
         /// <summary>
         /// 啟用/停用商店庫存
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="isEnable"></param>
+        /// <param name="id">要被啟用/停用的id</param>
+        /// <param name="isEnable">true = 啟用, false = 停用</param>
         /// <returns></returns>
         Task EnableAsync(long id, bool isEnable);
+
+        /// <summary>
+        /// 檢查該商品庫存(產品)是否為啟用
+        /// </summary>
+        /// <param name="id">商店庫存id</param>
+        /// <returns></returns>
+        Task<bool> IsProductEnableAsync(long id);
     }
 }
