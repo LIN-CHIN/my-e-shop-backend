@@ -14,6 +14,7 @@ using System.Net;
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    builder.Configuration.AddEnvironmentVariables();
 
     builder.Services.AddControllers()
         //Custom ModelState 
@@ -107,6 +108,7 @@ try
 
     if (app.Environment.IsDevelopment())
     {
+        Console.WriteLine("is dev environment");
         app.UseOpenApi(options =>
         {
 
@@ -123,7 +125,7 @@ try
         });
     }
 
-    app.UseHttpsRedirection();
+    //app.UseHttpsRedirection();
     app.UseAuthorization();
 
     //Custom Middleware

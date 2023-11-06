@@ -15,3 +15,21 @@ services:
        - POSTGRES_DB=$MAIN_DB
      volumes:
        - ~/.docker-conf/EshopDB/data:/var/lib/postgresql/data
+   eshop-api:
+     container_name: eshop-api
+     hostname: eshop-api
+     restart: always
+     mem_limit: 300m
+     ports: 
+       - "7001:80"
+     build: 
+       context: .
+       dockerfile: ./EShopAPI/Dockerfile
+     environment:
+       - TZ=Asia/Taipei
+       - ASPNETCORE_ENVIRONMENT=Development
+       - ApiSettings__ConnectionString=$DB_CONNECTION_STING
+       - JwtSettings__Issuer=$JWT_ISSUER
+       - JwtSettings__SignKey=$JWT_SIGN_KEY
+     depends_on:
+       - eshop-db
