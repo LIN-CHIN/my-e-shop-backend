@@ -59,7 +59,6 @@ namespace EShopAPI.Cores.CompositeProductItems
         /// <summary>
         /// 折扣數
         /// </summary>
-        [Required]
         [Column("discount")]
         [Comment("折扣數")]
         public double Discount { get; set; }

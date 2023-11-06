@@ -7,6 +7,7 @@ using EShopCores.Enums;
 using EShopCores.Errors;
 using EShopCores.Json;
 using EShopCores.Responses;
+using Jose;
 using Moq;
 using System.Text.Json;
 
@@ -639,6 +640,44 @@ namespace EshopTest.Cores.ShopInventories
             }
 
             Assert.That(isPass, Is.True);
+        }
+
+        /// <summary>
+        /// 測試 IsProductEnableAsync (找不到id)
+        /// </summary>
+        [Test]
+        public void TestIsProductEnableAsyncNotFindId() 
+        {
+            _mockShopInventoryDao
+                .Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(value: null);
+
+            EShopException ex = Assert.ThrowsAsync<EShopException>(async () =>
+               await _shopInventoryService.IsProductEnableAsync(It.IsAny<long>()));
+
+            Assert.That(ex.Code, Is.EqualTo(ResponseCodeType.RequestParameterError));
+        }
+
+        /// <summary>
+        /// 測試 IsProductEnableAsync (成功)
+        /// </summary>
+        [Test]
+        public async Task TestIsProductEnableAsyncSuccess()
+        {
+            _mockShopInventoryDao
+                .Setup(x => x.GetByIdAsync(It.IsAny<long>()))
+                .ReturnsAsync(new ShopInventory());
+
+            try
+            {
+                await _shopInventoryService.IsProductEnableAsync(It.IsAny<long>());
+            }
+            catch (Exception)
+            {
+                Assert.Fail("should not get the error");
+            }
+
+            Assert.Pass();
         }
     }
 }

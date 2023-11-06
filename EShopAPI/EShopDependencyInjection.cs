@@ -2,6 +2,8 @@
 using EShopAPI.Context;
 using EShopAPI.Cores.Auth.JWTs;
 using EShopAPI.Cores.Auth.Services;
+using EShopAPI.Cores.CompositeProductItems.DAOs;
+using EShopAPI.Cores.CompositeProductItems.Services;
 using EShopAPI.Cores.CompositeProducts.DAOs;
 using EShopAPI.Cores.CompositeProducts.Services;
 using EShopAPI.Cores.CustomVariantAttributes.DAOs;
@@ -99,6 +101,10 @@ namespace EShopAPI
             //EShopUnits
             services.AddScoped<IEShopUnitService, EShopUnitService>();
             services.AddScoped<IEShopUnitDao, EShopUnitDao>();
+
+            //CompositeProductItems
+            services.AddScoped<ICompositeProductItemService, CompositeProductItemService>();
+            services.AddScoped<ICompositeProductItemDao, CompositeProductItemDao>();
 
             return services;
         }

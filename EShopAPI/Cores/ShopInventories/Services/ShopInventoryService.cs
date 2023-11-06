@@ -91,5 +91,12 @@ namespace EShopAPI.Cores.ShopInventories.Services
 
             return shopInventory;
         }
+
+        ///<inheritdoc/>
+        public async Task<bool> IsProductEnableAsync(long id)
+        {
+            ShopInventory shopInventory = await ThrowNotFindByIdAsync(id);
+            return shopInventory.IsEnable;
+        }
     }
 }
