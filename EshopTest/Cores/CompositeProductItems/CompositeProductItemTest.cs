@@ -3,22 +3,12 @@ using EShopAPI.Cores.CompositeProductItems;
 using EShopAPI.Cores.CompositeProductItems.DAOs;
 using EShopAPI.Cores.CompositeProductItems.DTOs;
 using EShopAPI.Cores.CompositeProductItems.Services;
-using EShopAPI.Cores.CompositeProducts;
-using EShopAPI.Cores.CompositeProducts.DTOs;
-using EShopAPI.Cores.CompositeProducts.Services;
-using EShopAPI.Cores.EShopUnits;
 using EShopAPI.Cores.ShopInventories;
 using EShopAPI.Cores.ShopInventories.Services;
 using EShopCores.Errors;
 using EShopCores.Responses;
-using Jose;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace EshopTest.Cores.CompositeProductItems
 {
