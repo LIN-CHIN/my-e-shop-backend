@@ -232,7 +232,7 @@ namespace EshopTest.Cores.CompositeProductItems
             {
                 new UpdateCompositeProductItemDto
                 {
-                    Id = 1,
+                    Id = 2,
                     Price = 900,
                     Count = 1,
                     IsAlwaysSale = false,
@@ -291,6 +291,10 @@ namespace EshopTest.Cores.CompositeProductItems
                 .Setup(x => x.GetByCompositeProductId(insertDto.CompositeProductId))
                 .Returns(compositeProductItems.AsQueryable());
 
+            _mockShopInventoryService
+                .Setup(x => x.IsProductEnableAsync(insertDto.ShopInventoryId))
+                .ReturnsAsync(true);
+
             _mockCompositeProductItemDao
                 .Setup(x => x.InsertAsync(It.IsAny<CompositeProductItem>()))
                 .ReturnsAsync(new CompositeProductItem());
@@ -317,8 +321,8 @@ namespace EshopTest.Cores.CompositeProductItems
                .Returns(compositeProductItems.AsQueryable());
 
             _mockShopInventoryService
-                .Setup(x => x.GetByIdAsync(insertDto.ShopInventoryId))
-                .ReturnsAsync(shopInventory);
+                .Setup(x => x.IsProductEnableAsync(insertDto.ShopInventoryId))
+                .ReturnsAsync(false);
 
             _mockCompositeProductItemDao
                 .Setup(x => x.InsertAsync(It.IsAny<CompositeProductItem>()))
@@ -345,6 +349,10 @@ namespace EshopTest.Cores.CompositeProductItems
             _mockCompositeProductItemDao
                .Setup(x => x.GetByCompositeProductId(insertDto.CompositeProductId))
                .Returns(new List<CompositeProductItem>().AsQueryable());
+
+            _mockShopInventoryService
+               .Setup(x => x.IsProductEnableAsync(insertDto.ShopInventoryId))
+               .ReturnsAsync(true);
 
             _mockCompositeProductItemDao
                 .Setup(x => x.InsertAsync(It.IsAny<CompositeProductItem>()))
@@ -480,9 +488,6 @@ namespace EshopTest.Cores.CompositeProductItems
             _mockCompositeProductItemDao
                 .Setup(x => x.DeleteAsync(It.IsAny<CompositeProductItem>()))
                 .Returns(Task.FromResult(false));
-
-            var ex = Assert.ThrowsAsync<EShopException>(async () =>
-               await _compositeProductItemService.DeleteAsync(It.IsAny<long>()));
 
             try
             {
