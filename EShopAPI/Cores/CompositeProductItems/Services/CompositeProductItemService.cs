@@ -70,7 +70,8 @@ namespace EShopAPI.Cores.CompositeProductItems.Services
                     $"該組合產品已經有相同的項目，商店庫存id : {insertDto.ShopInventoryId}");
             }
 
-            return await _compositeProductItemDao.InsertAsync(insertDto.ToEntity());
+            return await _compositeProductItemDao.InsertAsync(
+                insertDto.ToEntity(_loginUserData.UserNumber));
         }
 
         ///<inheritdoc/>

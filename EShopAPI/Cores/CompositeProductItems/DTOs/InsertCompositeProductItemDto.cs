@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using EShopCores.Extensions;
 using EShopCores.Json;
 
 namespace EShopAPI.Cores.CompositeProductItems.DTOs
@@ -73,8 +74,9 @@ namespace EShopAPI.Cores.CompositeProductItems.DTOs
         /// <summary>
         /// 將DTO轉成實體
         /// </summary>
+        /// <param name="userNumber">新增者帳號</param>
         /// <returns></returns>
-        public CompositeProductItem ToEntity() 
+        public CompositeProductItem ToEntity(string userNumber) 
         {
             return new CompositeProductItem
             {
@@ -88,7 +90,9 @@ namespace EShopAPI.Cores.CompositeProductItems.DTOs
                 SaleEndDate = SaleEndDate,
                 EshopUnitId = EshopUnitId,
                 Remarks = Remarks,
-                Language = JsonSerializer.SerializeToDocument(Languages)
+                Language = JsonSerializer.SerializeToDocument(Languages),
+                CreateUser = userNumber,
+                CreateDate = DateTime.UtcNow.GetUnixTimeMillisecond()
             };
         }
     }
