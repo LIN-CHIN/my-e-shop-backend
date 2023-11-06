@@ -39,9 +39,9 @@ namespace EShopAPI.Cores.CompositeProductItems.Services
         /// <summary>
         /// 編輯組合產品項目
         /// </summary>
-        /// <param name="upadteDto">要編輯的組合產品項目資訊</param>
+        /// <param name="updateDto">要編輯的組合產品項目資訊</param>
         /// <returns></returns>
-        Task UpdateAsync(UpdateCompositeProductItemDto upadteDto);
+        Task UpdateAsync(UpdateCompositeProductItemDto updateDto);
 
         /// <summary>
         /// 刪除組合產品項目
