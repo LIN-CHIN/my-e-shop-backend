@@ -1500,7 +1500,7 @@ namespace EShopAPI.Context
                     Language = null,
                     Number = "size",
                     Name = "尺寸",
-                    AttributeType = CustomVariantAttributeType.Text,
+                    AttributeType = CustomVariantAttributeType.DropDownList,
                     IsSystemDefault = true,
                     IsEnable = true,
                     Options = JsonSerializer.SerializeToDocument(

@@ -22,6 +22,12 @@ namespace EShopCores.Enums
         /// 顏色類型
         /// </summary>
         [Description("顏色類型")]
-        Color = 3
+        Color = 3,
+
+        /// <summary>
+        /// 下拉選單
+        /// </summary>
+        [Description("下拉選單")]
+        DropDownList = 4
     }
 }
