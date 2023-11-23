@@ -6,6 +6,7 @@ using EShopAPI.Cores.ShopInventories.Services;
 using EShopCores.Errors;
 using EShopCores.Extensions;
 using EShopCores.Responses;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShopAPI.Cores.Products.Services
 {
@@ -36,7 +37,22 @@ namespace EShopAPI.Cores.Products.Services
         ///<inheritdoc/>
         public IQueryable<Product> Get(QueryProductDto queryDto)
         {
-            return _productDao.Get(queryDto);
+            IQueryable<Product> products = _productDao.Get(queryDto)
+                .Include( p => p.ShopInventory);
+
+            if (!string.IsNullOrWhiteSpace(queryDto.ProductNumber)) 
+            {
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ShopInventory!.Number, $"%{queryDto.ProductNumber}%"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryDto.ProductName))
+            {
+                products = products.Where(p =>
+                    EF.Functions.Like(p.ShopInventory!.Name, $"%{queryDto.ProductName}%"));
+            }
+
+            return products;
         }
 
         ///<inheritdoc/>

@@ -25,11 +25,6 @@ namespace EShopAPI.Cores.Products.DAOs
         {
             IQueryable<Product> products = _eShopContext.Product;
 
-            if (queryDto.ShopInventoryId != null) 
-            {
-                products = products.Where(p => p.ShopInventoryId == queryDto.ShopInventoryId);
-            }
-
             if (queryDto.PriceScopeStart != null)
             {
                 products = products.Where(p => p.Price >= queryDto.PriceScopeStart);

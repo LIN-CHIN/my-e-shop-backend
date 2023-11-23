@@ -6,10 +6,15 @@
     public class QueryProductDto
     {
         /// <summary>
-        /// 庫存id
+        /// 產品代碼 (庫存table中的number)
         /// </summary>
-        public long? ShopInventoryId { get; set; }
-        
+        public string? ProductNumber { get; set; }
+
+        /// <summary>
+        /// 產品名稱 (庫存table中的name)
+        /// </summary>
+        public string? ProductName { get; set; }
+
         /// <summary>
         /// 價格區間(起)
         /// </summary>
